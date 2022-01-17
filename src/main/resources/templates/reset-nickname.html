@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font awesome -->
+  <script src="https://kit.fontawesome.com/98a425b916.js" crossorigin="anonymous"></script>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Roboto:ital,wght@0,900;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/styles/header.css">
+  <link rel="stylesheet" href="/styles/reset-nickname.css">
+
+  <!-- JS -->
+  <script src="/javascripts/reset-nickname.js" defer></script>
+  <title>닉네임 재설정 - ToDo Mate</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1 class="header__title">
+      <a href="#">
+        ToDo Mate
+      </a>
+    </h1>
+    <a href="#" class="header__prev-button">
+      <img src="/images/prev-btn.png" alt="prev button" class="filter-white">
+    </a>
+  </header>
+
+  <!-- Reset Nickname -->
+  <main class="reset-nickname">
+    <form class="reset-nickname__form" action="#" method="POST">
+      <h1 class="reset-nickname_title">RESET NICKNAME</h1>
+      <label class="reset-nickname__input-title" for="user-pw">
+        닉네임
+      </label>
+      <div class="reset-nickname__input-container">
+        <input class="reset-nickname__input" id="user-nickname" name="user-nickname" type="password" placeholder="닉네임을 입력해주세요.">
+      </div>
+
+      <!-- Alert -->
+      <div class="reset-nickname__alert">
+        <strong id="empty-user-nickname" class="reset-nickname__alert-info wrong">
+          닉네임을 입력하세요.
+        </strong>
+        <strong id="double-checked-user-nickname" class="reset-nickname__alert-info wrong">
+          닉네임이 중복되었습니다.
+        </strong>
+        <strong id="correct-user-nickname" class="reset-nickname__alert-info correct">
+          사용 가능한 닉네임 입니다.
+        </strong>
+      </div>
+      <button id="double-check-user-nickname" class="reset-nickname__btn" type="button">중복확인</button>
+      <button id="edit-user-nickname" class="reset-nickname__btn" type="submit">수정하기</button>
+    </form>
+
+    <!-- Modal -->
+    <div class="modal">
+      <div class="modal__header">
+        <span class="modal__close-btn"></span>
+      </div>
+      <div class="modal__container">
+        <p class="modal__description">
+          닉네임이 재설정되었습니다.
+        </p>
+        <button type="button" class="modal__login-btn">
+          확인
+        </button>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

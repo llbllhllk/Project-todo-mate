@@ -17,48 +17,33 @@ input:focus {
   outline: none;
 }
 
-/* Find ID */
-.reset-pw__form {
+/* Reset Nickname */
+.reset-nickname__form {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.reset-pw_title {
+.reset-nickname_title {
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-style: italic;
   margin-bottom: 40px;
 }
 
-.reset-pw__container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.reset-pw__list:last-child {
-  margin-top: 30px;
-}
-
-.reset-pw__list__container {
-  display: flex;
-}
-
-.reset-pw__input-title {
+.reset-nickname__input-title {
   display: block;
   font-family: "Nanum Gothic", sans-serif;
   font-size: 16px;
   margin-bottom: 12px;
 }
 
-.reset-pw__input-container {
+.reset-nickname__input-container {
   position: relative;
 }
 
-.reset-pw__input-container::after {
+.reset-nickname__input-container::after {
   display: block;
   content: "\f00c";
   font-family: FontAwesome;
@@ -68,19 +53,17 @@ input:focus {
   top: 10px;
 }
 
-.reset-pw__timer {
-  margin-left: 8px;
-  font-size: 14px;
-  color: red;
+.reset-nickname__input-container.valid::after {
+  color: black;
 }
 
-.reset-pw__input {
+.reset-nickname__input {
   height: 35px;
   padding-left: 14px;
 }
 
-.reset-pw__input,
-.reset-pw__btn {
+.reset-nickname__input,
+.reset-nickname__btn {
   display: block;
   width: 500px;
   font-size: 14px;
@@ -88,7 +71,7 @@ input:focus {
   border: 1px solid #ccd2d8;
 }
 
-.reset-pw__btn {
+.reset-nickname__btn {
   height: 50px;
   margin-top: 20px;
   cursor: pointer;
@@ -98,12 +81,12 @@ input:focus {
   transition: all 0.3s ease;
 }
 
-.reset-pw__btn:hover {
+.reset-nickname__btn:hover {
   background-color: #000;
   color: #fff;
 }
 
-.reset-pw__alert {
+.reset-nickname__alert {
   margin-top: 6px;
   height: 12px;
 }
@@ -170,7 +153,7 @@ input:focus {
 }
 
 /* Alert */
-.reset-pw__alert-info {
+.reset-nickname__alert-info {
   display: none;
   font-family: "Nanum Gothic", sans-serif;
   font-weight: 400;
