@@ -1,0 +1,128 @@
+body {
+	user-select: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+ul,
+li {
+	list-style: none;
+}
+
+button {
+	border: 0;
+	outline: 0;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+/* main-container */
+.container {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.login-title {
+	font-family: "Roboto", sans-serif;
+	text-align: center;
+	font-style: italic;
+	font-weight: 800;
+	font-size: 40px;
+}
+
+.login-form {
+	margin: 36px 0 27px 0;
+}
+
+.input-id {
+	font-family: "Nanum Gothic", sans-serif;
+	width: 600px;
+	height: 50px;
+	border: 1px solid black;
+	text-indent: 21px;
+	font-size: 20px;
+	margin: 11px 0 30px 0;
+}
+
+.input-pw {
+	font-family: "Nanum Gothic", sans-serif;
+	width: 600px;
+	height: 50px;
+	border: 1px solid black;
+	text-indent: 21px;
+	font-size: 20px;
+	margin: 11px 0 5px 0;
+}
+
+.input-id:focus,
+.input-pw:focus {
+	outline: 1px solid black;
+}
+
+.error_msg {
+	height: 40px;
+	margin-bottom: 10px;
+}
+
+.mismatch_msg,
+.empty_msg {
+	display: none;
+}
+
+@media screen {
+	.mismatch_msg.active,
+	.empty_msg.active {
+		display: block;
+	}
+
+	.mismatch_msg.active li,
+	.empty_msg.active li {
+		color: #ff0000;
+		font-size: 15px;
+	}
+}
+
+.login-form-btn {
+	width: 600px;
+	height: 64px;
+	font-weight: 900;
+	font-size: 22px;
+	background: #c4c4c4;
+	border: 1px solid black;
+	transition: all 0.3s ease;
+}
+
+.login-form-btn:hover {
+	background: black;
+	color: white;
+}
+
+.container > ul {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
+.find-id a,
+.find-pw a,
+.sign-up a {
+	color: black;
+	transition: all 0.3s ease;
+}
+
+.container > ul li {
+	border-right: 1px solid black;
+	padding: 0 30px;
+}
+
+.container > ul li:last-child {
+	border-right: 1px solid transparent;
+}
+
+.container > ul li a:hover {
+	font-weight: bold;
+}

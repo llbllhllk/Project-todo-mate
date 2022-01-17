@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+	user-select: none;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+/* User Edit */
+.user-edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  width: 100%;
+  height: 100vh;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.user-edit__container {
+  width: 678px;
+}
+
+.user-edit__user-name {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+/* User Email */
+.user-edit__email-info {
+  background-color: #555050;
+  padding: 32px 20px;
+  font-size: 18px;
+  margin-bottom: 26px;
+}
+
+.user-edit__email-title {
+  font-weight: 700;
+  color: #C4C4C4;
+  margin-bottom: 10px;
+}
+
+.user-edit__email {
+  color: #fff;
+}
+
+/* Edit List */
+.user-edit__list-item {
+  padding: 0 0 20px 20px;
+  border-bottom: 1px solid #2E2D2D;
+  margin-bottom: 26px;
+}
+
+.user-edit__list-item a {
+  display: block;
+  color: #C4C4C4;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.user-edit__list-item:last-child {
+  margin-bottom: 0;
+}
+
+.user-edit__list-item:last-child a {
+  color: #D33A3A;
+}

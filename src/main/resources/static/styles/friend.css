@@ -1,0 +1,198 @@
+body {
+	user-select: none;
+}
+
+ul,
+li {
+	list-style: none;
+}
+
+button {
+	border: 0;
+	outline: 0;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+/* body */
+body {
+	background-color: black;
+	color: white;
+}
+
+.main {
+	position: absolute;
+	left: 50%;
+	top: 150px;
+	transform: translate(-50%);
+	width: 500px;
+}
+
+/* tab */
+.friend-tab {
+	display: flex;
+	justify-content: space-between;
+}
+
+.friend-tab .active {
+	border-bottom: 2px solid #00a3ff;
+}
+
+.friend-tab li {
+	padding: 0 0 4px 0;
+}
+
+.friend-tab button {
+	font-size: 18px;
+	color: white;
+}
+
+.friend-tab span {
+	text-align: center;
+	color: #00a3ff;
+	font-size: 18px;
+}
+
+/* contents */
+.contents {
+	margin-top: 20px;
+}
+
+.search-form-control {
+	position: relative;
+	display: none;
+}
+
+.search-form-control.active {
+	display: block;
+}
+
+.search-form-control i {
+	position: absolute;
+	color: black;
+	left: 7px;
+	top: 8px;
+}
+
+/* input */
+.search-user,
+.search-friend {
+	display: none;
+	font-family: "Nanum Gothic", sans-serif;
+	width: 500px;
+	height: 30px;
+	border: 1px solid black;
+	text-indent: 27px;
+	font-size: 14px;
+	margin: 11px 0 30px 0;
+	border-radius: 10px;
+}
+
+.search-user.active,
+.search-friend.active {
+	display: block;
+}
+
+.search-user:focus,
+.search-friend:focus {
+	outline: none;
+}
+
+/* search table */
+/* friend table */
+/* request table */
+.request-table,
+.friend-table,
+.user-table {
+	display: none;
+	width: 500px;
+	height: 700px;
+	overflow: auto;
+	-ms-overflow-style: none;
+}
+
+.request-table::-webkit-scrollbar,
+.friend-table::-webkit-scrollbar,
+.user-table::-webkit-scrollbar {
+	background-color: rgb(38, 38, 38);
+	width: 10px;
+}
+
+.request-table::-webkit-scrollbar-thumb,
+.friend-table::-webkit-scrollbar-thumb,
+.user-table::-webkit-scrollbar-thumb {
+	background-color: rgb(143, 143, 143);
+	border-radius: 10px;
+}
+
+.request-table table,
+.friend-table table,
+.user-table table {
+	width: 100%;
+}
+
+.request-table.active,
+.friend-table.active,
+.user-table.active {
+	display: block;
+}
+
+.request-table tr,
+.friend-table tr,
+.user-table tr {
+	height: 40px;
+	font-size: 17px;
+	transition: all 0.3s ease;
+}
+
+.request-table tr:hover,
+.friend-table tr:hover,
+.user-table tr:hover {
+	background-color: rgb(38, 38, 38);
+}
+
+.request-table td:first-child,
+.friend-table td:first-child,
+.user-table td:first-child {
+	padding-left: 10px;
+}
+
+.request-table td:last-child,
+.friend-table td:last-child,
+.user-table td:last-child {
+	text-align: right;
+}
+
+.user-table button {
+	color: #00a3ff;
+	font-size: 17px;
+	padding-right: 10px;
+}
+
+.friend-table button {
+	color: #f16767;
+	font-size: 17px;
+	padding-right: 10px;
+}
+
+.request-table button:first-child {
+	color: #00a3ff;
+	font-size: 17px;
+	margin-right: 5px;
+}
+
+.request-table button:last-child {
+	color: #f16767;
+	font-size: 17px;
+	padding-right: 10px;
+}
+
+.request-table button:hover,
+.friend-table button:hover,
+.user-table button:hover {
+	text-decoration: underline;
+}

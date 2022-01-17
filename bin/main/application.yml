@@ -1,0 +1,12 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kitaecoding999@gmail.com
+    password: aa0332601
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

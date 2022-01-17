@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font awesome -->
+  <script src="https://kit.fontawesome.com/98a425b916.js" crossorigin="anonymous"></script>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Roboto:ital,wght@0,900;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/styles/header.css">
+  <link rel="stylesheet" href="/styles/find-id.css">
+  <!-- JS -->
+  <script src="/javascripts/find-id.js" defer></script>
+  <title>아이디 찾기 - ToDo Mate</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1 class="header__title">
+      <a href="#">
+        ToDo Mate
+      </a>
+    </h1>
+    <a href="#" class="header__prev-button">
+      <img src="/images/prev-btn.png" alt="prev button" class="filter-white">
+    </a>
+  </header>
+
+  <!-- Find ID -->
+  <main class="find-id">
+    <section class="find-id__form">
+      <h1 class="find-id_title">FIND ID</h1>
+      <div class="find-id__container">
+
+        <!-- Email -->
+        <form class="find-id__list" action="/find-id" method="POST">
+          <label class="find-id__input-title" for="user-email">
+            이메일
+          </label>
+          <div class="find-id__input-container">
+            <input class="find-id__input" id="user-email" name="user-email" type="text" placeholder="이메일을 입력해주세요.">
+          </div>
+
+          <!-- Alert -->
+          <div class="find-id__alert">
+            <strong id="empty-email" class="find-id__alert-info wrong">
+              이메일을 입력해주세요.
+            </strong>
+            <strong id="wrong-email" class="find-id__alert-info wrong">
+              가입하지 않은 이메일입니다. 다시 확인해주세요.
+            </strong>
+            <strong id="correct-email" class="find-id__alert-info correct">
+              인증번호를 보냈습니다.
+            </strong>
+          </div>
+          <button id="sending-certification" class="find-id__btn" type="submit">인증번호 보내기</button>
+        </form>
+
+        <!-- Certification -->
+        <form class="find-id__list close" action="/find-id" method="POST">
+          <div class="find-id__list__container">
+            <label class="find-id__input-title" for="user-certification">
+              인증번호
+            </label>
+            <strong class="find-id__timer">3:00</strong>
+          </div>
+          <div class="find-id__input-container">
+            <input class="find-id__input" name="user-certification" id="user-certification" type="text"
+              placeholder="인증번호를 입력해주세요.">
+          </div>
+
+          <!-- Alert -->
+          <div class="find-id__alert">
+            <strong id="empty-certification" class="find-id__alert-info wrong">
+              인증번호를 입력해 주세요.
+            </strong>
+            <strong id="correct-certification" class="find-id__alert-info correct">
+              인증번호가 맞습니다.
+            </strong>
+            <strong id="wrong-certification" class="find-id__alert-info wrong">
+              인증번호가 틀립니다.
+            </strong>
+          </div>
+          <button id="confirm-certification" class="find-id__btn" type="submit">인증 확인</button>
+        </form>
+      </div>
+    </section>
+    
+    <!-- Modal -->
+    <div class="modal close">
+      <div class="modal__header">
+        <span class="modal__close-btn"></span>
+      </div>
+      <p class="modal__description">
+        사용자님의 아이디는
+        <strong class="modal__user-id">아무개</strong>
+        입니다.
+      </p>
+    </div>
+  </main>
+</body>
+
+</html>
