@@ -34,6 +34,7 @@ input:focus {
   font-family: "Roboto", sans-serif;
   font-style: italic;
   margin-bottom: 40px;
+  font-size: 40px;
 }
 
 .find-pw__container {
@@ -61,7 +62,7 @@ input:focus {
   color: #cfd2d4;
   position: absolute;
   left: 465px;
-  top: 10px;
+  top: 16px;
 }
 
 .find-pw__input-title {
@@ -78,7 +79,8 @@ input:focus {
 }
 
 .find-pw__input {
-  height: 35px;
+  height: 50px;
+  font-size: 20px;
   padding-left: 14px;
 }
 
@@ -86,13 +88,13 @@ input:focus {
 .find-pw__btn {
   display: block;
   width: 500px;
-  font-size: 14px;
   font-family: "Nanum Gothic", sans-serif;
   border: 1px solid #ccd2d8;
 }
 
 .find-pw__btn {
-  height: 50px;
+  height: 64px;
+  font-size: 22px;
   margin-top: 20px;
   cursor: pointer;
   background-color: #c4c4c4;
