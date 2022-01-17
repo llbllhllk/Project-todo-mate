@@ -1,7 +1,8 @@
 'use strict'
 
 // Btn
-const editAccountBtn = document.querySelector('#edit-account');
+const editNickNameBtn = document.querySelector('#edit-nickname');
+const editPasswordBtn = document.querySelector('#edit-password');
 const logoutBtn = document.querySelector('#logout');
 const secessionBtn = document.querySelector('#secession');
 const xBtns = document.querySelectorAll('.modal__close-btn');
@@ -11,9 +12,15 @@ const cancelBtns = document.querySelectorAll('.modal__btn.cancel');
 const logoutModal = document.querySelector('.modal.logout');
 const secessionModal = document.querySelector('.modal.secession');
 
-function editAccountBtnHandler() {
-  editAccountBtn.addEventListener('click', () => {
-    location.href="edit-account.html";
+function editNickNameBtnHandler() {
+  editNickNameBtn.addEventListener('click', () => {
+    location.href="edit-nickname.html";
+  });
+}
+
+function editPasswordBtnHandler() {
+  editPasswordBtn.addEventListener('click', (e) => {
+    location.href="edit-password.html";
   });
 }
 
@@ -46,7 +53,8 @@ function secessionModalHandler() {
 }
 
 function init() {
-  editAccountBtnHandler();
+  editNickNameBtnHandler();
+  editPasswordBtnHandler();
   logoutModalHandler();
   secessionModalHandler();
   deleteBtnHandler();
