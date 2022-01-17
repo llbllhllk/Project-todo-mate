@@ -17,7 +17,7 @@ input:focus {
   outline: none;
 }
 
-/* Find ID */
+/* Reset PW */
 .reset-pw__form {
   position: absolute;
   top: 50%;
@@ -30,6 +30,7 @@ input:focus {
   font-family: "Roboto", sans-serif;
   font-style: italic;
   margin-bottom: 40px;
+  font-size: 40px;
 }
 
 .reset-pw__container {
@@ -65,17 +66,12 @@ input:focus {
   color: #cfd2d4;
   position: absolute;
   left: 465px;
-  top: 10px;
-}
-
-.reset-pw__timer {
-  margin-left: 8px;
-  font-size: 14px;
-  color: red;
+  top: 16px;
 }
 
 .reset-pw__input {
-  height: 35px;
+  height: 50px;
+  font-size: 20px;
   padding-left: 14px;
 }
 
@@ -83,13 +79,13 @@ input:focus {
 .reset-pw__btn {
   display: block;
   width: 500px;
-  font-size: 14px;
   font-family: "Nanum Gothic", sans-serif;
   border: 1px solid #ccd2d8;
 }
 
 .reset-pw__btn {
-  height: 50px;
+  height: 64px;
+  font-size: 22px;
   margin-top: 20px;
   cursor: pointer;
   background-color: #c4c4c4;
