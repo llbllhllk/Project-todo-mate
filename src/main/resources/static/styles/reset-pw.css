@@ -18,10 +18,6 @@ input:focus {
 }
 
 /* Find ID */
-.reset-pw_ {
-  position: relative;
-}
-
 .reset-pw__form {
   position: absolute;
   top: 50%;
