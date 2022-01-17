@@ -59,10 +59,16 @@ li {
   margin-bottom: 26px;
 }
 
-.user-edit__list-item a {
+.user-edit__btn {
+  font-family: "Nanum Gothic", sans-serif;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
   display: block;
   color: #C4C4C4;
   font-weight: 700;
+  font-size: 18px;
   text-decoration: none;
 }
 
@@ -70,6 +76,83 @@ li {
   margin-bottom: 0;
 }
 
-.user-edit__list-item:last-child a {
+.user-edit__list-item:last-child button {
   color: #D33A3A;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  border: 1px solid #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 300px;
+  background-color: #fff;
+  transition: opacity 0.3 ease;
+}
+
+.modal__header {
+  position: relative;
+  height: 40px;
+  border: 1px solid #000;
+  background-color: #000;
+}
+
+.modal__close-btn {
+  display: block;
+  position: absolute;
+  top: 25%;
+  right: 10px;
+  background: url('/images/tab-delete-button.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.modal__content {
+  font-family: "Nanum Gothic", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 260px;
+}
+
+.modal__description {
+  margin-bottom: 20px;
+}
+
+.modal__btn-group {
+  display: flex;
+}
+
+.modal__btn {
+  display: block;
+  border: 1px solid #000;
+  background-color: #000;
+  color: #fff;
+  width: 100px;
+  height: 30px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.modal__btn:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+.modal__btn:last-child {
+  margin-right: 0;
+}
+
+/* Active */
+.active {
+  display: block;
 }
