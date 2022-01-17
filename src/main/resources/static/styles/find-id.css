@@ -34,6 +34,7 @@ input:focus {
   font-family: "Roboto", sans-serif;
   font-style: italic;
   margin-bottom: 40px;
+  font-size: 40px;
 }
 
 .find-id__container {
@@ -69,7 +70,7 @@ input:focus {
   color: #cfd2d4;
   position: absolute;
   left: 465px;
-  top: 10px;
+  top: 16px;
 }
 
 .find-id__timer {
@@ -79,7 +80,8 @@ input:focus {
 }
 
 .find-id__input {
-  height: 35px;
+  height: 50px;
+  font-size: 20px;
   padding-left: 14px;
 }
 
@@ -87,15 +89,15 @@ input:focus {
 .find-id__btn {
   display: block;
   width: 500px;
-  font-size: 14px;
   font-family: "Nanum Gothic", sans-serif;
   border: 1px solid #ccd2d8;
 }
 
 .find-id__btn {
-  height: 50px;
+  height: 64px;
   margin-top: 20px;
   cursor: pointer;
+  font-size: 22px;
   background-color: #c4c4c4;
   border: 1px solid black;
   font-weight: 700;
