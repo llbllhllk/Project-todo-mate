@@ -7,6 +7,7 @@
  * @property {string} data
  */
 
+
 // @type {InputInfo[]}
 const inputInfoArr = [
   {
@@ -16,7 +17,7 @@ const inputInfoArr = [
   },
   {
     id: 'userPw',
-    validationCb: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+    validationCb: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~@$^!%<>&*?&])[A-Za-z\d~@$^!%<>&*?&]{8,20}$/,
     isValid: false,
     isEmpty: true,
     data: "비밀번호",
