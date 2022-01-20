@@ -11,4 +11,5 @@ public interface MemberRepository{
     Optional<Member> getMemberIdInformation(String id) throws Exception;
     Optional<Nickname> getMemberNicknameInformation(String nickname) throws Exception;
     String registerNickname(Nickname nickname) throws Exception;
+
 }
