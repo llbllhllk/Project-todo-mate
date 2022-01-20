@@ -27,7 +27,8 @@ button {
 
 .main_container {
 	max-width: 1300px;
-	margin: 70px auto;
+	height: 80vh;
+	margin: 50px auto;
 	display: flex;
 }
 

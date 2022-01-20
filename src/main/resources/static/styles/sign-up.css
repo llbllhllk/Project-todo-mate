@@ -1,122 +1,125 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Nanum Gothic", sans-serif;
 }
 
 body {
-    user-select: none;
+	user-select: none;
 }
 
 h1 {
-  margin: 0;
+	margin: 0;
 }
 
 a {
-  text-decoration:none;
-  color: white;
+	text-decoration: none;
+	color: white;
 }
 
-ul, li {
-  list-style: none;
+ul,
+li {
+	list-style: none;
 }
 
 input:focus {
-  outline:none;
+	outline: none;
 }
 
 /* Sign up */
 .sign-up {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-  margin-bottom: 70px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 30px;
+	margin-bottom: 70px;
 }
 
 .sign-up_title {
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
-  font-style: italic;
-  margin-bottom: 40px;
+	text-align: center;
+	font-family: "Roboto", sans-serif;
+	font-style: italic;
+	margin-top: 50px;
 }
 
 .sign_list {
-  display: grid;
-  place-content: center;
-  margin-bottom: 30px;
+	display: grid;
+	place-content: center;
+	margin-bottom: 10px;
 }
 
 .sign_item_title {
-  font-weight: normal;
-  font-family: 'Nanum Gothic', sans-serif;
-  font-size: 16px;
-  margin-bottom: 12px;
+	font-weight: normal;
+	font-size: 16px;
+	margin-top: 20px;
 }
 
 .sign_input {
-  position: relative;
-  margin-top: 7px;
+	position: relative;
+	margin-top: 7px;
 }
 
 .sign_input::after {
-  content: "\f00c";
-  font-family:FontAwesome;
-  color: #cfd2d4;
-  position: absolute;
-  left: 465px;
-  top: 10px;
+	content: "\f00c";
+	font-family: FontAwesome;
+	color: #cfd2d4;
+	position: absolute;
+	left: 465px;
+	top: 16px;
 }
 
-.sign_input.valid::after { color: black; }
+.sign_input.valid::after {
+	color: black;
+}
 
-.sign__input,
-.sign-up_button {
-  width: 500px;
-  height: 35px;
-  padding-left: 14px;
-  font-size: 14px;
-  font-family: 'Nanum Gothic', sans-serif;
-  border-radius: 0;
-  border: 1px solid #ccd2d8;
+.sign__input {
+	width: 500px;
+	height: 50px;
+	padding-left: 14px;
+	font-size: 15px;
+	border-radius: 0;
+	border: 1px solid #ccd2d8;
+}
+
+.sign__input:focus {
+	outline: 1px solid black;
 }
 
 .sign-info > p {
-  margin-top: 6px;
-  font-size: 12px;
-  color: #696564;
-  font-family: 'Nanum Gothic', sans-serif;
+	margin-top: 6px;
+	font-size: 12px;
+	color: #696564;
 }
 
-p.sign_err{
-  margin-top: 6px;
-  font-size: 12px;
-  color: red;
-  font-family: 'Nanum Gothic', sans-serif;
+p.sign_err {
+	margin-top: 6px;
+	font-size: 12px;
+	color: red;
 }
 
 .hidden {
-  display: none;
-}
-
-/* 버튼 높이: 50 */
-.sign-up_button {
-  height: 50px;
-  padding-left: 0;
+	display: none;
 }
 
 .sign-up_button > button {
-  width: 100%;
-  height: 100%;
-  font-weight: 700;
-  background-color: #C4C4C4;
-  border: 1px solid black;
-  font-family: 'Nanum Gothic', sans-serif;
-  cursor: pointer;
+	margin-top: 40px;
+	width: 100%;
+	height: 64px;
+	font-size: 18px;
+	font-weight: 700;
+	background-color: #c4c4c4;
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 .sign-up_button > button:hover {
-  background-color: #000;
-  color: #fff;
-  transition: all 0.3s ease;
+	background-color: #000;
+	color: #fff;
+	transition: all 0.3s ease;
+}
+
+/* alert */
+.sign-info {
+	height: 15px;
 }
