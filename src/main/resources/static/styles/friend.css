@@ -129,10 +129,15 @@ body {
 	border-radius: 10px;
 }
 
-.request-table table,
-.friend-table table,
-.user-table table {
-	width: 100%;
+.request-table ul,
+.friend-table ul,
+.user-table ul {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 40px;
+	font-size: 17px;
+	transition: all 0.3s ease;
 }
 
 .request-table.active,
@@ -141,30 +146,16 @@ body {
 	display: block;
 }
 
-.request-table tr,
-.friend-table tr,
-.user-table tr {
-	height: 40px;
-	font-size: 17px;
-	transition: all 0.3s ease;
-}
-
-.request-table tr:hover,
-.friend-table tr:hover,
-.user-table tr:hover {
+.request-table ul:hover,
+.friend-table ul:hover,
+.user-table ul:hover {
 	background-color: rgb(38, 38, 38);
 }
 
-.request-table td:first-child,
-.friend-table td:first-child,
-.user-table td:first-child {
+.request-table ul li:first-child,
+.friend-table ul li:first-child,
+.user-table ul li:first-child {
 	padding-left: 10px;
-}
-
-.request-table td:last-child,
-.friend-table td:last-child,
-.user-table td:last-child {
-	text-align: right;
 }
 
 .user-table button {
@@ -179,13 +170,13 @@ body {
 	padding-right: 10px;
 }
 
-.request-table button:first-child {
+.request-table ul li button:first-child {
 	color: #00a3ff;
 	font-size: 17px;
 	margin-right: 5px;
 }
 
-.request-table button:last-child {
+.request-table ul li button:last-child {
 	color: #f16767;
 	font-size: 17px;
 	padding-right: 10px;
