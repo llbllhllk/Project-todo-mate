@@ -1,7 +1,6 @@
 package ToDoMate.ToDoMate.service;
 
 import ToDoMate.ToDoMate.domain.Member;
-import ToDoMate.ToDoMate.domain.Nickname;
 import ToDoMate.ToDoMate.repository.MemberRepository;
 
 import java.util.Optional;
@@ -19,11 +18,6 @@ public class MemberService {
         return member.getId();
     }
 
-    public String joinNickname(Nickname nickname) throws Exception{
-        memberRepository.registerNickname(nickname);
-        return nickname.getNickname();
-    }
-
     public int uniqueId(Member member) throws Exception{
         Optional<Member> result = memberRepository.getMemberIdInformation(member.getId());
         if(result.isPresent()){
@@ -38,14 +32,23 @@ public class MemberService {
         return memberRepository.getMemberIdInformation(id);
     }
 
-    public int uniqueNickname(Nickname nickname) throws Exception{
-        Optional<Nickname> result = memberRepository.getMemberNicknameInformation(nickname.getNickname());
-        if(result.isPresent()){
+    public int uniqueNickname(String nickname) throws Exception{
+        if(!memberRepository.nicknameDuplicateCheck(nickname)){
             return 1;
         }
         else{
             return 0;
         }
     }
+
+    public int uniqueEmail(String email) throws Exception{
+        if(!memberRepository.emailDuplicateCheck(email)){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+
 
 }

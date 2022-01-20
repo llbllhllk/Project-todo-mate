@@ -1,7 +1,6 @@
 package ToDoMate.ToDoMate.controller;
 
 import ToDoMate.ToDoMate.domain.Member;
-import ToDoMate.ToDoMate.domain.Nickname;
 import ToDoMate.ToDoMate.form.EmailForm;
 import ToDoMate.ToDoMate.form.JoinForm;
 import ToDoMate.ToDoMate.form.LoginForm;
@@ -9,9 +8,8 @@ import ToDoMate.ToDoMate.service.AuthenticationService;
 import ToDoMate.ToDoMate.service.MemberService;
 import ToDoMate.ToDoMate.validator.Validate;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firestore.v1.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -63,7 +62,6 @@ public class LoginController {
         boolean emailValidation=false;
 
         Member member = new Member();
-        Nickname nickname = new Nickname();
 
         if(joinForm.getId().equals("") || joinForm.getPassword().equals("") || joinForm.getNickname().equals("") || joinForm.getName().equals("") || joinForm.getEmail().equals("") || joinForm.getCheckPassword().equals("")) {
             return "sign-up";
@@ -99,7 +97,6 @@ public class LoginController {
 
         if(validate.validateNickname(joinForm.getNickname())){
             member.setNickname(joinForm.getNickname());
-            nickname.setNickname(joinForm.getNickname());
             nicknameValidation=true;
         }
         else{
@@ -108,18 +105,22 @@ public class LoginController {
         }
 //        System.out.println(nickname.getNickname());
 
-        if(validate.validateEmail(joinForm.getEmail())){
+        if(validate.validateEmail(joinForm.getEmail())==0){
             member.setEmail(joinForm.getEmail());
             emailValidation=true;
         }
-        else{
-            System.out.println("이메일 규격 x");
-            model.addAttribute("emailFlag",1);
+        else if(validate.validateEmail(joinForm.getEmail())==1){
+            System.out.println("이메일을 입력하지 않았습니다. 이메일을 입력해주세요.");
+        }
+        else if(validate.validateEmail(joinForm.getEmail())==2){
+            System.out.println("이메일이 중복되었습니다. 다시 입력해주세요.");
+        }
+        else if(validate.validateEmail(joinForm.getEmail())==3){
+            System.out.println("이메일이 규격에 맞지 않습니다. 다시 입력해주세요.");
         }
 
         if(idValidation&&passwordValidation&&checkPasswordValidation&&nicknameValidation&&emailValidation){ // 모든 회원가입 유효성 충족
             memberService.join(member);
-            memberService.joinNickname(nickname);
             return "login";
         }
         else{
@@ -185,14 +186,44 @@ public class LoginController {
     }
 
     @GetMapping("find-id")
-    public String viewFindId(){
+    public String viewFindId() throws Exception{
+//        Firestore firestore = FirestoreClient.getFirestore();
+//        DocumentReference documentReference = firestore.collection("member").document("dlrlxo999").;
+//        ApiFuture<DocumentSnapshot> future = documentReference.get();
+//        DocumentSnapshot documentSnapshot = future.get();
+//        if(documentSnapshot.exists()){
+//            System.out.println("Document data : " + documentSnapshot.getData());
+//        }
+//        else{
+//            System.out.println("No such Document!");
+//        }
+
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            System.out.println(document.getId() + " =>" + document.toObject(Member.class).getEmail());
+        }
         return "find-id";
     }
 
     @PostMapping("find-id")
     public String findId(EmailForm emailForm) throws MessagingException, UnsupportedEncodingException{
-        // find-id 부분 pull 하는 과정에서 날라감 ㅠ
-        String to = emailForm.getEmail();
+
+        String userEmail;   // 회원 이메일
+
+        if(emailForm.getEmail().equals("")){    // 이메일을 아무것도 입력안할 때
+            System.out.println("이메일을 입력하지 않으셨습니다. 이메일을 입력해주세요.");
+            return "find-id";
+        }
+//        else if(){  //이메일을 입력했으나 DB에 없는 이메일일 때
+//            return "find-id";
+//        }
+        else{   //DB에 있는 이메일을 잘 입력했을 때
+            userEmail = emailForm.getEmail();
+        }
+
+        String to = userEmail;
         String from = "kitaecoding999@gmail.com";
         String subject = "To Do Mate 이메일 인증 관련 메일";
         String validationString = authenticationService.generateRandomNumber();
