@@ -1,4 +1,5 @@
 "use strict";
+
 // Handling Tab Button
 const tabBtn = document.querySelector(".header__tab-button");
 const tab = document.querySelector(".tab");
