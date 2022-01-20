@@ -94,6 +94,7 @@ function checkValidation(elem) {
 
   if (value === "") {
     infoElem.classList.remove('hidden');
+    inputInfo.isEmpty = true;
     return;
   }
   if (validationCb instanceof RegExp) {
