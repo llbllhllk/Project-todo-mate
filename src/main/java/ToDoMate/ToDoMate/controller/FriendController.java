@@ -25,11 +25,11 @@ public class FriendController {
         this.friendService = friendService;
     }
 
-//    @GetMapping("friendList")
-//    public void friendList() throws Exception {
-//        Optional<Friend> friend = friendService.friendList("dlrlxo99");
-//        System.out.println(friend.get().getFriend());
-//    }
+    @GetMapping("friendList")
+    public void friendList() throws Exception {
+        Optional<Friend> friend = friendService.friendList("dlrlxo99");
+        System.out.println(friend.get().getFriend());
+    }
 
     @GetMapping("/friend")
     public String viewFriend(Member member, HttpServletRequest request) throws Exception {

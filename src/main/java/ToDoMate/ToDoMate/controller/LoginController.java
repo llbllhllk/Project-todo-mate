@@ -191,8 +191,21 @@ public class LoginController {
 
     @PostMapping("find-id")
     public String findId(EmailForm emailForm) throws MessagingException, UnsupportedEncodingException{
-        // find-id 부분 pull 하는 과정에서 날라감 ㅠ
-        String to = emailForm.getEmail();
+
+        String userEmail;   // 회원 이메일
+
+        if(emailForm.getEmail().equals("")){    // 이메일을 아무것도 입력안할 때
+            System.out.println("이메일을 입력하지 않으셨습니다. 이메일을 입력해주세요.");
+            return "find-id";
+        }
+        else if(){  //이메일을 입력했으나 DB에 없는 이메일일 때
+            return "find-id";
+        }
+        else{   //DB에 있는 이메일을 잘 입력했을 때
+            userEmail = emailForm.getEmail();
+        }
+
+        String to = userEmail;
         String from = "kitaecoding999@gmail.com";
         String subject = "To Do Mate 이메일 인증 관련 메일";
         String validationString = authenticationService.generateRandomNumber();
