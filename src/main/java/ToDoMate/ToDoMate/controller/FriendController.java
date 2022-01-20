@@ -40,25 +40,25 @@ public class FriendController {
         return "friend";
     }
 
-    @RequestMapping(value="/friendList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<String> viewFriendList(HttpServletRequest request) throws Exception{
-        HttpSession session = request.getSession();
-        Member member = (Member)session.getAttribute("member");
-        Optional<Friend> friend = friendService.friendList(member.getId());
-        List<String> listName = new ArrayList<>();
-        for (int i =0; i<friend.get().getFriend().size(); i++)
-        {
-            if(friend.get().getFriend().get(i).contains(request.getParameter("friendName")) == true)
-            {
-                listName.add(friend.get().getFriend().get(i));
-            }
-            else if(friend.get().getFriend().get(i).contains(request.getParameter("friendName")) == true)
-            {
-                listName.add(friend.get().getFriend().get(i));
-            }
-        }
-        return listName;
-    }
+//    @RequestMapping(value="/friendList",method = RequestMethod.POST)
+//    @ResponseBody
+//    public List<String> viewFriendList(HttpServletRequest request) throws Exception{
+//        HttpSession session = request.getSession();
+//        Member member = (Member)session.getAttribute("member");
+//        Optional<Friend> friend = friendService.friendList(member.getId());
+//        List<String> listName = new ArrayList<>();
+//        for (int i =0; i<friend.get().getFriend().size(); i++)
+//        {
+//            if(friend.get().getFriend().get(i).contains(request.getParameter("friendName")) == true)
+//            {
+//                listName.add(friend.get().getFriend().get(i));
+//            }
+//            else if(friend.get().getFriend().get(i).contains(request.getParameter("friendName")) == true)
+//            {
+//                listName.add(friend.get().getFriend().get(i));
+//            }
+//        }
+//        return listName;
+//    }
 
 }

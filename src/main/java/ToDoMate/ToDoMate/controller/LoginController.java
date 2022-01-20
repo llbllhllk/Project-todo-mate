@@ -9,7 +9,7 @@ import ToDoMate.ToDoMate.service.AuthenticationService;
 import ToDoMate.ToDoMate.service.MemberService;
 import ToDoMate.ToDoMate.validator.Validate;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firestore.v1.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -185,7 +186,24 @@ public class LoginController {
     }
 
     @GetMapping("find-id")
-    public String viewFindId(){
+    public String viewFindId() throws Exception{
+//        Firestore firestore = FirestoreClient.getFirestore();
+//        DocumentReference documentReference = firestore.collection("member").document("dlrlxo999").;
+//        ApiFuture<DocumentSnapshot> future = documentReference.get();
+//        DocumentSnapshot documentSnapshot = future.get();
+//        if(documentSnapshot.exists()){
+//            System.out.println("Document data : " + documentSnapshot.getData());
+//        }
+//        else{
+//            System.out.println("No such Document!");
+//        }
+
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            System.out.println(document.getId() + " =>" + document.toObject(Member.class).getEmail());
+        }
         return "find-id";
     }
 
@@ -198,9 +216,9 @@ public class LoginController {
             System.out.println("이메일을 입력하지 않으셨습니다. 이메일을 입력해주세요.");
             return "find-id";
         }
-        else if(){  //이메일을 입력했으나 DB에 없는 이메일일 때
-            return "find-id";
-        }
+//        else if(){  //이메일을 입력했으나 DB에 없는 이메일일 때
+//            return "find-id";
+//        }
         else{   //DB에 있는 이메일을 잘 입력했을 때
             userEmail = emailForm.getEmail();
         }
