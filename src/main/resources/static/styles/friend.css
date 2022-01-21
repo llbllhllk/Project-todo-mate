@@ -129,9 +129,9 @@ body {
 	border-radius: 10px;
 }
 
-.request-table ul,
-.friend-table ul,
-.user-table ul {
+.request-table div,
+.friend-table div,
+.user-table div {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -146,15 +146,15 @@ body {
 	display: block;
 }
 
-.request-table ul:hover,
-.friend-table ul:hover,
-.user-table ul:hover {
+.request-table li:hover,
+.friend-table li:hover,
+.user-table li:hover {
 	background-color: rgb(38, 38, 38);
 }
 
-.request-table ul li:first-child,
-.friend-table ul li:first-child,
-.user-table ul li:first-child {
+.request-table div:first-child,
+.friend-table div:first-child,
+.user-table div:first-child {
 	padding-left: 10px;
 }
 
@@ -170,16 +170,20 @@ body {
 	padding-right: 10px;
 }
 
-.request-table ul li button:first-child {
-	color: #00a3ff;
-	font-size: 17px;
-	margin-right: 5px;
+.request-table div > div button {
+	display: flex;
 }
 
-.request-table ul li button:last-child {
+.request-table div > div button:first-child {
+	color: #00a3ff;
+	font-size: 17px;
+	margin-right: 10px;
+}
+
+.request-table div > div button:last-child {
 	color: #f16767;
 	font-size: 17px;
-	padding-right: 10px;
+	margin-right: 10px;
 }
 
 .request-table button:hover,

@@ -111,6 +111,7 @@ p.sign_err {
 	background-color: #c4c4c4;
 	cursor: pointer;
 	transition: all 0.3s ease;
+	border: 1px solid black;
 }
 
 .sign-up_button > button:hover {

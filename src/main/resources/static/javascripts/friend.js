@@ -70,6 +70,8 @@ function tabBtnClick() {
         user_table.classList.remove('active');
         friend_table.classList.remove('active');
         request_table.classList.add('active');
+
+        showRequest();
     })
 }
 
@@ -80,7 +82,7 @@ let searchUser = async function() {
     try {
         let res = await axios({
             mehtod: 'POST',
-            url: '/userList',
+            url: '/searchMember',
             data: {
                 user: input.value
             }
@@ -102,9 +104,35 @@ let searchFriend = async function() {
             mehtod: 'POST',
             url: '/friendList',
             data: {
-                friend: input.value
+                friendName: input.value
             }
         });
+
+        console.log(res);
+    } catch (err) {
+        console.log(err);
+        throw new Error(err);
+    }
+}
+
+let showUser = async function() {
+
+}
+
+let showFriend = async function() {
+
+}
+
+let showRequest = async function() {
+    try {
+        let res = await axios({
+            mehtod: 'POST',
+            url: '/follwerList',
+            data: {
+                
+            }
+        });
+        console.log(res);
 
         console.log(res);
     } catch (err) {
