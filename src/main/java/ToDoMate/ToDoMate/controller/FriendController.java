@@ -35,12 +35,17 @@ public class FriendController {
 
     @GetMapping("/friend")
     public String viewFriend(Member member, HttpServletRequest request) throws Exception {
-
 //        HttpSession session = request.getSession();
 //        member = (Member) session.getAttribute("member");
 //        Optional<Friend> friend = friendService.friendList(member.getId());
 //        System.out.println(friend.get().getFriend());
-        return "friend";
+//        return "friend";
+        HttpSession session = request.getSession();
+        Member sessionMember = (Member)session.getAttribute("member");
+        if(sessionMember!=null){
+            return "friend";
+        }
+        return "login";
     }
 
     /**

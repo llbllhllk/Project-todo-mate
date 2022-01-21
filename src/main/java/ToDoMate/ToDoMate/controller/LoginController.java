@@ -15,8 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -53,7 +52,8 @@ public class LoginController {
         return "sign-up";
     }
 
-    @PostMapping("/sign-up")
+    @RequestMapping(value="sign-up",method = RequestMethod.POST)
+    @ResponseBody
     public String memberJoin(Model model, JoinForm joinForm) throws Exception{
         boolean idValidation=false;
         boolean passwordValidation=false;
@@ -64,7 +64,7 @@ public class LoginController {
         Member member = new Member();
 
         if(joinForm.getId().equals("") || joinForm.getPassword().equals("") || joinForm.getNickname().equals("") || joinForm.getName().equals("") || joinForm.getEmail().equals("") || joinForm.getCheckPassword().equals("")) {
-            return "sign-up";
+            return "not_entered";
         }
 
         if(validate.validateId(joinForm.getId())){
@@ -73,7 +73,7 @@ public class LoginController {
         }
         else{
             System.out.println("중복 아이디");
-            model.addAttribute("idFlag",1);
+            return "id_duplicate";
         }
 
         if(validate.validatePassword(joinForm.getPassword())){
@@ -82,7 +82,7 @@ public class LoginController {
         }
         else{
             System.out.println("비밀번호 유효성 틀림");
-            model.addAttribute("passwordFlag",1);
+            return "password_availability";
         }
 
         if(validate.validateCheckPassword(member.getPassword(),joinForm.getCheckPassword())){
@@ -90,7 +90,7 @@ public class LoginController {
         }
         else{
             System.out.println("비밀번호 확인 유효성 틀림");
-            model.addAttribute("checkPasswordFlag",1);
+            return "password_check_availability";
         }
 
         member.setName(joinForm.getName());
@@ -101,7 +101,7 @@ public class LoginController {
         }
         else{
             System.out.println("닉네임 중복");
-            model.addAttribute("nicknameFlag",1);
+            return "nickname_duplicate";
         }
 //        System.out.println(nickname.getNickname());
 
@@ -109,23 +109,22 @@ public class LoginController {
             member.setEmail(joinForm.getEmail());
             emailValidation=true;
         }
-        else if(validate.validateEmail(joinForm.getEmail())==1){
-            System.out.println("이메일을 입력하지 않았습니다. 이메일을 입력해주세요.");
-        }
         else if(validate.validateEmail(joinForm.getEmail())==2){
             System.out.println("이메일이 중복되었습니다. 다시 입력해주세요.");
+            return "email_duplicate";
         }
         else if(validate.validateEmail(joinForm.getEmail())==3){
             System.out.println("이메일이 규격에 맞지 않습니다. 다시 입력해주세요.");
+            return "email_availability";
         }
 
         if(idValidation&&passwordValidation&&checkPasswordValidation&&nicknameValidation&&emailValidation){ // 모든 회원가입 유효성 충족
             memberService.join(member);
-            return "login";
+            return "sign-up_complete";
         }
         else{
             model.addAttribute("signupFlag", 1);
-            return "sign-up";
+            return "sign-up_not_complete";
         }
 
     }
