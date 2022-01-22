@@ -21,6 +21,7 @@ const correctEmail = document.querySelector('#correct-email');
 const emptyCertification = document.querySelector('#empty-certification');
 const wrongCertification = document.querySelector('#wrong-certification');
 const correctCertification = document.querySelector('#correct-certification');
+const timeoutCertification = document.querySelector('#timeout-certification');
 
 // Timer
 const timer = document.querySelector('.find-pw__timer');

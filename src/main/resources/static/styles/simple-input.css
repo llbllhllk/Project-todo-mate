@@ -1,0 +1,223 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul, li {
+  list-style: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+button {
+  font-family: 'Nanum Gothic', sans-serif;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background-color: transparent;
+}
+
+body {
+  position: relative;  
+}
+
+/* Simple input */
+.simple-input {
+  font-family: 'Roboto', sans-serif;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+}
+
+.simple-input__main-title {
+  padding: 36px 0;
+  text-align: center;
+  font-size: 24px;
+}
+
+.simple-input__container {
+  margin: 0 auto;
+  width: 650px;
+  max-height: 650px;
+  overflow: scroll;
+}
+
+.simple-input__container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Goal */
+.simple-input__content {
+  margin-top: 36px;
+}
+
+.simple-input__content:first-child {
+  margin-top: 0;
+}
+
+.simple-input__goal-btn {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  align-items: center;
+  min-width: 100px;
+  background-color: #4A4848;
+  padding: 8px 28px;
+  border-radius: 5px;
+  font-size: 18px;
+  margin-bottom: 28px;
+}
+
+.simple-input__goal {
+  margin-right: 10px;
+}
+
+/* Simple input about Goal */
+.simple-input__list {
+  margin-top: 32px;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+.simple-input__list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.simple-input__goal-title::before {
+  content: '';
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-image: url('/images/simple-input-status.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.simple-input__goal-title {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.simple-input__edit-btn {
+  border: none;
+  cursor: pointer;
+}
+
+.simple-input__list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #2E2D2D;
+  margin-bottom: 16px;
+}
+
+.simple-input__list-item:last-child {
+  margin-bottom: 0;
+}
+
+.simple-input__list-title {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.simple-input__list-data {
+  font-size: 16px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  font-family: 'Nanum Gothic', sans-serif;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background-color: #262424;
+  border-radius: 14px;
+  color: #fff;
+}
+
+.modal__description {
+  display: block;
+  text-align: center;
+}
+
+.modal__btn-group {
+  display: flex;
+  align-items: center;
+}
+
+.modal__btn {
+  height: 38px;
+  background-color: #474747;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Edit Modal */
+.modal.edit {
+  height: 215px;
+}
+
+.modal__description.edit {
+  padding: 27px 0;
+}
+
+.modal__btn-group.edit {
+  flex-direction: column;
+}
+
+.modal__btn-item.edit {
+  margin-bottom: 7px;
+}
+
+.modal__btn-item.edit:last-child {
+  margin-bottom: 0;
+}
+
+.modal__btn.edit {
+  width: 320px;
+}
+
+/* Delete Modal */
+.modal.delete {
+  height: 115px;
+}
+
+.modal__description.delete {
+  font-size: 14px;
+  width: 200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 14px 0;
+}
+
+.modal__btn-group.delete {
+  justify-content: center;
+}
+
+.modal__btn-item.delete {
+  margin-right: 12px;
+}
+
+.modal__btn-item.delete:last-child {
+  margin-right: 0;
+}
+
+.modal__btn.delete {
+  width: 155px;
+}
+
+/* Modal Active */
+.active {
+  display: block;
+}
