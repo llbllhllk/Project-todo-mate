@@ -55,6 +55,7 @@ function tabBtnClick() {
         user_table.classList.remove('active');
         friend_table.classList.add('active');
         request_table.classList.remove('active');
+
     })
 
     tabBtn_request.addEventListener('click', (e) => {
@@ -75,19 +76,17 @@ function tabBtnClick() {
     })
 }
 
+// 유저 검색 
 let searchUser = async function() {
     var input = document.getElementById('search-user');
     var table = document.querySelector('.user-table');
     table.innerHTML = "";
     try {
-        let res = await axios({
-            mehtod: 'POST',
-            url: '/searchMember',
-            data: {
-                user: input.value
+        const res = await axios.post('/searchMember', {}, {
+            params: {
+                "search-user": input.value,
             }
         });
-
         console.log(res);
     } catch (err) {
         console.log(err);
@@ -95,19 +94,18 @@ let searchUser = async function() {
     }
 }
 
+// 친구 검색
 let searchFriend = async function() {
     var input = document.getElementById('search-friend');
     var table = document.querySelector('.friend-table');
     table.innerHTML = "";
+
     try {
-        let res = await axios({
-            mehtod: 'POST',
-            url: '/friendList',
-            data: {
-                friendName: input.value
+        const res = await axios.post('/friendList', {}, {
+            params: {
+                friendName: input.value, 
             }
         });
-
         console.log(res);
     } catch (err) {
         console.log(err);
@@ -115,25 +113,28 @@ let searchFriend = async function() {
     }
 }
 
-let showUser = async function() {
-
-}
-
+// 친구 리스트 보여주기
 let showFriend = async function() {
+    try {
+        const res = await axios.get('/friendList', {
+            params: {
 
+            }
+        });
+        console.log(res);
+    } catch (err) {
+        console.log(err);
+        throw new Error(err);
+    }
 }
 
 let showRequest = async function() {
     try {
-        let res = await axios({
-            mehtod: 'POST',
-            url: '/follwerList',
-            data: {
-                
+        const res = await axios.get('/followerList', {
+            params: {
+
             }
         });
-        console.log(res);
-
         console.log(res);
     } catch (err) {
         console.log(err);
