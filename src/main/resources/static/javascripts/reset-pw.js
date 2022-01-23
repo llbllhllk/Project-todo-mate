@@ -9,15 +9,26 @@ const userPwEnter = document.querySelector('#user-pw-enter');
 
 // Alert
 const emptyPw = document.querySelector('#empty-user-pw');
+const wrongPw = document.querySelector("#wrong-user-pw");
 const emptyPwEnter = document.querySelector('#empty-user-pw-enter');
 const wrongPwEnter = document.querySelector('#wrong-user-pw-enter');
 
 function showPwAlert() {
-  userPw.addEventListener('blur', () => {
-    if(userPw.value === "") {
-      emptyPw.classList.add('active'); 
-    } else {
-      emptyPw.classList.remove('active');
+  const validationCb =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~@$^!%<>&*?&])[A-Za-z\d~@$^!%<>&*?&]{8,20}$/;
+
+  userPw.addEventListener("blur", () => {
+    if (userPw.value === "") {
+      emptyPw.classList.add("active");
+      wrongPw.classList.remove("active");
+    } else if (validationCb instanceof RegExp) {
+      if (!validationCb.test(userPw.value)) {
+        wrongPw.classList.add("active");
+        emptyPw.classList.remove("active");
+      } else {
+        wrongPw.classList.remove("active");
+        emptyPw.classList.remove("active");
+      }
     }
   });
 }

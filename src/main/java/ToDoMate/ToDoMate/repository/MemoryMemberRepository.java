@@ -1,7 +1,6 @@
 package ToDoMate.ToDoMate.repository;
 
 import ToDoMate.ToDoMate.domain.Member;
-import ToDoMate.ToDoMate.domain.Nickname;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
@@ -31,22 +30,31 @@ public class MemoryMemberRepository implements MemberRepository {
         return Optional.ofNullable(documentSnapshot.toObject(Member.class));
     }
 
+
     @Override
-    public Optional<Nickname> getMemberNicknameInformation(String nickname) throws Exception {
+    public Boolean nicknameDuplicateCheck(String nickname) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = firestore.collection(collectionNickname).document(nickname);
-        ApiFuture<DocumentSnapshot> apiFuture = documentReference.get();
-        DocumentSnapshot documentSnapshot = apiFuture.get();
-        return Optional.ofNullable(documentSnapshot.toObject(Nickname.class));
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents) {
+            if(document.toObject(Member.class).getNickname().equals(nickname)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
-    public String registerNickname(Nickname nickname) throws Exception {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture=
-                dbFirestore.collection(collectionNickname).document(nickname.getNickname()).set(nickname);
-        return collectionsApiFuture.get().getUpdateTime().toString();
+    public Boolean emailDuplicateCheck(String email) throws Exception {
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents) {
+            if(document.toObject(Member.class).getEmail().equals(email)){
+                return false;
+            }
+        }
+        return true;
     }
-
 
 }
