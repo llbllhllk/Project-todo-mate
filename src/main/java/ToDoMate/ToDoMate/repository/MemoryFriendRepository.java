@@ -26,17 +26,34 @@ public class MemoryFriendRepository implements FriendRepository {
     }
 
 
+//    @Override
+//    public List<String> findMemberList(String area, String search) throws Exception {
+//        Firestore firestore = FirestoreClient.getFirestore();
+//        ApiFuture<QuerySnapshot> allMember = firestore.collection("member").get(); //전체문서
+//        List<QueryDocumentSnapshot> allMemberList = allMember.get().getDocuments();
+//        List<String> allMemberIdList=new ArrayList<>();
+//        for (QueryDocumentSnapshot document : allMemberList) {
+//            allMemberIdList.add(document.getId());
+//        }
+//        return allMemberIdList;
+//    }
+
+
     @Override
     public List<String> findMemberList(String area, String search) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> allMember = firestore.collection("member").get(); //전체문서
         List<QueryDocumentSnapshot> allMemberList = allMember.get().getDocuments();
-        List<String> allMemberIdList=new ArrayList<>();
+
+        List<String> allMemberNicknameList=new ArrayList<>();
         for (QueryDocumentSnapshot document : allMemberList) {
-            allMemberIdList.add(document.getId());
+            Member member = document.toObject(Member.class);
+            allMemberNicknameList.add(member.getNickname());
         }
-        return allMemberIdList;
+        return allMemberNicknameList;
     }
+
+
 
 //    @Override
 //    public Member addFriend(Member member, String addMember) throws Exception {
