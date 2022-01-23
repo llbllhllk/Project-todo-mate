@@ -11,7 +11,7 @@ import java.util.List;
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
 
-    private static final List<String> URL_PATTERNS= Arrays.asList("/friend", "/friendList", "/followerList","/searchMember");
+    private static final List<String> URL_PATTERNS= Arrays.asList("/friend", "/friendList", "/followerList","/searchMember", "/user-edit");
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
