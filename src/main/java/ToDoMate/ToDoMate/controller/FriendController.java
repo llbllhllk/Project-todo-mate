@@ -55,8 +55,6 @@ public class FriendController {
                                    @RequestParam("search-user")String searchNickname) throws Exception{
         String searchArea = member.getId();
         return friendService.findMember(searchArea, searchNickname);
-
-        //목록 떴을때 친구추가를 위한 기능 (세션에 추가해서 넘김?) -> 다시 데이터를 받는 방법?
     }
 
 
