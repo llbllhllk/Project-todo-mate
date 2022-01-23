@@ -184,7 +184,7 @@ public class LoginController {
 
         else{
             session.invalidate();
-            return "main";
+            return "start";
         }
     }
 
@@ -287,7 +287,13 @@ public class LoginController {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         dbFirestore.collection("member").document(target).delete();
         System.out.println("계정 삭제가 완료되었습니다.");
-        return "main";
+        return "start";
     }
+
+    @GetMapping("/user-edit")
+    public String viewUserEdit(){
+        return "user-edit";
+    }
+
 
 }
