@@ -15,11 +15,11 @@
     rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="../static/styles/header.css">
-    <link rel="stylesheet" href="../static/styles/edit-goal.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link rel="stylesheet" href="/styles/edit-goal.css">
 
     <!-- JS -->
-    <script src="../static/javascripts/edit-goal.js" defer></script>
+    <script src="/javascripts/edit-goal.js" defer></script>
 
     <title>목표 수정 - ToDo Mate</title>
 </head>
@@ -32,7 +32,7 @@
         </a>
         </h1>
         <a href="#" class="header__prev-button">
-            <img src="../static/images/prev-btn.png" alt="prev button" class="filter-white">
+            <img src="/images/prev-btn.png" alt="prev button" class="filter-white">
         </a>
     </header>
 
@@ -143,27 +143,116 @@
             
         </ul>
     </main>
+    <!-- modal -->
+    <!-- modal create -->
     <div class="modal">
-        <form action="POST" class="modal-form" action="/">
-            <div>
-                <strong>제목</strong>
-                <button type="submit">확인</button>
-            </div>
-            <input type="text"
-                placeholder="TEST"
-                class="input-goal"
+        <div>
+            <strong>제목</strong>
+            <button type="submit" class="create_confirm">확인</button>
+        </div>
+        <input type="text"
+                placeholder=""
+                class="input-goal create"
                 id="goal"
                 name="goal"
             />
+        <div class="color create">
+            <strong>색상</strong>
+            <ul>
+                <li><button type="button" class="0 active"></button></li>
+                <li><button type="button" class="1"></button></li>
+                <li><button type="button" class="2"></button></li>
+                <li><button type="button" class="3"></button></li>
+                <li><button type="button" class="4"></button></li>
+                <li><button type="button" class="5"></button></li>
+                <li><button type="button" class="6"></button></li>
+                <li><button type="button" class="7"></button></li>
+                <li><button type="button" class="8"></button></li>
+            </ul>
+            <ul>
+                <li><button type="button" class="9"></button></li>
+                <li><button type="button" class="10"></button></li>
+                <li><button type="button" class="11"></button></li>
+                <li><button type="button" class="12"></button></li>
+                <li><button type="button" class="13"></button></li>
+                <li><button type="button" class="14"></button></li>
+                <li><button type="button" class="15"></button></li>
+                <li><button type="button" class="16"></button></li>
+                <li><button type="button" class="17"></button></li>
+            </ul>
+            <ul>
+                <li><button type="button" class="18"></button></li>
+                <li><button type="button" class="19"></button></li>
+                <li><button type="button" class="20"></button></li>
+                <li><button type="button" class="21"></button></li>
+                <li><button type="button" class="22"></button></li>
+                <li><button type="button" class="23"></button></li>
+                <li><button type="button" class="24"></button></li>
+                <li><button type="button" class="25"></button></li>
+                <li><button type="button" class="26"></button></li>
+            </ul>
+            <button type="button" class="modal_btn back">뒤로가기</button>
+        </div>
+    </div>
 
-        </form>
-
+    <!-- modal edit -->
+    <div class="modal">
         <div>
             <strong>제목</strong>
-            <button type="submit">확인</button>
-            <input type="text">
+            <button type="submit" class="edit_confirm">확인</button>
         </div>
-
+        <input type="text"
+                placeholder="TEST"
+                class="input-goal edit"
+                id="goal"
+                name="goal"
+            />
+        <div class="color edit">
+            <strong>색상</strong>
+            <ul>
+                <li><button type="button" class="0 active"></button></li>
+                <li><button type="button" class="1"></button></li>
+                <li><button type="button" class="2"></button></li>
+                <li><button type="button" class="3"></button></li>
+                <li><button type="button" class="4"></button></li>
+                <li><button type="button" class="5"></button></li>
+                <li><button type="button" class="6"></button></li>
+                <li><button type="button" class="7"></button></li>
+                <li><button type="button" class="8"></button></li>
+            </ul>
+            <ul>
+                <li><button type="button" class="9"></button></li>
+                <li><button type="button" class="10"></button></li>
+                <li><button type="button" class="11"></button></li>
+                <li><button type="button" class="12"></button></li>
+                <li><button type="button" class="13"></button></li>
+                <li><button type="button" class="14"></button></li>
+                <li><button type="button" class="15"></button></li>
+                <li><button type="button" class="16"></button></li>
+                <li><button type="button" class="17"></button></li>
+            </ul>
+            <ul>
+                <li><button type="button" class="18"></button></li>
+                <li><button type="button" class="19"></button></li>
+                <li><button type="button" class="20"></button></li>
+                <li><button type="button" class="21"></button></li>
+                <li><button type="button" class="22"></button></li>
+                <li><button type="button" class="23"></button></li>
+                <li><button type="button" class="24"></button></li>
+                <li><button type="button" class="25"></button></li>
+                <li><button type="button" class="26"></button></li>
+            </ul>
+            <button type="button" class="modal_btn edit">삭제</button>
+        </div>
+    </div>
+    
+    <!-- modal delete -->
+    <div class="modal active">
+        <strong>목표를 삭제하시겠습니까?</strong>
+        <ul class="btn_delete">
+            <li><button type="button" class="modal_btn exit">취소</button></li>
+            <li><button type="button" class="modal_btn delete">삭제</button></li>
+        </ul>
     </div>
 
 </body>
