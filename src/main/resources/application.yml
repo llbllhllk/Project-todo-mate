@@ -4,6 +4,9 @@ spring:
     port: 587
     username: kitaecoding999@gmail.com
     password: aa0332601
+    thymeleaf:
+      cache: false
+      prefix: classpath:/templates
     properties:
       mail:
         smtp:

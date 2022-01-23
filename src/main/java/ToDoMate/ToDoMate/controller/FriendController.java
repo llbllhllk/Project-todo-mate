@@ -26,13 +26,13 @@ public class FriendController {
     @Autowired
     private final FriendService friendService;
 
-    HttpSession session;
+    // HttpSession session;
 
     public FriendController(FriendService friendService) {
         this.friendService = friendService;
     }
 
-    @GetMapping("/friend")
+    @GetMapping("friend")
     public String viewFriend(Member member, HttpServletRequest request) throws Exception {
 
         // HttpSession session = request.getSession();
@@ -55,9 +55,9 @@ public class FriendController {
      * @return findMemberList
      * @throws Exception
      */
-    @PostMapping("/searchMember")
+    @PostMapping("searchMember")
     @ResponseBody
-    @ModelAttribute("member")
+
     public List<String> findMember(@SessionAttribute("member") Member member,
             @RequestParam("search-user") String searchNickname) throws Exception {
         String searchArea = member.getId();
@@ -73,9 +73,10 @@ public class FriendController {
      * @return friendList
      * @throws Exception
      */
-    @GetMapping(value = "/friendList")
+
+    @GetMapping(value = "friendList")
     @ResponseBody
-    public List<String> viewFriendListByDasol(@SessionAttribute("member") Member member) throws Exception {
+    public List<String> viewFriendList(@SessionAttribute(name = "member") Member member) throws Exception {
         Optional<Friend> friend = friendService.friendList(member.getId()); // 저장된 친구리스트
         List<String> friendList = friend.get().getFriend();
         return friendList;
@@ -89,11 +90,11 @@ public class FriendController {
      * @return searchResultList
      * @throws Exception
      */
-    @PostMapping(value = "/friendList")
-    @ResponseBody
-    public List<String> searchFriendListByDasol(@SessionAttribute("member") Member member,
-            @RequestParam("friendName") String searchName) throws Exception {
 
+    @PostMapping(value = "friendList")
+    @ResponseBody
+    public List<String> searchFriendList(@SessionAttribute(name = "member") Member member,
+            @RequestParam("friendName") String searchName) throws Exception {
         List<String> friend = friendService.friendList(member.getId()).get().getFriend();// 저장된 친구리스트
         List<String> searchFriendList = new ArrayList<>();
         // 친구검색
@@ -106,7 +107,6 @@ public class FriendController {
     }
 
     // 친구목록에서 친구 삭제
-
     /**
      * 나를 친구로 추가한 목록 보여주기
      * 

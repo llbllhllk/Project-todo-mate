@@ -66,9 +66,9 @@ class FriendControllerTest {
 
         session.setAttribute("member", member);
 
-        request = new MockHttpServletRequest();
-        request.setSession(session);
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+//        request = new MockHttpServletRequest();
+//        request.setSession(session);
+//        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
 /*
