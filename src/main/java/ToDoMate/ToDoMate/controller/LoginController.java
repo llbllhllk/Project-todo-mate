@@ -22,6 +22,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +55,7 @@ public class LoginController {
 
     @RequestMapping(value="sign-up",method = RequestMethod.POST)
     @ResponseBody
-    public String memberJoin(Model model, JoinForm joinForm) throws Exception{
+    public List<String> memberJoin(Model model, JoinForm joinForm) throws Exception{
         boolean idValidation=false;
         boolean passwordValidation=false;
         boolean checkPasswordValidation=false;
@@ -62,9 +63,10 @@ public class LoginController {
         boolean emailValidation=false;
 
         Member member = new Member();
+        ArrayList<String> returnValues = new ArrayList<String>();
 
         if(joinForm.getId().equals("") || joinForm.getPassword().equals("") || joinForm.getNickname().equals("") || joinForm.getName().equals("") || joinForm.getEmail().equals("") || joinForm.getCheckPassword().equals("")) {
-            return "not_entered";
+            returnValues.add("not_entered");
         }
 
         if(validate.validateId(joinForm.getId())){
@@ -73,7 +75,7 @@ public class LoginController {
         }
         else{
             System.out.println("중복 아이디");
-            return "id_duplicate";
+            returnValues.add("id_duplicate");
         }
 
         if(validate.validatePassword(joinForm.getPassword())){
@@ -82,7 +84,7 @@ public class LoginController {
         }
         else{
             System.out.println("비밀번호 유효성 틀림");
-            return "password_availability";
+            returnValues.add("password_availability");
         }
 
         if(validate.validateCheckPassword(member.getPassword(),joinForm.getCheckPassword())){
@@ -90,7 +92,7 @@ public class LoginController {
         }
         else{
             System.out.println("비밀번호 확인 유효성 틀림");
-            return "password_check_availability";
+            returnValues.add("password_check_availability");
         }
 
         member.setName(joinForm.getName());
@@ -101,7 +103,7 @@ public class LoginController {
         }
         else{
             System.out.println("닉네임 중복");
-            return "nickname_duplicate";
+            returnValues.add("nickname_duplicate");
         }
 //        System.out.println(nickname.getNickname());
 
@@ -111,21 +113,22 @@ public class LoginController {
         }
         else if(validate.validateEmail(joinForm.getEmail())==2){
             System.out.println("이메일이 중복되었습니다. 다시 입력해주세요.");
-            return "email_duplicate";
+            returnValues.add("email_duplicate");
         }
         else if(validate.validateEmail(joinForm.getEmail())==3){
             System.out.println("이메일이 규격에 맞지 않습니다. 다시 입력해주세요.");
-            return "email_availability";
+            returnValues.add("email_availability");
         }
 
         if(idValidation&&passwordValidation&&checkPasswordValidation&&nicknameValidation&&emailValidation){ // 모든 회원가입 유효성 충족
             memberService.join(member);
-            return "sign-up_complete";
+            returnValues.add("sign-up_complete");
         }
         else{
             model.addAttribute("signupFlag", 1);
-            return "sign-up_not_complete";
+            returnValues.add("sign-up_not_complete");
         }
+        return returnValues;
 
     }
 
@@ -154,6 +157,7 @@ public class LoginController {
                 if (loginMember.get().getPassword().equals(member.getPassword())) { // 로그인 성공
                     HttpSession session = request.getSession();
                     session.setAttribute("member",loginMember.get());   //세션에 로그인한 멤버 객체 삽입
+                    System.out.println(session.getAttribute("member")); //로그인에 성공한 후 세션에 멤버 객체가 잘들어갔는지 테스트
                     return "main";
                 }
                 else{
@@ -180,7 +184,7 @@ public class LoginController {
 
         else{
             session.invalidate();
-            return "main";
+            return "start";
         }
     }
 
@@ -283,7 +287,13 @@ public class LoginController {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         dbFirestore.collection("member").document(target).delete();
         System.out.println("계정 삭제가 완료되었습니다.");
-        return "main";
+        return "start";
     }
+
+    @GetMapping("/user-edit")
+    public String viewUserEdit(){
+        return "user-edit";
+    }
+
 
 }
