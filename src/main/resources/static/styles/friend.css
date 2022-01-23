@@ -110,7 +110,7 @@ body {
 .user-table {
 	display: none;
 	width: 500px;
-	height: 700px;
+	height: 65vh;
 	overflow: auto;
 	-ms-overflow-style: none;
 }
@@ -150,6 +150,7 @@ body {
 .friend-table li:hover,
 .user-table li:hover {
 	background-color: rgb(38, 38, 38);
+	border-radius: 5px;
 }
 
 .request-table div:first-child,
