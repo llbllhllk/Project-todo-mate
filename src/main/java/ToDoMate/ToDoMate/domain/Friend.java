@@ -13,4 +13,6 @@ public class Friend {
     private List<String> friend;
 
     private List<String> follower;
+
+    private List<String> followee;
 }

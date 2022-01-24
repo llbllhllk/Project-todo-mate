@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 //@Service
 public class FriendService {
@@ -27,21 +25,33 @@ public class FriendService {
     }
 
 
-    //DASOL 추가
     //친구추가위한 찾기
-    public List<String> findMember(String area, String search) throws Exception {
-        //이메일인지 닉네임인지 확인
-        List<String> memberList = friendRepository.findMemberList(area, search);
+    public Optional<Map> findMember(String area, String search) throws Exception {
+        List<String> nicknameList = friendRepository.getMemberNicknameList(area, search);
+        List<String> friendList = friendRepository.getFriendList(area).get().getFriend();
+        List<String> followerList = friendRepository.getFriendList(area).get().getFollower();
+        String myNickname = friendRepository.findMemberNicknameById(area).get();
         List<String> findList=new ArrayList<>();
+        HashMap<String, Boolean> result = new HashMap<>();
 
-        for (int i =0; i<memberList.size(); i++)
+        for (int i =0; i<nicknameList.size(); i++)
         {
-            if(memberList.get(i).contains(search) == true)
+            String nickname = nicknameList.get(i);
+            if(nickname.contains(search) == true && friendList.contains(nickname)==false && !Objects.equals(nickname, myNickname))
             {
-                findList.add(memberList.get(i));
+                findList.add(nickname);
             }
         }
-        return findList;
+
+        for (int i=0; i<findList.size();i++){
+            if (followerList.contains(findList.get(i))==true){
+                result.put(findList.get(i), true);
+            }
+            else {
+                result.put(findList.get(i), false);
+            }
+        }
+        return Optional.ofNullable(result);
     }
 
 
@@ -53,5 +63,26 @@ public class FriendService {
     //친구목록에서 친구 찾기
     //친구신청목록보여주기
 
+
+    public List<String> deleteFriend(String memberId, String deleteNickname) throws Exception {
+        String deleteId = friendRepository.findMemberIdByNickname(deleteNickname).get();
+        String memberNickname=friendRepository.findMemberNicknameById(memberId).get();
+        //양쪽 friendList에서 각자를 없애고 로그인한 회원의 friend리스트 반환
+        return friendRepository.deleteFriend(memberId, memberNickname, deleteId, deleteNickname);
+    }
+
+
+    public List<String> acceptFriend(String memberId, String nickname) throws Exception{
+        String acceptId = friendRepository.findMemberIdByNickname(nickname).get();
+        String memberNickname=friendRepository.findMemberNicknameById(memberId).get();
+        return friendRepository.acceptFollower(memberId, memberNickname, acceptId, nickname);
+    }
+
+
+    public List<String> refuseFriend(String memberId, String nickname) throws Exception{
+        String refuseId = friendRepository.findMemberIdByNickname(nickname).get();
+        String memberNickname=friendRepository.findMemberNicknameById(memberId).get();
+        return friendRepository.refuseFollower(memberId, memberNickname, refuseId, nickname);
+    }
 
 }

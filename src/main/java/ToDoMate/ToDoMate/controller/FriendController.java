@@ -26,107 +26,129 @@ public class FriendController {
     @Autowired
     private final FriendService friendService;
 
-    // HttpSession session;
+//    HttpSession session;
 
     public FriendController(FriendService friendService) {
         this.friendService = friendService;
     }
 
-    @GetMapping("friend")
-    public String viewFriend(Member member, HttpServletRequest request) throws Exception {
 
-        // HttpSession session = request.getSession();
-        // member = (Member) session.getAttribute("member");
-        // Optional<Friend> friend = friendService.friendList(member.getId());
-        // System.out.println(friend.get().getFriend());
-        // return "friend";
-        HttpSession session = request.getSession();
-        Member sessionMember = (Member) session.getAttribute("member");
-        if (sessionMember != null) {
-            return "friend";
-        }
-        return "login";
-    }
+//    @GetMapping("friend")
+//    public String viewFriend(Member member, HttpServletRequest request) throws Exception {
+//
+////        HttpSession session = request.getSession();
+////        member = (Member) session.getAttribute("member");
+////        Optional<Friend> friend = friendService.friendList(member.getId());
+////        System.out.println(friend.get().getFriend());
+//        return "friend";
+//    }
 
     /**
      * 회원 닉네임으로 검색
      * param Search-user-nickname
-     * 
      * @return findMemberList
      * @throws Exception
      */
-    @PostMapping("searchMember")
+    @GetMapping("friend")
     @ResponseBody
-
-    public List<String> findMember(@SessionAttribute("member") Member member,
-            @RequestParam("search-user") String searchNickname) throws Exception {
+    public Optional<Map> findMember(@SessionAttribute("member")Member member,
+                                   @RequestParam("user")String searchNickname) throws Exception{
         String searchArea = member.getId();
         return friendService.findMember(searchArea, searchNickname);
-
     }
+
+//    @GetMapping("followMember")
+//    @ResponseBody
+//    public Optional<Map> followMember(@SessionAttribute("member")Member member,
+//                                      @RequestParam("followUser")String followNickname) throws Exception{
+//
+//
+//    }
+
 
     /**
      * 친구목록보여주기
-     * 
      * @param member
      * @return friendList
      * @throws Exception
      */
-
-    @GetMapping(value = "friendList")
+    @GetMapping(value="friendList")
     @ResponseBody
-    public List<String> viewFriendList(@SessionAttribute(name = "member") Member member) throws Exception {
-        Optional<Friend> friend = friendService.friendList(member.getId()); // 저장된 친구리스트
+    public List<String> viewFriendList(@SessionAttribute(name = "member") Member member) throws Exception{
+        Optional<Friend> friend = friendService.friendList(member.getId()); //저장된 친구리스트
         List<String> friendList = friend.get().getFriend();
         return friendList;
     }
 
+
     /**
      * 친구목록에서 친구검색하기
-     * 
      * @param member
      * @param searchName
      * @return searchResultList
      * @throws Exception
      */
-
-    @PostMapping(value = "friendList")
+    @GetMapping(value="searchFriend")
     @ResponseBody
-    public List<String> searchFriendList(@SessionAttribute(name = "member") Member member,
-            @RequestParam("friendName") String searchName) throws Exception {
-        List<String> friend = friendService.friendList(member.getId()).get().getFriend();// 저장된 친구리스트
+    public List<String> searchFriendList(@SessionAttribute(name = "member")Member member,
+                                         @RequestParam("friendName")String searchName) throws Exception{
+        List<String> friend = friendService.friendList(member.getId()).get().getFriend();//저장된 친구리스트
         List<String> searchFriendList = new ArrayList<>();
-        // 친구검색
-        for (int i = 0; i < friend.size(); i++) {
-            if (friend.get(i).contains(searchName) == true) {
+        //친구검색
+        for (int i =0; i<friend.size(); i++)
+        {
+            if(friend.get(i).contains(searchName) == true)
+            {
                 searchFriendList.add(friend.get(i));
             }
         }
         return searchFriendList;
     }
 
-    // 친구목록에서 친구 삭제
+    @GetMapping("deleteFriend")
+    public List<String> deleteFriend(@SessionAttribute("member") Member member,
+                                     @RequestParam("friendName")String deleteName) throws Exception {
+        return friendService.deleteFriend(member.getId(), deleteName);
+    }
+
+
     /**
      * 나를 친구로 추가한 목록 보여주기
-     * 
      * @param member
      * @return followerList
      * @throws Exception
      */
-    @GetMapping(value = "followerList")
+    @GetMapping(value="followerList")
     @ResponseBody
-    public List<String> viewFollower(@SessionAttribute("member") Member member) throws Exception {
+    public List<String> viewFollower(@SessionAttribute("member")Member member) throws Exception{
 
-        Optional<Friend> friend = friendService.friendList(member.getId()); // 저장된 친구리스트
+        Optional<Friend> friend = friendService.friendList(member.getId()); //저장된 친구리스트
         List<String> followerList = friend.get().getFollower();
         return followerList;
     }
 
-    // //친구요청창에서 친구 받아주기/거절하기
-    // @PostMapping("/acceptOrRefuse")
-    // public String acceptOfRefuse(@SessionAttribute("member") Member member,
-    // HttpServletRequest request) throws Exception{
-    //
-    // }
+
+    //친구요청창에서 친구 받아주기/거절하기
+    @GetMapping("acceptFollower")
+    @ResponseBody
+    public List<String> acceptFollower(@SessionAttribute("member") Member member,
+                                       @RequestParam("follower") String nickname) throws Exception{
+        return friendService.acceptFriend(member.getId(), nickname);
+    }
+
+
+    /**
+     * 팔로워목록에서 친구 거절하기
+     * @param member
+     * @param nickname
+     * @return 거절한 후 남아있는 팔로워목록
+     * @throws Exception
+     */
+    @GetMapping("refuseFollower")
+    @ResponseBody
+    public List<String> refuseFollower(@SessionAttribute("member") Member member,
+                                       @RequestParam("follower") String nickname) throws Exception {
+        return friendService.refuseFriend(member.getId(), nickname);
+    }
 
 }

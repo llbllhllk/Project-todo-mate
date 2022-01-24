@@ -10,34 +10,26 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WebAppConfiguration
 class FriendControllerTest {
 
 //    private Member member=new Member();
@@ -82,9 +74,9 @@ class FriendControllerTest {
     public void 친구추가위한회원검색() throws Exception{
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/searchMember")
+        mockMvc.perform(MockMvcRequestBuilders.get("/friend")
                 .session(session)
-                .param("search-user","a"))
+                .param("user","a"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -104,9 +96,20 @@ class FriendControllerTest {
     public void 친구목록에서검색() throws Exception{
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/friendList")
+        mockMvc.perform(MockMvcRequestBuilders.get("/searchFriend")
                 .session(session)
                 .param("friendName","a"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void 친구삭제() throws Exception{
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/deleteFriend")
+                .session(session)
+                .param("friendName","qwer"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -118,6 +121,30 @@ class FriendControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/followerList")
                 .session(session))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
+    @Test
+    public void 팔로워수락하기() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/acceptFollower")
+                .session(session)
+                .param("follower", "test"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
+    @Test
+    public void 팔로워거절하기() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/refuseFollower")
+                .session(session)
+                .param("follower", "refuse"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
