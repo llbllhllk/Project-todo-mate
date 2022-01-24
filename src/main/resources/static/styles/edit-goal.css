@@ -35,22 +35,26 @@ button {
 	width: 600px;
 }
 
-.top {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.goal {
+	position: relative;
 	margin-bottom: 30px;
 }
 
-.top li strong {
+.goal__main-title {
+	text-align: center;
 	font-size: 24px;
 }
 
-.top button {
+.goal__add-btn {
+	position: absolute;
+	top: 4px;
+	right: 0;
+	width: 19px;
+	height: 19px;
 	margin-right: 8px;
 }
 
-.top button i {
+.goal__add-btn i {
 	font-size: 20px;
 	color: white;
 }
@@ -72,24 +76,21 @@ button {
 	border-radius: 10px;
 }
 
-.goal-list li {
+.goal-list__item {
 	margin-top: 3px;
 	padding: 8px;
 	transition: all 0.3s ease;
-}
-
-.goal-list li:hover {
-	background-color: rgb(38, 38, 38);
-	border-radius: 5px;
-}
-
-.goal-list div {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.goal-list strong {
+.goal-list__item:hover {
+	background-color: rgb(38, 38, 38);
+	border-radius: 5px;
+}
+
+.goal-list__name {
 	background-color: #343333;
 	color: #00c2ff;
 	border: 1px solid #343333;
@@ -97,13 +98,9 @@ button {
 	padding: 5px;
 }
 
-.goal-list i {
+.goal-list__edit-btn i {
 	font-size: 18px;
 	color: #a7a7a7;
-}
-
-main {
-	display: none;
 }
 
 /* modal */
@@ -125,12 +122,12 @@ main {
 	display: block;
 }
 
-.modal div:first-child {
+.modal-header {
 	display: flex;
 	justify-content: space-between;
 }
 
-.modal div strong {
+.modal__description {
 	font-size: 16px;
 }
 
@@ -162,44 +159,45 @@ main {
 	margin-top: 20px;
 }
 
-.color ul {
+.color-picker {
 	display: flex;
 	justify-content: space-between;
 	margin-top: 15px;
 }
 
-.color ul button {
+.color-picker__list button {
 	height: 25px;
 	width: 25px;
 	border-radius: 15px;
 	background-color: #d07e7e;
 }
 
-.color ul li .active {
+.color-list .active {
 	border: 2px solid white;
 }
 
 .modal_btn {
 	width: 100%;
 	height: 38px;
-	background-color: #c4c4c4;
+	background-color: #474747;
 	margin-top: 20px;
-	color: black;
-	font-size: 15px;
+	color: white;
+	font-size: 16px;
 	font-weight: bold;
+	border-radius: 3px;
 }
 
 .modal_btn.edit {
-	color: #d91616;
+	color: #ed7777;
 }
 
-.modal > strong {
+.modal__description {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.btn_delete {
+.modal_btn-group {
 	display: flex;
 	justify-content: space-between;
 }
