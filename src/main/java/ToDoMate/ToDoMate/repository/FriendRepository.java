@@ -13,9 +13,11 @@ public interface FriendRepository {
 
     List<String> getMemberNicknameList(String area, String search) throws Exception;
 
-    List<String> refuseFollower(String memberId, String nickname) throws Exception;
+    List<String> deleteFriend(String memberId, String memberNickname, String deleteId, String deleteNickname) throws Exception;
 
     List<String> acceptFollower(String memberId, String memberNickname, String followerId, String followerNickname) throws Exception;
+
+    List<String> refuseFollower(String memberId, String memberNickname, String refuseId, String refuseNickname) throws Exception;
 
     Optional<String> findMemberIdByNickname(String nickname) throws Exception;
     Optional<String> findMemberNicknameById(String memberId) throws Exception;

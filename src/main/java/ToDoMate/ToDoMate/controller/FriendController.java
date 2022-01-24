@@ -33,15 +33,15 @@ public class FriendController {
     }
 
 
-    @GetMapping("friend")
-    public String viewFriend(Member member, HttpServletRequest request) throws Exception {
-
-//        HttpSession session = request.getSession();
-//        member = (Member) session.getAttribute("member");
-//        Optional<Friend> friend = friendService.friendList(member.getId());
-//        System.out.println(friend.get().getFriend());
-        return "friend";
-    }
+//    @GetMapping("friend")
+//    public String viewFriend(Member member, HttpServletRequest request) throws Exception {
+//
+////        HttpSession session = request.getSession();
+////        member = (Member) session.getAttribute("member");
+////        Optional<Friend> friend = friendService.friendList(member.getId());
+////        System.out.println(friend.get().getFriend());
+//        return "friend";
+//    }
 
     /**
      * 회원 닉네임으로 검색
@@ -49,13 +49,21 @@ public class FriendController {
      * @return findMemberList
      * @throws Exception
      */
-    @PostMapping("searchMember")
+    @GetMapping("friend")
     @ResponseBody
-    public List<String> findMember(@SessionAttribute("member")Member member,
+    public Optional<Map> findMember(@SessionAttribute("member")Member member,
                                    @RequestParam("user")String searchNickname) throws Exception{
         String searchArea = member.getId();
         return friendService.findMember(searchArea, searchNickname);
     }
+
+//    @GetMapping("followMember")
+//    @ResponseBody
+//    public Optional<Map> followMember(@SessionAttribute("member")Member member,
+//                                      @RequestParam("followUser")String followNickname) throws Exception{
+//
+//
+//    }
 
 
     /**
@@ -80,7 +88,7 @@ public class FriendController {
      * @return searchResultList
      * @throws Exception
      */
-    @PostMapping(value="friendList")
+    @GetMapping(value="searchFriend")
     @ResponseBody
     public List<String> searchFriendList(@SessionAttribute(name = "member")Member member,
                                          @RequestParam("friendName")String searchName) throws Exception{
@@ -95,6 +103,12 @@ public class FriendController {
             }
         }
         return searchFriendList;
+    }
+
+    @GetMapping("deleteFriend")
+    public List<String> deleteFriend(@SessionAttribute("member") Member member,
+                                     @RequestParam("friendName")String deleteName) throws Exception {
+        return friendService.deleteFriend(member.getId(), deleteName);
     }
 
 
@@ -115,7 +129,7 @@ public class FriendController {
 
 
     //친구요청창에서 친구 받아주기/거절하기
-    @PostMapping("acceptFollower")
+    @GetMapping("acceptFollower")
     @ResponseBody
     public List<String> acceptFollower(@SessionAttribute("member") Member member,
                                        @RequestParam("follower") String nickname) throws Exception{
@@ -130,7 +144,7 @@ public class FriendController {
      * @return 거절한 후 남아있는 팔로워목록
      * @throws Exception
      */
-    @PostMapping("refuseFollower")
+    @GetMapping("refuseFollower")
     @ResponseBody
     public List<String> refuseFollower(@SessionAttribute("member") Member member,
                                        @RequestParam("follower") String nickname) throws Exception {
