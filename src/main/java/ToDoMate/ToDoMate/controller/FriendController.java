@@ -98,8 +98,6 @@ public class FriendController {
     }
 
 
-
-    //친구목록에서 친구 삭제
     /**
      * 나를 친구로 추가한 목록 보여주기
      * @param member
@@ -116,25 +114,27 @@ public class FriendController {
     }
 
 
-//    //친구요청창에서 친구 받아주기/거절하기
-//    @PostMapping("/acceptOrRefuse")
-//    public String acceptOfRefuse(@SessionAttribute("member") Member member, HttpServletRequest request) throws Exception{
-//
-//    }
+    //친구요청창에서 친구 받아주기/거절하기
+    @PostMapping("acceptFollower")
+    @ResponseBody
+    public List<String> acceptFollower(@SessionAttribute("member") Member member,
+                                       @RequestParam("follower") String nickname) throws Exception{
+        return friendService.acceptFriend(member.getId(), nickname);
+    }
 
 
-    @PostMapping("/refuseFollower")
+    /**
+     * 팔로워목록에서 친구 거절하기
+     * @param member
+     * @param nickname
+     * @return 거절한 후 남아있는 팔로워목록
+     * @throws Exception
+     */
+    @PostMapping("refuseFollower")
     @ResponseBody
     public List<String> refuseFollower(@SessionAttribute("member") Member member,
                                        @RequestParam("follower") String nickname) throws Exception {
         return friendService.refuseFriend(member.getId(), nickname);
     }
-
-
-
-
-
-
-
 
 }

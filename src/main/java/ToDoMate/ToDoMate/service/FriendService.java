@@ -30,15 +30,14 @@ public class FriendService {
     //DASOL 추가
     //친구추가위한 찾기
     public List<String> findMember(String area, String search) throws Exception {
-        //이메일인지 닉네임인지 확인
-        List<String> memberList = friendRepository.findMemberList(area, search);
+        List<String> nicknameList = friendRepository.getMemberNicknameList(area, search);
         List<String> findList=new ArrayList<>();
 
-        for (int i =0; i<memberList.size(); i++)
+        for (int i =0; i<nicknameList.size(); i++)
         {
-            if(memberList.get(i).contains(search) == true)
+            if(nicknameList.get(i).contains(search) == true)
             {
-                findList.add(memberList.get(i));
+                findList.add(nicknameList.get(i));
             }
         }
         return findList;
@@ -52,6 +51,12 @@ public class FriendService {
     //친구목록 보여주기
     //친구목록에서 친구 찾기
     //친구신청목록보여주기
+    public List<String> acceptFriend(String memberId, String nickname) throws Exception{
+        String acceptId = friendRepository.findMemberIdByNickname(nickname).get();
+        String memberNickname=friendRepository.findMemberNicknameById(memberId).get();
+        return friendRepository.acceptFollower(memberId, memberNickname, acceptId, nickname);
+    }
+
 
     public List<String> refuseFriend(String memberId, String nickname) throws Exception{
         return friendRepository.refuseFollower(memberId, nickname);

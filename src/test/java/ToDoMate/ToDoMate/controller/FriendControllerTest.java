@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +36,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -127,6 +127,19 @@ class FriendControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+
+    @Test
+    public void 팔로워수락하기() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/acceptFollower")
+                .session(session)
+                .param("follower", "qwer"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
     @Test
     public void 팔로워거절하기() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -137,5 +150,6 @@ class FriendControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
 
 }
