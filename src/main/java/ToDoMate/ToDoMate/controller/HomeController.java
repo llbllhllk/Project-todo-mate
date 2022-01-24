@@ -25,8 +25,15 @@ public class HomeController {
     }
 
     @GetMapping("main")
-    public String viewMain(){
-        return "main";
+    public String viewMain(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Member member = (Member)session.getAttribute("member");
+        if(member==null){   // 로그인 안되어있고 처음 시작하는 상태
+            return "login";
+        }
+        else{   // 이미 로그인 되어있는 상태
+            return "main";
+        }
     }
 
 }

@@ -16,7 +16,7 @@ const inputInfoArr = [
   },
   {
     id: 'userPw',
-    validationCb: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+    validationCb: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~@$^!%<>&*?&])[A-Za-z\d~@$^!%<>&*?&]{8,20}$/,
     isValid: false,
     isEmpty: true,
     data: "비밀번호",
@@ -94,6 +94,7 @@ function checkValidation(elem) {
 
   if (value === "") {
     infoElem.classList.remove('hidden');
+    inputInfo.isEmpty = true;
     return;
   }
   if (validationCb instanceof RegExp) {

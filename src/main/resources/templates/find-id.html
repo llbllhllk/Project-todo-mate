@@ -27,18 +27,18 @@
 <!-- Header -->
 <header class="header">
   <h1 class="header__title">
-    <a href="#">
+    <a href="start">
       ToDo Mate
     </a>
   </h1>
-  <a href="#" class="header__prev-button">
+  <a href="login" class="header__prev-button">
     <img src="/images/prev-btn.png" alt="prev button" class="filter-white">
   </a>
 </header>
 
 <!-- Find ID -->
 <main class="find-id">
-  <form class="find-id__form" action="#" method="POST">
+  <form class="find-id__form" action="/find-id" method="POST">
     <h1 class="find-id_title">FIND ID</h1>
     <ul class="find-id__container">
 
@@ -48,7 +48,7 @@
           이메일
         </label>
         <div class="find-id__input-container">
-          <input class="find-id__input" id="user-email" name="user-email" type="text" placeholder="이메일을 입력해주세요.">
+          <input class="find-id__input" id="user-email" name="email" type="text" placeholder="이메일을 입력해주세요.">
         </div>
 
         <!-- Alert -->
@@ -63,10 +63,13 @@
             인증번호를 보냈습니다.
           </strong>
         </div>
-        <button id="sending-certification" class="find-id__btn" type="button">인증번호 보내기</button>
+        <button id="sending-certification" class="find-id__btn" type="submit">인증번호 보내기</button>
       </li>
+    </ul>
+  </form>
 
       <!-- Certification -->
+  <form class="find-id__form" action="#" method="POST">
       <li class="find-id__list close">
         <div class="find-id__list__container">
           <label class="find-id__input-title" for="user-certification">
@@ -90,10 +93,12 @@
           <strong id="wrong-certification" class="find-id__alert-info wrong">
             인증번호가 틀립니다.
           </strong>
+          <strong id="timeout-certification" class="find-id__alert-info wrong">
+            시간이 초과되었습니다.
+          </strong>
         </div>
         <button id="confirm-certification" class="find-id__btn" type="button">인증 확인</button>
       </li>
-    </ul>
   </form>
 
   <!-- Modal -->

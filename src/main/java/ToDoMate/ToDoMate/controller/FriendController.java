@@ -83,7 +83,7 @@ public class FriendController {
     @PostMapping(value="friendList")
     @ResponseBody
     public List<String> searchFriendList(@SessionAttribute(name = "member")Member member,
-                                                @RequestParam("friendName")String searchName) throws Exception{
+                                         @RequestParam("friendName")String searchName) throws Exception{
         List<String> friend = friendService.friendList(member.getId()).get().getFriend();//저장된 친구리스트
         List<String> searchFriendList = new ArrayList<>();
         //친구검색

@@ -1,7 +1,6 @@
 package ToDoMate.ToDoMate.controller;
 
 import ToDoMate.ToDoMate.domain.Member;
-import ToDoMate.ToDoMate.domain.Nickname;
 import ToDoMate.ToDoMate.form.EmailForm;
 import ToDoMate.ToDoMate.form.JoinForm;
 import ToDoMate.ToDoMate.form.LoginForm;
@@ -9,22 +8,22 @@ import ToDoMate.ToDoMate.service.AuthenticationService;
 import ToDoMate.ToDoMate.service.MemberService;
 import ToDoMate.ToDoMate.validator.Validate;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firestore.v1.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -54,8 +53,9 @@ public class LoginController {
         return "sign-up";
     }
 
-    @PostMapping("/sign-up")
-    public String memberJoin(Model model, JoinForm joinForm) throws Exception{
+    @RequestMapping(value="sign-up",method = RequestMethod.POST)
+    @ResponseBody
+    public List<String> memberJoin(Model model, JoinForm joinForm) throws Exception{
         boolean idValidation=false;
         boolean passwordValidation=false;
         boolean checkPasswordValidation=false;
@@ -63,10 +63,10 @@ public class LoginController {
         boolean emailValidation=false;
 
         Member member = new Member();
-        Nickname nickname = new Nickname();
+        ArrayList<String> returnValues = new ArrayList<String>();
 
         if(joinForm.getId().equals("") || joinForm.getPassword().equals("") || joinForm.getNickname().equals("") || joinForm.getName().equals("") || joinForm.getEmail().equals("") || joinForm.getCheckPassword().equals("")) {
-            return "sign-up";
+            returnValues.add("not_entered");
         }
 
         if(validate.validateId(joinForm.getId())){
@@ -75,7 +75,7 @@ public class LoginController {
         }
         else{
             System.out.println("중복 아이디");
-            model.addAttribute("idFlag",1);
+            returnValues.add("id_duplicate");
         }
 
         if(validate.validatePassword(joinForm.getPassword())){
@@ -84,7 +84,7 @@ public class LoginController {
         }
         else{
             System.out.println("비밀번호 유효성 틀림");
-            model.addAttribute("passwordFlag",1);
+            returnValues.add("password_availability");
         }
 
         if(validate.validateCheckPassword(member.getPassword(),joinForm.getCheckPassword())){
@@ -92,40 +92,43 @@ public class LoginController {
         }
         else{
             System.out.println("비밀번호 확인 유효성 틀림");
-            model.addAttribute("checkPasswordFlag",1);
+            returnValues.add("password_check_availability");
         }
 
         member.setName(joinForm.getName());
 
         if(validate.validateNickname(joinForm.getNickname())){
             member.setNickname(joinForm.getNickname());
-            nickname.setNickname(joinForm.getNickname());
             nicknameValidation=true;
         }
         else{
             System.out.println("닉네임 중복");
-            model.addAttribute("nicknameFlag",1);
+            returnValues.add("nickname_duplicate");
         }
 //        System.out.println(nickname.getNickname());
 
-        if(validate.validateEmail(joinForm.getEmail())){
+        if(validate.validateEmail(joinForm.getEmail())==0){
             member.setEmail(joinForm.getEmail());
             emailValidation=true;
         }
-        else{
-            System.out.println("이메일 규격 x");
-            model.addAttribute("emailFlag",1);
+        else if(validate.validateEmail(joinForm.getEmail())==2){
+            System.out.println("이메일이 중복되었습니다. 다시 입력해주세요.");
+            returnValues.add("email_duplicate");
+        }
+        else if(validate.validateEmail(joinForm.getEmail())==3){
+            System.out.println("이메일이 규격에 맞지 않습니다. 다시 입력해주세요.");
+            returnValues.add("email_availability");
         }
 
         if(idValidation&&passwordValidation&&checkPasswordValidation&&nicknameValidation&&emailValidation){ // 모든 회원가입 유효성 충족
             memberService.join(member);
-            memberService.joinNickname(nickname);
-            return "login";
+            returnValues.add("sign-up_complete");
         }
         else{
             model.addAttribute("signupFlag", 1);
-            return "sign-up";
+            returnValues.add("sign-up_not_complete");
         }
+        return returnValues;
 
     }
 
@@ -154,6 +157,7 @@ public class LoginController {
                 if (loginMember.get().getPassword().equals(member.getPassword())) { // 로그인 성공
                     HttpSession session = request.getSession();
                     session.setAttribute("member",loginMember.get());   //세션에 로그인한 멤버 객체 삽입
+                    System.out.println(session.getAttribute("member")); //로그인에 성공한 후 세션에 멤버 객체가 잘들어갔는지 테스트
                     return "main";
                 }
                 else{
@@ -180,18 +184,49 @@ public class LoginController {
 
         else{
             session.invalidate();
-            return "main";
+            return "start";
         }
     }
 
     @GetMapping("find-id")
-    public String viewFindId(){
+    public String viewFindId() throws Exception{
+//        Firestore firestore = FirestoreClient.getFirestore();
+//        DocumentReference documentReference = firestore.collection("member").document("dlrlxo999").;
+//        ApiFuture<DocumentSnapshot> future = documentReference.get();
+//        DocumentSnapshot documentSnapshot = future.get();
+//        if(documentSnapshot.exists()){
+//            System.out.println("Document data : " + documentSnapshot.getData());
+//        }
+//        else{
+//            System.out.println("No such Document!");
+//        }
+
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            System.out.println(document.getId() + " =>" + document.toObject(Member.class).getEmail());
+        }
         return "find-id";
     }
 
     @PostMapping("find-id")
     public String findId(EmailForm emailForm) throws MessagingException, UnsupportedEncodingException{
-        String to = emailForm.getEmail();
+
+        String userEmail;   // 회원 이메일
+
+        if(emailForm.getEmail().equals("")){    // 이메일을 아무것도 입력안할 때
+            System.out.println("이메일을 입력하지 않으셨습니다. 이메일을 입력해주세요.");
+            return "find-id";
+        }
+//        else if(){  //이메일을 입력했으나 DB에 없는 이메일일 때
+//            return "find-id";
+//        }
+        else{   //DB에 있는 이메일을 잘 입력했을 때
+            userEmail = emailForm.getEmail();
+        }
+
+        String to = userEmail;
         String from = "kitaecoding999@gmail.com";
         String subject = "To Do Mate 이메일 인증 관련 메일";
         String validationString = authenticationService.generateRandomNumber();
@@ -252,7 +287,13 @@ public class LoginController {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         dbFirestore.collection("member").document(target).delete();
         System.out.println("계정 삭제가 완료되었습니다.");
-        return "main";
+        return "start";
     }
+
+    @GetMapping("/user-edit")
+    public String viewUserEdit(){
+        return "user-edit";
+    }
+
 
 }
