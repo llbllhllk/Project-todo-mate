@@ -63,7 +63,7 @@ async function postTimeoutCertification() {
     const resTimeoutCertification = await axios(timeoutCertificationUrl, {
       timeout: true,
     })
-    const validCertification = resValidCertification.data;
+    const validCertification = resTimeoutCertification.data;
     showCertificationAlert(validCertification);
   } catch(err) {
     console.log(err);
