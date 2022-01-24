@@ -64,7 +64,7 @@ async function postTimeoutCertification() {
       timeout: true,
     })
     const validCertification = resTimeoutCertification.data;
-    showCertificationAlert(validCertification);
+    console.log(validCertification);
   } catch(err) {
     console.log(err);
     throw new Error(err);
@@ -104,17 +104,20 @@ function showCertificationAlert(id) {
     emptyCertification.classList.add('active');
     wrongCertification.classList.remove('active');
     correctCertification.classList.remove('active');
+    timeoutCertification.classList.remove('active');
   }
   if(id === "") {
     // 인증번호가 틀렸을 경우 틀렸다는 알림
     emptyCertification.classList.remove('active');
     wrongCertification.classList.add('active');
     correctCertification.classList.remove('active'); 
+    timeoutCertification.classList.remove('active');
   } else {
     // 인증번호가 맞을 경우 알림과 사용자의 아이디 modal로 출력
     emptyCertification.classList.remove('active');
     wrongCertification.classList.remove('active');
     correctCertification.classList.add('active');
+    timeoutCertification.classList.remove('active');
     modal.classList.remove('close');
     modalHandler(id);
   }
@@ -174,4 +177,3 @@ function init() {
 }
 
 init();
-
