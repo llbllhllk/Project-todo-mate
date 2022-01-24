@@ -53,5 +53,8 @@ public class FriendService {
     //친구목록에서 친구 찾기
     //친구신청목록보여주기
 
+    public List<String> refuseFriend(String memberId, String nickname) throws Exception{
+        return friendRepository.refuseFollower(memberId, nickname);
+    }
 
 }

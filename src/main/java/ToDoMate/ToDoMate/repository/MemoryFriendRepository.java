@@ -8,9 +8,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 
 import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MemoryFriendRepository implements FriendRepository {
 
@@ -65,23 +63,16 @@ public class MemoryFriendRepository implements FriendRepository {
 //    }
 
 
-
-
-
-    /*
     @Override
-    public Member findMemberByEmail(Member member, String search) {
+    public List<String> refuseFollower(String memberId, String nickname) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = firestore.collection(collectionName).document(member.getId());
-        ApiFuture<DocumentSnapshot> apiFuture = documentReference.get();
-        DocumentSnapshot documentSnapshot = apiFuture.get();
-        return Optional.ofNullable(documentSnapshot.toObject(Friend.class));
+        DocumentReference document = firestore.collection(collectionName).document(memberId);
+        Friend friendDoc = document.get().get().toObject(Friend.class);
+        friendDoc.getFollower().remove(nickname);
+        System.out.println("document.get().get().toObject(Friend.class = " + document.get().get().toObject(Friend.class).getFollower());
+        return document.get().get().toObject(Friend.class).getFollower();
     }
 
-    @Override
-    public Member findMemberByNickname(Member member, String search) {
-        return null;
-    }
-*/
+
 
 }

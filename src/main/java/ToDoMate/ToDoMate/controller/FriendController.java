@@ -52,7 +52,7 @@ public class FriendController {
     @PostMapping("searchMember")
     @ResponseBody
     public List<String> findMember(@SessionAttribute("member")Member member,
-                                   @RequestParam("search-user")String searchNickname) throws Exception{
+                                   @RequestParam("user")String searchNickname) throws Exception{
         String searchArea = member.getId();
         return friendService.findMember(searchArea, searchNickname);
     }
@@ -71,7 +71,6 @@ public class FriendController {
         List<String> friendList = friend.get().getFriend();
         return friendList;
     }
-
 
 
     /**
@@ -122,6 +121,14 @@ public class FriendController {
 //    public String acceptOfRefuse(@SessionAttribute("member") Member member, HttpServletRequest request) throws Exception{
 //
 //    }
+
+
+    @PostMapping("/refuseFollower")
+    @ResponseBody
+    public List<String> refuseFollower(@SessionAttribute("member") Member member,
+                                       @RequestParam("follower") String nickname) throws Exception {
+        return friendService.refuseFriend(member.getId(), nickname);
+    }
 
 
 

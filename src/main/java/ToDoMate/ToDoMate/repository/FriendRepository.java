@@ -13,5 +13,5 @@ public interface FriendRepository {
 
     List<String> findMemberList(String area, String search) throws Exception;
 
-
+    List<String> refuseFollower(String memberId, String nickname) throws Exception;
 }
