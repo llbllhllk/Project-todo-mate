@@ -38,116 +38,26 @@
 
     <!-- contents -->
     <main class="contents">
-        <ul class="top">
-            <li></li>
-            <li><strong>목표</strong></li>
-            <li><button type="button"><i class="fas fa-plus"></i></button></li>
-        </ul>
+        <div class="goal">
+            <h1 class="goal__main-title">목표</h1>
+            <button type="button" class="goal__add-btn"><i class="fas fa-plus"></i></button>
+        </div>
         <ul class="goal-list">
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
+            <li class="goal-list__item">
+                <strong class="goal-list__name">수업</strong>
+                <button type="button" class="goal-list__edit-btn"><i class="fas fa-chevron-right"></i></button>
             </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
+            <li class="goal-list__item">
+                <strong class="goal-list__name">수업</strong>
+                <button type="button" class="goal-list__edit-btn"><i class="fas fa-chevron-right"></i></button>
             </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <strong>수업</strong>
-                    <button type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </li>
-            
         </ul>
     </main>
     <!-- modal -->
     <!-- modal create -->
     <div class="modal">
-        <div>
-            <strong>제목</strong>
+        <div class="modal-header">
+            <strong class="modal__description">제목</strong>
             <button type="submit" class="create_confirm">확인</button>
         </div>
         <input type="text"
@@ -157,39 +67,39 @@
                 name="goal"
             />
         <div class="color create">
-            <strong>색상</strong>
-            <ul>
-                <li><button type="button" class="0 active"></button></li>
-                <li><button type="button" class="1"></button></li>
-                <li><button type="button" class="2"></button></li>
-                <li><button type="button" class="3"></button></li>
-                <li><button type="button" class="4"></button></li>
-                <li><button type="button" class="5"></button></li>
-                <li><button type="button" class="6"></button></li>
-                <li><button type="button" class="7"></button></li>
-                <li><button type="button" class="8"></button></li>
+            <strong class="color__description">색상</strong>
+            <ul class="color-picker">
+                <li class="color-picker__list"><button type="button" class="color-picker__list-1 active"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-2"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-3"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-5"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-6"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-7"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-8"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-9"></button></li>
             </ul>
-            <ul>
-                <li><button type="button" class="9"></button></li>
-                <li><button type="button" class="10"></button></li>
-                <li><button type="button" class="11"></button></li>
-                <li><button type="button" class="12"></button></li>
-                <li><button type="button" class="13"></button></li>
-                <li><button type="button" class="14"></button></li>
-                <li><button type="button" class="15"></button></li>
-                <li><button type="button" class="16"></button></li>
-                <li><button type="button" class="17"></button></li>
+            <ul class="color-picker">
+                <li class="color-picker__list"><button type="button" class="color-picker__list-10"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-11"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-12"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-13"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-14"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-15"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-16"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-17"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-18"></button></li>
             </ul>
-            <ul>
-                <li><button type="button" class="18"></button></li>
-                <li><button type="button" class="19"></button></li>
-                <li><button type="button" class="20"></button></li>
-                <li><button type="button" class="21"></button></li>
-                <li><button type="button" class="22"></button></li>
-                <li><button type="button" class="23"></button></li>
-                <li><button type="button" class="24"></button></li>
-                <li><button type="button" class="25"></button></li>
-                <li><button type="button" class="26"></button></li>
+            <ul class="color-picker">
+                <li class="color-picker__list"><button type="button" class="color-picker__list-19"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-20"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-21"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-22"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-23"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-24"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-25"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-26"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-27"></button></li>
             </ul>
             <button type="button" class="modal_btn back">뒤로가기</button>
         </div>
@@ -197,8 +107,8 @@
 
     <!-- modal edit -->
     <div class="modal">
-        <div>
-            <strong>제목</strong>
+        <div class="modal-header">
+            <strong class="modal__description">제목</strong>
             <button type="submit" class="edit_confirm">확인</button>
         </div>
         <input type="text"
@@ -208,39 +118,39 @@
                 name="goal"
             />
         <div class="color edit">
-            <strong>색상</strong>
-            <ul>
-                <li><button type="button" class="0 active"></button></li>
-                <li><button type="button" class="1"></button></li>
-                <li><button type="button" class="2"></button></li>
-                <li><button type="button" class="3"></button></li>
-                <li><button type="button" class="4"></button></li>
-                <li><button type="button" class="5"></button></li>
-                <li><button type="button" class="6"></button></li>
-                <li><button type="button" class="7"></button></li>
-                <li><button type="button" class="8"></button></li>
+            <strong color="color__description">색상</strong>
+            <ul class="color-picker">
+                <li class="color-picker__list"><button type="button" class="color-picker__list-1 active"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-2"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-3"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-5"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-6"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-7"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-8"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-9"></button></li>
             </ul>
-            <ul>
-                <li><button type="button" class="9"></button></li>
-                <li><button type="button" class="10"></button></li>
-                <li><button type="button" class="11"></button></li>
-                <li><button type="button" class="12"></button></li>
-                <li><button type="button" class="13"></button></li>
-                <li><button type="button" class="14"></button></li>
-                <li><button type="button" class="15"></button></li>
-                <li><button type="button" class="16"></button></li>
-                <li><button type="button" class="17"></button></li>
+            <ul class="color-picker">
+                <li class="color-picker__list"><button type="button" class="color-picker__list-10"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-11"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-12"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-13"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-14"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-15"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-16"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-17"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-18"></button></li>
             </ul>
-            <ul>
-                <li><button type="button" class="18"></button></li>
-                <li><button type="button" class="19"></button></li>
-                <li><button type="button" class="20"></button></li>
-                <li><button type="button" class="21"></button></li>
-                <li><button type="button" class="22"></button></li>
-                <li><button type="button" class="23"></button></li>
-                <li><button type="button" class="24"></button></li>
-                <li><button type="button" class="25"></button></li>
-                <li><button type="button" class="26"></button></li>
+            <ul class="color-picker">
+                <li class="color-picker__list"><button type="button" class="color-picker__list-19"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-20"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-21"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-22"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-23"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-24"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-25"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-26"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-27"></button></li>
             </ul>
             <button type="button" class="modal_btn edit">삭제</button>
         </div>
@@ -248,10 +158,14 @@
     
     <!-- modal delete -->
     <div class="modal active">
-        <strong>목표를 삭제하시겠습니까?</strong>
-        <ul class="btn_delete">
-            <li><button type="button" class="modal_btn exit">취소</button></li>
-            <li><button type="button" class="modal_btn delete">삭제</button></li>
+        <strong class="modal__description">목표를 삭제하시겠습니까?</strong>
+        <ul class="modal_btn-group">
+            <li class="modal_btn-item">
+                <button type="button" class="modal_btn exit">취소</button>
+            </li>
+            <li class="modal_btn-item">
+                <button type="button" class="modal_btn delete">삭제</button>
+            </li>
         </ul>
     </div>
 
