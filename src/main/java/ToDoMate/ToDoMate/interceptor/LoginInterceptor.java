@@ -13,7 +13,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
         if (session.getAttribute("member") == null){
-            response.sendRedirect("/");
+            response.sendRedirect("redirect:/");
             return false;
         }
         return true;

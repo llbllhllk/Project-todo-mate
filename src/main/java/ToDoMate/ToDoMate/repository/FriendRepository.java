@@ -6,12 +6,15 @@ import ToDoMate.ToDoMate.domain.Friend;
 import ToDoMate.ToDoMate.domain.Member;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface FriendRepository {
     Optional<Friend> getFriendList(String id) throws Exception;
 
     List<String> getMemberNicknameList(String area, String search) throws Exception;
+
+    Boolean requestFriend(String memberId, String memberNickname, String addId, String addNickname) throws Exception;
 
     List<String> deleteFriend(String memberId, String memberNickname, String deleteId, String deleteNickname) throws Exception;
 
