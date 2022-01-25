@@ -57,13 +57,20 @@ public class FriendController {
         return friendService.findMember(searchArea, searchNickname);
     }
 
-//    @GetMapping("followMember")
-//    @ResponseBody
-//    public Optional<Map> followMember(@SessionAttribute("member")Member member,
-//                                      @RequestParam("followUser")String followNickname) throws Exception{
-//
-//
-//    }
+
+    /**
+     * 친구 요청
+     * @param member
+     * @param followNickname
+     * @return 성공시 true, 실패시 false
+     * @throws Exception
+     */
+    @GetMapping("requestFriend")
+    @ResponseBody
+    public Boolean requestFriend(@SessionAttribute("member")Member member,
+                                      @RequestParam("followUser")String followNickname) throws Exception{
+        return friendService.requestFriend(member.getId(), followNickname);
+    }
 
 
     /**

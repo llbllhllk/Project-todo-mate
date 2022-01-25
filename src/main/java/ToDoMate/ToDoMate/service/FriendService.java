@@ -30,9 +30,10 @@ public class FriendService {
         List<String> nicknameList = friendRepository.getMemberNicknameList(area, search);
         List<String> friendList = friendRepository.getFriendList(area).get().getFriend();
         List<String> followerList = friendRepository.getFriendList(area).get().getFollower();
+        List<String> followeeList = friendRepository.getFriendList(area).get().getFollowee();
         String myNickname = friendRepository.findMemberNicknameById(area).get();
         List<String> findList=new ArrayList<>();
-        HashMap<String, Boolean> result = new HashMap<>();
+        HashMap<String, Integer> result = new HashMap<>();
 
         for (int i =0; i<nicknameList.size(); i++)
         {
@@ -45,10 +46,13 @@ public class FriendService {
 
         for (int i=0; i<findList.size();i++){
             if (followerList.contains(findList.get(i))==true){
-                result.put(findList.get(i), true);
+                result.put(findList.get(i), 2);
+            }
+            else if (followeeList.contains(findList.get(i))==true){
+                result.put(findList.get(i), 1);
             }
             else {
-                result.put(findList.get(i), false);
+                result.put(findList.get(i), 0);
             }
         }
         return Optional.ofNullable(result);
@@ -56,9 +60,11 @@ public class FriendService {
 
 
     //친구 추가 요청시 친구신청목록에 넣기
-//    public Member addFriend(Member member, String addMember) throws Exception {
-//        return friendRepository.addFriend(member, addMember);
-//    }
+    public Boolean requestFriend(String memberId, String addNickname) throws Exception {
+        String addId = friendRepository.findMemberIdByNickname(addNickname).get();
+        String memberNickname=friendRepository.findMemberNicknameById(memberId).get();
+        return friendRepository.requestFriend(memberId, memberNickname, addId, addNickname);
+    }
     //친구목록 보여주기
     //친구목록에서 친구 찾기
     //친구신청목록보여주기

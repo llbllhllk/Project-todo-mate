@@ -41,6 +41,38 @@ public class MemoryFriendRepository implements FriendRepository {
         return allMemberNicknameList;
     }
 
+    @Override
+    public Boolean requestFriend(String memberId, String memberNickname, String addId, String addNickname) throws Exception {
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference memDocRef = firestore.collection(collectionName).document(memberId);
+        DocumentReference addDocRef = firestore.collection(collectionName).document(addId);
+        Friend memDoc = memDocRef.get().get().toObject(Friend.class);
+        Friend addDoc = addDocRef.get().get().toObject(Friend.class);
+        ArrayList<String> afterMemAdd = new ArrayList<>();
+        ArrayList<String> afteraddAdd = new ArrayList<>();
+        List<String> memFollowee = memDoc.getFollowee();
+        List<String> addFollower = addDoc.getFollower();
+        memFollowee.add(addNickname);
+        addFollower.add(memberNickname);
+
+        Map<String, Object> addUpdate = new HashMap<>();
+        Map<String, Object> memUpdate = new HashMap<>();
+        memUpdate.put("friend", memDoc.getFriend());
+        memUpdate.put("follower", memDoc.getFollower());
+        memUpdate.put("followee", memFollowee);
+        boolean memUpdateDone = memDocRef.update(memUpdate).isCancelled();
+
+        addUpdate.put("friend", addDoc.getFriend());
+        addUpdate.put("follower", addFollower);
+        addUpdate.put("followee", addDoc.getFollowee());
+        boolean addUpdateDone = addDocRef.update(addUpdate).isCancelled();
+
+        System.out.println("memUpdateDone = " + memUpdateDone);
+        System.out.println("addUpdateDone = " + addUpdateDone);
+
+        if (!memUpdateDone && !addUpdateDone) return true;
+        else return false;
+    }
 
 
 //    @Override
