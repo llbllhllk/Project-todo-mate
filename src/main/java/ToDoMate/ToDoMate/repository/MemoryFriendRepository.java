@@ -48,41 +48,19 @@ public class MemoryFriendRepository implements FriendRepository {
         DocumentReference addDocRef = firestore.collection(collectionName).document(addId);
         Friend memDoc = memDocRef.get().get().toObject(Friend.class);
         Friend addDoc = addDocRef.get().get().toObject(Friend.class);
-        ArrayList<String> afterMemAdd = new ArrayList<>();
-        ArrayList<String> afteraddAdd = new ArrayList<>();
         List<String> memFollowee = memDoc.getFollowee();
         List<String> addFollower = addDoc.getFollower();
         memFollowee.add(addNickname);
         addFollower.add(memberNickname);
 
-        Map<String, Object> addUpdate = new HashMap<>();
-        Map<String, Object> memUpdate = new HashMap<>();
-        memUpdate.put("friend", memDoc.getFriend());
-        memUpdate.put("follower", memDoc.getFollower());
-        memUpdate.put("followee", memFollowee);
+        Map<String, Object> memUpdate = makeUpdateMap(memDoc.getFriend(), memDoc.getFollower(), memFollowee);
         boolean memUpdateDone = memDocRef.update(memUpdate).isCancelled();
-
-        addUpdate.put("friend", addDoc.getFriend());
-        addUpdate.put("follower", addFollower);
-        addUpdate.put("followee", addDoc.getFollowee());
+        Map<String, Object> addUpdate = makeUpdateMap(addDoc.getFriend(), addFollower, addDoc.getFollowee());
         boolean addUpdateDone = addDocRef.update(addUpdate).isCancelled();
-
-        System.out.println("memUpdateDone = " + memUpdateDone);
-        System.out.println("addUpdateDone = " + addUpdateDone);
 
         if (!memUpdateDone && !addUpdateDone) return true;
         else return false;
     }
-
-
-//    @Override
-//    public Member addFriend(Member member, String addMember) throws Exception {
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        DocumentReference documentReference = firestore.collection("friend").document(member.getId()).set(addMember);
-//        ApiFuture<DocumentSnapshot> apiFuture = documentReference.get();
-//        DocumentSnapshot documentSnapshot = apiFuture.get();
-//        return member;
-//    }
 
 
     @Override
@@ -108,16 +86,9 @@ public class MemoryFriendRepository implements FriendRepository {
             afterdelDelete.add(f);
         }
 
-        Map<String, Object> delUpdate = new HashMap<>();
-        Map<String, Object> memUpdate = new HashMap<>();
-        memUpdate.put("friend", afterMemDelete);
-        memUpdate.put("follower", memDoc.getFollower());
-        memUpdate.put("followee", memDoc.getFollowee());
+        Map<String, Object> memUpdate = makeUpdateMap(afterMemDelete, memDoc.getFollower(), memDoc.getFollowee());
         memDocRef.update(memUpdate);
-
-        delUpdate.put("friend", afterdelDelete);
-        delUpdate.put("follower", deleteDoc.getFollower());
-        delUpdate.put("followee", deleteDoc.getFollowee());
+        Map<String, Object> delUpdate = makeUpdateMap(afterdelDelete, deleteDoc.getFollower(), deleteDoc.getFollowee());
         delDocRef.update(delUpdate);
         return afterMemDelete;
     }
@@ -151,16 +122,12 @@ public class MemoryFriendRepository implements FriendRepository {
         List<String> memFriend= memberFriendDoc.getFriend();
         List<String> follFriend = followerFriendDoc.getFriend();
         memFriend.add(followerNickname);
-        memberFriendUpdate.put("friend", memFriend);
-        memberFriendUpdate.put("follower", updateFollower);
-        memberFriendUpdate.put("followee", memberFriendDoc.getFollowee());
-
         follFriend.add(memberNickname);
-        followerFriendUpdate.put("friend", follFriend);
-        followerFriendUpdate.put("follower", followerFriendDoc.getFollower());
-        followerFriendUpdate.put("followee", updateFollowee);
-        memDoc.update(memberFriendUpdate);
-        followerDoc.update(followerFriendUpdate);
+
+        Map<String, Object> memUpdate = makeUpdateMap(memFriend, updateFollower, memberFriendDoc.getFollowee());
+        Map<String, Object> acceptUpdate = makeUpdateMap(follFriend, followerFriendDoc.getFollower(),updateFollowee);
+        memDoc.update(memUpdate);
+        followerDoc.update(acceptUpdate);
 
         return updateFollower;
     }
@@ -192,16 +159,9 @@ public class MemoryFriendRepository implements FriendRepository {
             updateFollowee.add(s);
         }
 
-        Map<String, Object> memUpdate = new HashMap<>();
-        Map<String, Object> refuseUpdate = new HashMap<>();
-        memUpdate.put("friend", memFriend.getFriend());
-        memUpdate.put("follower", updateFollower);
-        memUpdate.put("followee", memFriend.getFollowee());
+        Map<String, Object> memUpdate = makeUpdateMap(memFriend.getFriend(), updateFollower, memFriend.getFollowee());
+        Map<String, Object> refuseUpdate = makeUpdateMap(refuseFriend.getFriend(), refuseFriend.getFollower(), updateFollowee);
         memdDoc.update(memUpdate);
-
-        refuseUpdate.put("friend", refuseFriend.getFriend());
-        refuseUpdate.put("follower", refuseFriend.getFollower());
-        refuseUpdate.put("followee", updateFollowee);
         refuseDoc.update(refuseUpdate);
 
         return updateFollower;
@@ -240,5 +200,12 @@ public class MemoryFriendRepository implements FriendRepository {
     }
 
 
+    public Map<String, Object> makeUpdateMap(Object friendUpdate, Object followerUpdate, Object followeeUpdate) {
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("friend", friendUpdate);
+        updateMap.put("follower", followerUpdate);
+        updateMap.put("followee", followeeUpdate);
+        return updateMap;
+    }
 
 }
