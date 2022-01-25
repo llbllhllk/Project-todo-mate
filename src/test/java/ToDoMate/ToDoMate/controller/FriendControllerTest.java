@@ -74,7 +74,7 @@ class FriendControllerTest {
     public void 친구추가위한회원검색() throws Exception{
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/friend")
+        mockMvc.perform(MockMvcRequestBuilders.get("/searchMember")
                 .session(session)
                 .param("user","a"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

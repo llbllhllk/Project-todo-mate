@@ -33,15 +33,15 @@ public class FriendController {
     }
 
 
-//    @GetMapping("friend")
-//    public String viewFriend(Member member, HttpServletRequest request) throws Exception {
-//
-////        HttpSession session = request.getSession();
-////        member = (Member) session.getAttribute("member");
-////        Optional<Friend> friend = friendService.friendList(member.getId());
-////        System.out.println(friend.get().getFriend());
-//        return "friend";
-//    }
+    @GetMapping("friend")
+    public String viewFriend(Member member, HttpServletRequest request) throws Exception {
+
+//        HttpSession session = request.getSession();
+//        member = (Member) session.getAttribute("member");
+//        Optional<Friend> friend = friendService.friendList(member.getId());
+//        System.out.println(friend.get().getFriend());
+        return "friend";
+    }
 
     /**
      * 회원 닉네임으로 검색
@@ -49,7 +49,7 @@ public class FriendController {
      * @return findMemberList
      * @throws Exception
      */
-    @GetMapping("friend")
+    @GetMapping("searchMember")
     @ResponseBody
     public Optional<Map> findMember(@SessionAttribute("member")Member member,
                                    @RequestParam("user")String searchNickname) throws Exception{
@@ -106,6 +106,7 @@ public class FriendController {
     }
 
     @GetMapping("deleteFriend")
+    @ResponseBody
     public List<String> deleteFriend(@SessionAttribute("member") Member member,
                                      @RequestParam("friendName")String deleteName) throws Exception {
         return friendService.deleteFriend(member.getId(), deleteName);
