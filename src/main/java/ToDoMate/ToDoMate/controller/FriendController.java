@@ -35,11 +35,6 @@ public class FriendController {
 
     @GetMapping("friend")
     public String viewFriend(Member member, HttpServletRequest request) throws Exception {
-
-//        HttpSession session = request.getSession();
-//        member = (Member) session.getAttribute("member");
-//        Optional<Friend> friend = friendService.friendList(member.getId());
-//        System.out.println(friend.get().getFriend());
         return "friend";
     }
 
@@ -112,6 +107,14 @@ public class FriendController {
         return searchFriendList;
     }
 
+
+    /**
+     * 친구삭제
+     * @param member
+     * @param deleteName
+     * @return 삭제 후 친구 리스트
+     * @throws Exception
+     */
     @GetMapping("deleteFriend")
     @ResponseBody
     public List<String> deleteFriend(@SessionAttribute("member") Member member,
@@ -136,7 +139,13 @@ public class FriendController {
     }
 
 
-    //친구요청창에서 친구 받아주기/거절하기
+    /**
+     * 친구 요청 받아주기
+     * @param member
+     * @param nickname
+     * @return 수락 후 남아있는 팔로워목록
+     * @throws Exception
+     */
     @GetMapping("acceptFollower")
     @ResponseBody
     public List<String> acceptFollower(@SessionAttribute("member") Member member,
