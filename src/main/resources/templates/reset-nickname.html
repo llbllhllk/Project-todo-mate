@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -39,28 +39,28 @@
 
   <!-- Reset Nickname -->
   <main class="reset-nickname">
-    <form class="reset-nickname__form" action="#" method="POST">
+    <form class="reset-nickname__form" action="/reset-nickname" method="POST">
       <h1 class="reset-nickname_title">RESET NICKNAME</h1>
       <label class="reset-nickname__input-title" for="user-pw">
         닉네임
       </label>
       <div class="reset-nickname__input-container">
-        <input class="reset-nickname__input" id="user-nickname" name="user-nickname" type="password" placeholder="닉네임을 입력해주세요.">
+        <input class="reset-nickname__input" id="user-nickname" name="nickname" type="password" placeholder="닉네임을 입력해주세요." th:value="${nicknameValue}">
       </div>
 
       <!-- Alert -->
       <div class="reset-nickname__alert">
-        <strong id="empty-user-nickname" class="reset-nickname__alert-info wrong">
+        <strong th:if="${nicknameFlag}==2" id="empty-user-nickname" class="reset-nickname__alert-info wrong">
           닉네임을 입력하세요.
         </strong>
-        <strong id="double-checked-user-nickname" class="reset-nickname__alert-info wrong">
+        <strong th:if="${nicknameFlag}==1" id="double-checked-user-nickname" class="reset-nickname__alert-info wrong">
           닉네임이 중복되었습니다.
         </strong>
-        <strong id="correct-user-nickname" class="reset-nickname__alert-info correct">
+        <strong th:if="${nicknameFlag}==0" id="correct-user-nickname" class="reset-nickname__alert-info correct">
           사용 가능한 닉네임 입니다.
         </strong>
       </div>
-      <button id="double-check-user-nickname" class="reset-nickname__btn" type="button">중복확인</button>
+      <button id="double-check-user-nickname" class="reset-nickname__btn" type="submit">중복확인</button>
       <button id="edit-user-nickname" class="reset-nickname__btn" type="submit">수정하기</button>
     </form>
 

@@ -14,13 +14,13 @@ const secessionModal = document.querySelector('.modal.secession');
 
 function editNickNameBtnHandler() {
   editNickNameBtn.addEventListener('click', () => {
-    location.href="reset-nickname.html";
+    location.href="reset-nickname";
   });
 }
 
 function editPasswordBtnHandler() {
   editPasswordBtn.addEventListener('click', (e) => {
-    location.href="reset-pw.html";
+    location.href="reset-pw";
   });
 }
 

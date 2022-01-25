@@ -11,7 +11,6 @@ import java.util.Optional;
 public class MemoryMemberRepository implements MemberRepository {
 
     private static final String collectionMember = "member";
-    private static final String collectionNickname = "member_nickname";
 
     @Override
     public String registerMember(Member member) throws Exception {
