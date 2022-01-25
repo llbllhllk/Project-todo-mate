@@ -1,9 +1,7 @@
 package ToDoMate.ToDoMate.controller;
 
 import ToDoMate.ToDoMate.domain.Member;
-import ToDoMate.ToDoMate.form.EmailForm;
-import ToDoMate.ToDoMate.form.JoinForm;
-import ToDoMate.ToDoMate.form.LoginForm;
+import ToDoMate.ToDoMate.form.*;
 import ToDoMate.ToDoMate.service.AuthenticationService;
 import ToDoMate.ToDoMate.service.MemberService;
 import ToDoMate.ToDoMate.validator.Validate;
@@ -11,6 +9,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -293,6 +292,82 @@ public class LoginController {
     @GetMapping("/user-edit")
     public String viewUserEdit(){
         return "user-edit";
+    }
+
+    @GetMapping("/reset-nickname")
+    public String viewResetNickname(){
+        return "reset-nickname";
+    }
+
+    @PostMapping("/reset-nickname-check")
+    public String resetNicknameCheck(HttpServletRequest request, NicknameForm nicknameForm,Model model) throws Exception{
+        HttpSession session = request.getSession();
+        boolean nicknameDuplicateCondition=true;
+        Member member = (Member)session.getAttribute("member");
+        if(nicknameForm.getNickname().equals("")){
+            System.out.println("닉네임을 입력해주세요");
+            model.addAttribute("nicknameFlag",2);
+            return "reset-nickname";
+        }
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            if(document.toObject(Member.class).getNickname().equals(nicknameForm.getNickname())){
+                System.out.println("닉네임이 중복되었습니다.");
+                nicknameDuplicateCondition=false;
+                model.addAttribute("nicknameFlag",1);
+            }
+        }
+        if(nicknameDuplicateCondition){
+            model.addAttribute("nicknameFlag",0);
+            model.addAttribute("nicknameValue",nicknameForm.getNickname());
+        }
+        return "reset-nickname";
+    }
+
+    @PostMapping("/reset-nickname-submit")
+    public String resetNicknameSubmit(NicknameForm nicknameForm, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        Member member = (Member)session.getAttribute("member");
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestore.collection("member").document(member.getId());
+        ApiFuture<WriteResult> future = documentReference.update("nickname",nicknameForm.getNickname());
+        System.out.println("닉네임이 변경되었습니다.");
+        return "reset-nickname";
+    }
+
+    @GetMapping("/reset-pw")
+    public String viewResetPw(){
+        return "reset-pw";
+    }
+
+    @PostMapping("/reset-pw")
+    @ResponseBody
+    public int resetPw(HttpServletRequest request, PasswordForm passwordForm){
+        HttpSession session = request.getSession();
+        Member member = (Member)session.getAttribute("member");
+        if(validate.validatePassword(passwordForm.getPassword())){
+            Firestore firestore = FirestoreClient.getFirestore();
+            DocumentReference documentReference = firestore.collection("member").document(member.getId());
+            ApiFuture<WriteResult> future = documentReference.update("password",passwordForm.getPassword());
+            System.out.println("비밀번호가 변경되었습니다.");
+            return 0;
+        }
+        else{
+            if(passwordForm.getPassword().equals("") || passwordForm.getCheckPassword().equals("")){
+                System.out.println("비밀번호를 입력해주세요.");
+                return 1;
+            }
+            else if(!passwordForm.getPassword().equals(passwordForm.getCheckPassword())){
+                System.out.println("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                return 2;
+            }
+            else{
+                System.out.println("비밀번호 유효성을 충족하지 못했습니다.");
+                return 3;
+            }
+        }
     }
 
 
