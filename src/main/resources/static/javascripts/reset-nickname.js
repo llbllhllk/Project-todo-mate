@@ -14,7 +14,6 @@ const correctNickname = document.querySelector('#correct-user-nickname');
 
 function alertHandler() {
   doubleCheckBtn.addEventListener('click', (e) => {
-    console.log(userNickname.value);
     if(userNickname.value === '') {
       emptyNickname.classList.add('active');
       doubleCheckedNickname.classList.remove('active');
@@ -26,7 +25,7 @@ function alertHandler() {
 }
 
 function changeNicknameBtnHandler() {
-  changeNicknameBtn.addEventListener('click' () => {
+  changeNicknameBtn.addEventListener('click', () => {ㅋ
     // 중복확인이 완료되지 않았을 경우 modal__description의 내용 변경
     // 중복확인이 완료됬을 경우 modal__description의 내용 변경 및 changeNicknameBtn의 경로를 main으로 바꾼다.
   });
