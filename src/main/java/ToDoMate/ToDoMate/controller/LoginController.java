@@ -32,9 +32,6 @@ public class LoginController {
     private final Validate validate;
     private final AuthenticationService authenticationService;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-
     public LoginController(MemberService memberService, Validate validate, AuthenticationService authenticationService) {
         this.memberService = memberService;
         this.validate = validate;
@@ -187,96 +184,7 @@ public class LoginController {
         }
     }
 
-    @GetMapping("find-id")
-    public String viewFindId() throws Exception{
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        DocumentReference documentReference = firestore.collection("member").document("dlrlxo999").;
-//        ApiFuture<DocumentSnapshot> future = documentReference.get();
-//        DocumentSnapshot documentSnapshot = future.get();
-//        if(documentSnapshot.exists()){
-//            System.out.println("Document data : " + documentSnapshot.getData());
-//        }
-//        else{
-//            System.out.println("No such Document!");
-//        }
 
-        Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        for(QueryDocumentSnapshot document : documents){
-            System.out.println(document.getId() + " =>" + document.toObject(Member.class).getEmail());
-        }
-        return "find-id";
-    }
-
-    @PostMapping("find-id")
-    public String findId(EmailForm emailForm) throws MessagingException, UnsupportedEncodingException{
-
-        String userEmail;   // 회원 이메일
-
-        if(emailForm.getEmail().equals("")){    // 이메일을 아무것도 입력안할 때
-            System.out.println("이메일을 입력하지 않으셨습니다. 이메일을 입력해주세요.");
-            return "find-id";
-        }
-//        else if(){  //이메일을 입력했으나 DB에 없는 이메일일 때
-//            return "find-id";
-//        }
-        else{   //DB에 있는 이메일을 잘 입력했을 때
-            userEmail = emailForm.getEmail();
-        }
-
-        String to = userEmail;
-        String from = "kitaecoding999@gmail.com";
-        String subject = "To Do Mate 이메일 인증 관련 메일";
-        String validationString = authenticationService.generateRandomNumber();
-
-        StringBuilder body = new StringBuilder();
-        body.append("<html><body><h3>안녕하세요. To Do Mate 관리자입니다. 이메일 인증번호 보내드립니다.<br>");
-        body.append("인증번호는 " +validationString+"입니다.<br>");
-        body.append("To Do Mate 사이트에 가셔서 인증번호를 올바르게 입력해주시기 바랍니다.</h3></body></html>");
-
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "UTF-8");
-
-        mimeMessageHelper.setFrom(from,"To Do Mate Administrator");
-        mimeMessageHelper.setTo(to);
-        mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(body.toString(), true);
-
-
-        javaMailSender.send(message);
-        return "find-id";
-    }
-
-    @GetMapping("find-pw")
-    public String viewFindPassword(){
-        return "find-pw";
-    }
-
-    @PostMapping("find-pw")
-    public String findPw(EmailForm emailForm) throws MessagingException, UnsupportedEncodingException{
-        String to = emailForm.getEmail();
-        String from = "kitaecoding999@gmail.com";
-        String subject = "To Do Mate 이메일 인증 관련 메일";
-        String validationString = authenticationService.generateRandomNumber();
-
-        StringBuilder body = new StringBuilder();
-        body.append("<html><body><h3>안녕하세요. To Do Mate 관리자입니다. 이메일 인증번호 보내드립니다.<br>");
-        body.append("인증번호는 " +validationString+"입니다.<br>");
-        body.append("To Do Mate 사이트에 가셔서 인증번호를 올바르게 입력해주시기 바랍니다.</h3></body></html>");
-
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "UTF-8");
-
-        mimeMessageHelper.setFrom(from,"To Do Mate Administrator");
-        mimeMessageHelper.setTo(to);
-        mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(body.toString(), true);
-
-
-        javaMailSender.send(message);
-        return "find-pw";
-    }
 
     @GetMapping("accountWithdraw")
     public String accountWithdraw(HttpServletRequest request) throws Exception{
@@ -299,76 +207,96 @@ public class LoginController {
         return "reset-nickname";
     }
 
-    @PostMapping("/reset-nickname-check")
-    public String resetNicknameCheck(HttpServletRequest request, NicknameForm nicknameForm,Model model) throws Exception{
-        HttpSession session = request.getSession();
-        boolean nicknameDuplicateCondition=true;
-        Member member = (Member)session.getAttribute("member");
-        if(nicknameForm.getNickname().equals("")){
-            System.out.println("닉네임을 입력해주세요");
-            model.addAttribute("nicknameFlag",2);
-            return "reset-nickname";
-        }
+//    @PostMapping("/reset-nickname-check")
+//    public String resetNicknameCheck(HttpServletRequest request, NicknameForm nicknameForm,Model model) throws Exception{
+//        HttpSession session = request.getSession();
+//        boolean nicknameDuplicateCondition=true;
+//        Member member = (Member)session.getAttribute("member");
+//        if(nicknameForm.getNickname().equals("")){
+//            System.out.println("닉네임을 입력해주세요");
+//            model.addAttribute("nicknameFlag",2);
+//            return "reset-nickname";
+//        }
+//        Firestore firestore = FirestoreClient.getFirestore();
+//        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+//        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//        for(QueryDocumentSnapshot document : documents){
+//            if(document.toObject(Member.class).getNickname().equals(nicknameForm.getNickname())){
+//                System.out.println("닉네임이 중복되었습니다.");
+//                nicknameDuplicateCondition=false;
+//                model.addAttribute("nicknameFlag",1);
+//            }
+//        }
+//        if(nicknameDuplicateCondition){
+//            model.addAttribute("nicknameFlag",0);
+//            model.addAttribute("nicknameValue",nicknameForm.getNickname());
+//        }
+//        return "reset-nickname";
+//    }
+//
+//    @PostMapping("/reset-nickname-submit")
+//    public String resetNicknameSubmit(NicknameForm nicknameForm, HttpServletRequest request) throws Exception{
+//        HttpSession session = request.getSession();
+//        Member member = (Member)session.getAttribute("member");
+//        Firestore firestore = FirestoreClient.getFirestore();
+//        DocumentReference documentReference = firestore.collection("member").document(member.getId());
+//        ApiFuture<WriteResult> future = documentReference.update("nickname",nicknameForm.getNickname());
+//        System.out.println("닉네임이 변경되었습니다.");
+//        return "reset-nickname";
+//    }
+
+
+    /**
+     * 회원가입시에 아이디 중복체크
+     */
+
+    @PostMapping("validSignUpIdDuplicate")
+    @ResponseBody
+    public boolean postValidSignUpIdDuplicate(@RequestParam("id") String id) throws Exception{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getNickname().equals(nicknameForm.getNickname())){
-                System.out.println("닉네임이 중복되었습니다.");
-                nicknameDuplicateCondition=false;
-                model.addAttribute("nicknameFlag",1);
+            if(document.toObject(Member.class).getId().equals(id)){
+                return true;
             }
         }
-        if(nicknameDuplicateCondition){
-            model.addAttribute("nicknameFlag",0);
-            model.addAttribute("nicknameValue",nicknameForm.getNickname());
-        }
-        return "reset-nickname";
+        return false;
     }
 
-    @PostMapping("/reset-nickname-submit")
-    public String resetNicknameSubmit(NicknameForm nicknameForm, HttpServletRequest request) throws Exception{
-        HttpSession session = request.getSession();
-        Member member = (Member)session.getAttribute("member");
-        Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = firestore.collection("member").document(member.getId());
-        ApiFuture<WriteResult> future = documentReference.update("nickname",nicknameForm.getNickname());
-        System.out.println("닉네임이 변경되었습니다.");
-        return "reset-nickname";
-    }
+    /**
+     * 회원가입시에 닉네임 중복체크
+     */
 
-    @GetMapping("/reset-pw")
-    public String viewResetPw(){
-        return "reset-pw";
-    }
-
-    @PostMapping("/reset-pw")
+    @PostMapping("validSignUpNicknameDuplicate")
     @ResponseBody
-    public int resetPw(HttpServletRequest request, PasswordForm passwordForm){
-        HttpSession session = request.getSession();
-        Member member = (Member)session.getAttribute("member");
-        if(validate.validatePassword(passwordForm.getPassword())){
-            Firestore firestore = FirestoreClient.getFirestore();
-            DocumentReference documentReference = firestore.collection("member").document(member.getId());
-            ApiFuture<WriteResult> future = documentReference.update("password",passwordForm.getPassword());
-            System.out.println("비밀번호가 변경되었습니다.");
-            return 0;
-        }
-        else{
-            if(passwordForm.getPassword().equals("") || passwordForm.getCheckPassword().equals("")){
-                System.out.println("비밀번호를 입력해주세요.");
-                return 1;
-            }
-            else if(!passwordForm.getPassword().equals(passwordForm.getCheckPassword())){
-                System.out.println("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-                return 2;
-            }
-            else{
-                System.out.println("비밀번호 유효성을 충족하지 못했습니다.");
-                return 3;
+    public boolean postValidSignUpNicknameDuplicate(@RequestParam("nickname") String nickname) throws Exception{
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            if(document.toObject(Member.class).getNickname().equals(nickname)){
+                return true;
             }
         }
+        return false;
     }
 
+    /**
+     * 회원가입시에 이메일 중복체크
+     */
 
+    @PostMapping("validSignUpEmailDuplicate")
+    @ResponseBody
+    public boolean postValidSignUpEmailDuplicate(@RequestParam("email") String email) throws Exception{
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            if(document.toObject(Member.class).getEmail().equals(email)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
