@@ -165,7 +165,7 @@ function showCertificationAlert(validCertification) {
     correctCertification.classList.add('active');
     timeoutCertification.classList.remove('active');
     // 비밀번호 재설정 페이지로 이동
-    location.href = "reset-pw.html";
+    location.href = "reset-pw";
   }
 }
 
