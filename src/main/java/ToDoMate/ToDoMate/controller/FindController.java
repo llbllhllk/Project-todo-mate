@@ -6,19 +6,19 @@ import ToDoMate.ToDoMate.service.AuthenticationService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Controller
 public class FindController {
@@ -57,8 +57,9 @@ public class FindController {
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getEmail().equals(email)){
-                String to = email;
+//            System.out.println(document.toObject(Member.class).getEmail()+" compare to " + email);
+            if(document.toObject(Member.class).getEmail().equals(email.substring(10,email.length()-2))){
+                String to = document.toObject(Member.class).getEmail();
                 String from = "kitaecoding999@gmail.com";
                 String subject = "To Do Mate 이메일 인증 관련 메일";
                 String validationString = authenticationService.generateRandomNumber();
@@ -87,9 +88,10 @@ public class FindController {
 
     @PostMapping("validCertification")
     @ResponseBody
-    public String postValidCertification(@RequestParam("certification") String certification, HttpServletRequest request) throws Exception{
+    public String postValidCertification(@RequestBody String certification, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         String userCertification = (String) session.getAttribute("certification");
+        System.out.println(certification);
         if(certification.equals(userCertification)){
             String id = (String)session.getAttribute("id");
             return id;
