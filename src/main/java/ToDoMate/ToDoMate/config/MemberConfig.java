@@ -26,8 +26,4 @@ public class MemberConfig {
         return new Validate(memberService());
     }
 
-    @Bean
-    public AuthenticationService authenticationService(){
-        return new AuthenticationService();
-    }
 }
