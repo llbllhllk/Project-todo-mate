@@ -44,8 +44,9 @@ public class MemoryFriendRepository implements FriendRepository {
     @Override
     public Boolean requestFriend(String memberId, String memberNickname, String addId, String addNickname) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference memDocRef = firestore.collection(collectionName).document(memberId);
-        DocumentReference addDocRef = firestore.collection(collectionName).document(addId);
+        CollectionReference collection = firestore.collection(collectionName);
+        DocumentReference memDocRef = collection.document(memberId);
+        DocumentReference addDocRef = collection.document(addId);
         Friend memDoc = memDocRef.get().get().toObject(Friend.class);
         Friend addDoc = addDocRef.get().get().toObject(Friend.class);
         List<String> memFollowee = memDoc.getFollowee();
@@ -66,8 +67,9 @@ public class MemoryFriendRepository implements FriendRepository {
     @Override
     public List<String> deleteFriend(String memberId, String memberNickname, String deleteId, String deleteNickname) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference memDocRef = firestore.collection(collectionName).document(memberId);
-        DocumentReference delDocRef = firestore.collection(collectionName).document(deleteId);
+        CollectionReference collection = firestore.collection(collectionName);
+        DocumentReference memDocRef = collection.document(memberId);
+        DocumentReference delDocRef = collection.document(deleteId);
         Friend memDoc = memDocRef.get().get().toObject(Friend.class);
         Friend deleteDoc = delDocRef.get().get().toObject(Friend.class);
         ArrayList<String> afterMemDelete = new ArrayList<>();
