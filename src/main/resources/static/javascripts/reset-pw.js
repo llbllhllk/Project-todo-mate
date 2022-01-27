@@ -70,7 +70,7 @@ function showPwEnterAlert() {
 async function postUserPw() {
   try {
     const pwUrl = '/changePw';
-    const resPw = await axios(pwUrl, {
+    const resPw = await axios.post(pwUrl, {
       password: userPwEnter.value
     })
     const changedPw = resPw.data;

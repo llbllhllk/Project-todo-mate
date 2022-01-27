@@ -30,8 +30,8 @@ let interval;
 async function postUserId() {
   try {
     const idUrl = '/validId';
-    const resValidId = await axios(idUrl, {
-      "user-id": userId.value
+    const resValidId = await axios.post(idUrl, {
+      id: userId.value
     })
     const validId = resValidId.data;
     showIdAlert(validId);
@@ -57,8 +57,8 @@ function showIdAlert(validId) {
 async function postUserEmail() {
   try {
     const emailUrl = '/validEmail';
-    const resValidEmail = await axios(emailUrl, {
-      "user-email": userEmail.value
+    const resValidEmail = await axios.post(emailUrl, {
+      email: userEmail.value
     })
     const validEmail = resValidEmail.data;
     showEmailAlert(validEmail);
@@ -91,7 +91,7 @@ function showEmailAlert(validEmail) {
 async function postTimeoutCertification() {
   try {
     const timeoutCertificationUrl = '/timeoutCertification'
-    const resTimeoutCertification = await axios(timeoutCertificationUrl, {
+    const resTimeoutCertification = await axios.post(timeoutCertificationUrl, {
       timeout: true,
     })
     const validCertification = resTimeoutCertification.data;
@@ -133,8 +133,8 @@ function onTimer() {
 async function postUserCertification() {
   try {
     const certificationUrl = '/validCertification';
-    const resValidCertification = await axios(certificationUrl, {
-      "user-certification": userCertification.value
+    const resValidCertification = await axios.post(certificationUrl, {
+      certification: userCertification.value
     })
     const validCertification = resValidCertification.data;
     console.log(validCertification);
