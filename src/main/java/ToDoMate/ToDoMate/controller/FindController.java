@@ -51,7 +51,7 @@ public class FindController {
 
     @PostMapping("/validEmail")
     @ResponseBody
-    public boolean postValidEmail(@RequestParam("email") String email, HttpServletRequest request) throws Exception{
+    public boolean postValidEmail(@RequestBody String email, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();

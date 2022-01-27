@@ -32,10 +32,11 @@ let interval;
 async function postUserEmail() {
   try {
     const emailUrl = '/validEmail';
-    const resValidEmail = await axios(emailUrl, {
-      "user-email": userEmail.value,
-    })
+    const resValidEmail = await axios.post(emailUrl, {
+      email: userEmail.value,
+    });
     const validEmail = resValidEmail.data;
+    console.log(validEmail);
     showEmailAlert(validEmail);
   } catch(err) {
     console.log(err);
@@ -46,8 +47,8 @@ async function postUserEmail() {
 async function postUserCertification() {
   try {
     const certificationUrl = '/validCertification'
-    const resUserId = await axios(certificationUrl, {
-      "user-certification": userCertification.value,  
+    const resUserId = await axios.post(certificationUrl, {
+      certification: userCertification.value,  
     })
     const userId = resUserId.data;
     showCertificationAlert(userId);
@@ -60,7 +61,7 @@ async function postUserCertification() {
 async function postTimeoutCertification() {
   try {
     const timeoutCertificationUrl = '/timeoutCertification'
-    const resTimeoutCertification = await axios(timeoutCertificationUrl, {
+    const resTimeoutCertification = await axios.post(timeoutCertificationUrl, {
       timeout: true,
     })
     const validCertification = resTimeoutCertification.data;
@@ -153,7 +154,7 @@ function onTimer() {
 
 function onClickSendingCertificationBtn() {
   sendingCertificationBtn.addEventListener('click', (e) => {
-    postUserInfo();
+    postUserEmail();
   });
 }
 

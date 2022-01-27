@@ -20,7 +20,7 @@ const modal = document.querySelector('.modal');
 async function postCheckNickname() {
   try {
     const checkNicknameUrl = '/checkNickname';
-    const resCheckNickname = await axios(checkNicknameUrl, {
+    const resCheckNickname = await axios.post(checkNicknameUrl, {
       nickname: userNickname.value,
     })
     const checkedNickname = resCheckNickname.data;
@@ -57,7 +57,7 @@ function alertHandler() {
 async function postResetNickname() {
   try {
     const resetNicknameUrl = '/resetNickname';
-    const resResetNickname = await axios(resetNicknameUrl, {
+    const resResetNickname = await axios.post(resetNicknameUrl, {
       nickname: userNickname.value,
     })
     const validReset = resResetNickname.data;
