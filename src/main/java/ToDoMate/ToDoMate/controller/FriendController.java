@@ -48,6 +48,9 @@ public class FriendController {
     @ResponseBody
     public Optional<Map> findMember(@SessionAttribute("member")Member member,
                                    @RequestParam("user")String searchNickname) throws Exception{
+        if (searchNickname.equals("")){
+            return Optional.empty();
+        }
         String searchArea = member.getId();
         return friendService.findMember(searchArea, searchNickname);
     }

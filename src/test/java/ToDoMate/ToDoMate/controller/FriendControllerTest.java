@@ -76,10 +76,11 @@ class FriendControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/searchMember")
                 .session(session)
-                .param("user","a"))
+                .param("user",""))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
 
     @Test
     public void 친구추가요청() throws Exception{
