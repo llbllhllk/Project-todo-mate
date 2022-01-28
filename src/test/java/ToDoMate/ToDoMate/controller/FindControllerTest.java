@@ -2,6 +2,7 @@ package ToDoMate.ToDoMate.controller;
 
 import ToDoMate.ToDoMate.domain.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,12 +40,16 @@ class FindControllerTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         session.setAttribute("certification", "check_test");
+        JSONObject input = new JSONObject();
+        input.put("certification", "check_test");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/validCertification")
-                .param("certification", "check_test"))
+                .flashAttr("certification", input))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
+
 
 
 
