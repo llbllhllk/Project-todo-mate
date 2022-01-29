@@ -168,19 +168,10 @@ class FriendControllerTest {
         CollectionReference memberCollection = firestore.collection("member");
 
         for (int i=0;i<3;i++){
-            HashMap<String, String> memberMap = new HashMap<>();
-            HashMap<String, Object> friendMap = new HashMap<>();
-            String random = getRandomString(6);
-            memberMap.put("id",random);
-            memberMap.put("password",random);
-            memberMap.put("name",random);
-            memberMap.put("nickname",random);
-            memberMap.put("email","dasol199@naver.com");
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            String random = memberMap.get("id");
 
-            friendMap.put("friend", Collections.EMPTY_LIST);
-            friendMap.put("follower", Collections.EMPTY_LIST);
-            friendMap.put("followee", Collections.EMPTY_LIST);
-
+            Map<String, Object> friendMap = makeFriendUpdate(Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
             ApiFuture<WriteResult> future1 = memberCollection.document(random).set(memberMap);
             ApiFuture<WriteResult> future2 = friendCollection.document(random).set(friendMap);
             System.out.println("future1 = " + future1.get().getUpdateTime());
@@ -196,28 +187,17 @@ class FriendControllerTest {
         Friend friend = friendCollection.document("admin").get().get().toObject(Friend.class);
 
         for (int i=0;i<3;i++){
-            HashMap<String, String> memberMap = new HashMap<>();
-            HashMap<String, Object> memFriendMap = new HashMap<>();
-            HashMap<String, Object> ranFriendMap = new HashMap<>();
-            String random = getRandomString(6);
-            memberMap.put("id",random);
-            memberMap.put("password",random);
-            memberMap.put("name",random);
-            memberMap.put("nickname",random);
-            memberMap.put("email","dasol199@naver.com");
+
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            String random = memberMap.get("id");
 
             List<String> memFollowerList = friend.getFollower();
             ArrayList<String> ranFolloweeList = new ArrayList<>();
             memFollowerList.add(random);
             ranFolloweeList.add("admin");
 
-            memFriendMap.put("friend", friend.getFriend());
-            memFriendMap.put("follower", memFollowerList);
-            memFriendMap.put("followee", friend.getFollowee());
-
-            ranFriendMap.put("friend", Collections.EMPTY_LIST);
-            ranFriendMap.put("follower", Collections.EMPTY_LIST);
-            ranFriendMap.put("followee", ranFolloweeList);
+            Map<String, Object> memFriendMap = makeFriendUpdate(friend.getFriend(), memFollowerList, friend.getFollowee());
+            Map<String, Object> ranFriendMap = makeFriendUpdate(Collections.EMPTY_LIST, Collections.EMPTY_LIST, ranFolloweeList);
 
             ApiFuture<WriteResult> future1 = memberCollection.document(random).set(memberMap);
             ApiFuture<WriteResult> future2 = friendCollection.document(random).set(ranFriendMap);
@@ -236,28 +216,16 @@ class FriendControllerTest {
         Friend friend = friendCollection.document("admin").get().get().toObject(Friend.class);
 
         for (int i=0;i<3;i++){
-            HashMap<String, String> memberMap = new HashMap<>();
-            HashMap<String, Object> memFriendMap = new HashMap<>();
-            HashMap<String, Object> ranFriendMap = new HashMap<>();
-            String random = getRandomString(6);
-            memberMap.put("id",random);
-            memberMap.put("password",random);
-            memberMap.put("name",random);
-            memberMap.put("nickname",random);
-            memberMap.put("email", "dasol199@naver.com");
 
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            String random = memberMap.get("id");
             List<String> memFolloweeList = friend.getFollowee();
             ArrayList<String> ranFollowerList = new ArrayList<>();
             memFolloweeList.add(random);
             ranFollowerList.add("admin");
 
-            memFriendMap.put("friend", friend.getFriend());
-            memFriendMap.put("follower", friend.getFollower());
-            memFriendMap.put("followee", memFolloweeList);
-
-            ranFriendMap.put("friend", Collections.EMPTY_LIST);
-            ranFriendMap.put("follower", ranFollowerList);
-            ranFriendMap.put("followee", Collections.EMPTY_LIST);
+            Map<String, Object> memFriendMap = makeFriendUpdate(friend.getFriend(), friend.getFollower(), memFolloweeList);
+            Map<String, Object> ranFriendMap = makeFriendUpdate(Collections.EMPTY_LIST, ranFollowerList, Collections.EMPTY_LIST);
 
             ApiFuture<WriteResult> future1 = memberCollection.document(random).set(memberMap);
             ApiFuture<WriteResult> future2 = friendCollection.document(random).set(ranFriendMap);
@@ -276,16 +244,12 @@ class FriendControllerTest {
         Friend friend = friendCollection.document("admin").get().get().toObject(Friend.class);
 
         for (int i=0;i<3;i++){
-            HashMap<String, String> memberMap = new HashMap<>();
+
             HashMap<String, Object> memFriendMap = new HashMap<>();
             HashMap<String, Object> ranFriendMap = new HashMap<>();
-            String random = getRandomString(6);
-            memberMap.put("id",random);
-            memberMap.put("password",random);
-            memberMap.put("name",random);
-            memberMap.put("nickname",random);
-            memberMap.put("email", "dasol199@naver.com");
 
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            String random = memberMap.get("id");
             List<String> memFriendList = friend.getFriend();
             ArrayList<String> ranFriendList = new ArrayList<>();
             memFriendList.add(random);
@@ -321,5 +285,23 @@ class FriendControllerTest {
         return builder.toString();
     }
 
+    HashMap<String, String> makeRandomUpdate(String random){
+        HashMap<String, String> memberMap = new HashMap<>();
+        memberMap.put("id",random);
+        memberMap.put("password",random);
+        memberMap.put("name",random);
+        memberMap.put("nickname",random);
+        memberMap.put("email", "dasol199@naver.com");
+
+        return memberMap;
+    }
+
+    Map<String, Object> makeFriendUpdate(Object friendUpdate, Object followerUpdate, Object followeeUpdate) {
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("friend", friendUpdate);
+        updateMap.put("follower", followerUpdate);
+        updateMap.put("followee", followeeUpdate);
+        return updateMap;
+    }
 
 }
