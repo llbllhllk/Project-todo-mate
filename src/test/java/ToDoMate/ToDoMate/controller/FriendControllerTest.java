@@ -168,7 +168,7 @@ class FriendControllerTest {
         CollectionReference memberCollection = firestore.collection("member");
 
         for (int i=0;i<3;i++){
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(6));
             String random = memberMap.get("id");
 
             Map<String, Object> friendMap = makeFriendUpdate(Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
@@ -188,7 +188,7 @@ class FriendControllerTest {
 
         for (int i=0;i<3;i++){
 
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(6));
             String random = memberMap.get("id");
 
             List<String> memFollowerList = friend.getFollower();
@@ -217,7 +217,7 @@ class FriendControllerTest {
 
         for (int i=0;i<3;i++){
 
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(6));
             String random = memberMap.get("id");
             List<String> memFolloweeList = friend.getFollowee();
             ArrayList<String> ranFollowerList = new ArrayList<>();
@@ -248,7 +248,7 @@ class FriendControllerTest {
             HashMap<String, Object> memFriendMap = new HashMap<>();
             HashMap<String, Object> ranFriendMap = new HashMap<>();
 
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
+            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(6));
             String random = memberMap.get("id");
             List<String> memFriendList = friend.getFriend();
             ArrayList<String> ranFriendList = new ArrayList<>();
