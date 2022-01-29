@@ -49,10 +49,10 @@ class FriendControllerTest {
     @BeforeEach
     public void 테스트전_회원세션저장() throws Exception {
         Member member = new Member();
-        member.setId("dasol");
+        member.setId("dasol199");
         member.setPassword("0723");
-        member.setNickname("dyori");
-        member.setName("kang");
+        member.setNickname("SOL");
+        member.setName("강다솔");
         member.setEmail("dasol199@naver.com");
 
         session.setAttribute("member", member);
@@ -120,7 +120,7 @@ class FriendControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/deleteFriend")
                 .session(session)
-                .param("friendName","qwer"))
+                .param("friendName","delete"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -143,7 +143,7 @@ class FriendControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/acceptFollower")
                 .session(session)
-                .param("follower", "test"))
+                .param("follower", "accept"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
