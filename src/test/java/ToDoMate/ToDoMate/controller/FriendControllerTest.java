@@ -175,7 +175,7 @@ class FriendControllerTest {
             memberMap.put("password",random);
             memberMap.put("name",random);
             memberMap.put("nickname",random);
-            memberMap.put("email",random+"@naver.com");
+            memberMap.put("email","dasol199@naver.com");
 
             friendMap.put("friend", Collections.EMPTY_LIST);
             friendMap.put("follower", Collections.EMPTY_LIST);
@@ -204,7 +204,7 @@ class FriendControllerTest {
             memberMap.put("password",random);
             memberMap.put("name",random);
             memberMap.put("nickname",random);
-            memberMap.put("email",random+"@naver.com");
+            memberMap.put("email","dasol199@naver.com");
 
             List<String> memFollowerList = friend.getFollower();
             ArrayList<String> ranFolloweeList = new ArrayList<>();
@@ -244,7 +244,7 @@ class FriendControllerTest {
             memberMap.put("password",random);
             memberMap.put("name",random);
             memberMap.put("nickname",random);
-            memberMap.put("email",random+"@naver.com");
+            memberMap.put("email", "dasol199@naver.com");
 
             List<String> memFolloweeList = friend.getFollowee();
             ArrayList<String> ranFollowerList = new ArrayList<>();
@@ -284,7 +284,7 @@ class FriendControllerTest {
             memberMap.put("password",random);
             memberMap.put("name",random);
             memberMap.put("nickname",random);
-            memberMap.put("email",random+"@naver.com");
+            memberMap.put("email", "dasol199@naver.com");
 
             List<String> memFriendList = friend.getFriend();
             ArrayList<String> ranFriendList = new ArrayList<>();
