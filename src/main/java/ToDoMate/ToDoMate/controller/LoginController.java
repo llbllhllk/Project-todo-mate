@@ -118,6 +118,7 @@ public class LoginController {
 
         if(idValidation&&passwordValidation&&checkPasswordValidation&&nicknameValidation&&emailValidation){ // 모든 회원가입 유효성 충족
             memberService.join(member);
+            System.out.println("회원가입이 완료되었습니다.");
             returnValues.add("sign-up_complete");
         }
         else{
