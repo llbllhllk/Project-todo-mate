@@ -51,7 +51,8 @@ body {
 	color: white;
 }
 
-.friend-tab span {
+.num-of-friend,
+.num-of-request {
 	text-align: center;
 	color: #00a3ff;
 	font-size: 18px;
@@ -129,9 +130,9 @@ body {
 	border-radius: 10px;
 }
 
-.request-table div,
-.friend-table div,
-.user-table div {
+.request-table__list-item,
+.friend-table__list-item,
+.user-table__list-item {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -146,42 +147,42 @@ body {
 	display: block;
 }
 
-.request-table li:hover,
-.friend-table li:hover,
-.user-table li:hover {
+.request-table__list:hover,
+.friend-table__list:hover,
+.user-table__list:hover {
 	background-color: rgb(38, 38, 38);
 	border-radius: 5px;
 }
 
-.request-table div:first-child,
-.friend-table div:first-child,
-.user-table div:first-child {
+.request-table__nickname,
+.friend-table__nickname,
+.user-table__nickname {
 	padding-left: 10px;
 }
 
-.user-table button {
+.user-table__btn-plus {
 	color: #00a3ff;
 	font-size: 17px;
 	padding-right: 10px;
 }
 
-.friend-table button {
+.friend-table__btn-delete {
 	color: #f16767;
 	font-size: 17px;
 	padding-right: 10px;
 }
 
-.request-table div > div button {
+.request-table__btn {
 	display: flex;
 }
 
-.request-table div > div button:first-child {
+.request-table__btn-accept {
 	color: #00a3ff;
 	font-size: 17px;
 	margin-right: 10px;
 }
 
-.request-table div > div button:last-child {
+.request-table__btn-refuse {
 	color: #f16767;
 	font-size: 17px;
 	margin-right: 10px;
@@ -191,4 +192,11 @@ body {
 .friend-table button:hover,
 .user-table button:hover {
 	text-decoration: underline;
+}
+
+/* btn description */
+.user-table__description {
+	color: aliceblue;
+	padding-right: 10px;
+	font-size: 15px;
 }

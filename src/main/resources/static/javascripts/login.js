@@ -9,6 +9,9 @@ function encodePW() {
         console.log(pw.value);
         console.log(SHA256(pw.value));
     })
+    loginBtn.addEventListener('click', (e) => {
+        // pw.value = SHA256(pw.value);
+    })
 }
 
 function init() {
