@@ -49,86 +49,6 @@ public class LoginController {
         return "sign-up";
     }
 
-    @RequestMapping(value="sign-up",method = RequestMethod.POST)
-    @ResponseBody
-    public List<String> memberJoin(Model model, JoinForm joinForm) throws Exception{
-        boolean idValidation=false;
-        boolean passwordValidation=false;
-        boolean checkPasswordValidation=false;
-        boolean nicknameValidation=false;
-        boolean emailValidation=false;
-
-        Member member = new Member();
-        ArrayList<String> returnValues = new ArrayList<String>();
-
-        if(joinForm.getId().equals("") || joinForm.getPassword().equals("") || joinForm.getNickname().equals("") || joinForm.getName().equals("") || joinForm.getEmail().equals("") || joinForm.getCheckPassword().equals("")) {
-            returnValues.add("not_entered");
-        }
-
-        if(validate.validateId(joinForm.getId())){
-            member.setId(joinForm.getId());
-            idValidation=true;
-        }
-        else{
-            System.out.println("중복 아이디");
-            returnValues.add("id_duplicate");
-        }
-
-        if(validate.validatePassword(joinForm.getPassword())){
-            member.setPassword(joinForm.getPassword());
-            passwordValidation=true;
-        }
-        else{
-            System.out.println("비밀번호 유효성 틀림");
-            returnValues.add("password_availability");
-        }
-
-        if(validate.validateCheckPassword(member.getPassword(),joinForm.getCheckPassword())){
-            checkPasswordValidation=true;
-        }
-        else{
-            System.out.println("비밀번호 확인 유효성 틀림");
-            returnValues.add("password_check_availability");
-        }
-
-        member.setName(joinForm.getName());
-
-        if(validate.validateNickname(joinForm.getNickname())){
-            member.setNickname(joinForm.getNickname());
-            nicknameValidation=true;
-        }
-        else{
-            System.out.println("닉네임 중복");
-            returnValues.add("nickname_duplicate");
-        }
-//        System.out.println(nickname.getNickname());
-
-        if(validate.validateEmail(joinForm.getEmail())==0){
-            member.setEmail(joinForm.getEmail());
-            emailValidation=true;
-        }
-        else if(validate.validateEmail(joinForm.getEmail())==2){
-            System.out.println("이메일이 중복되었습니다. 다시 입력해주세요.");
-            returnValues.add("email_duplicate");
-        }
-        else if(validate.validateEmail(joinForm.getEmail())==3){
-            System.out.println("이메일이 규격에 맞지 않습니다. 다시 입력해주세요.");
-            returnValues.add("email_availability");
-        }
-
-        if(idValidation&&passwordValidation&&checkPasswordValidation&&nicknameValidation&&emailValidation){ // 모든 회원가입 유효성 충족
-            memberService.join(member);
-            System.out.println("회원가입이 완료되었습니다.");
-            returnValues.add("sign-up_complete");
-        }
-        else{
-            model.addAttribute("signupFlag", 1);
-            returnValues.add("sign-up_not_complete");
-        }
-        return returnValues;
-
-    }
-
     @GetMapping("/login")
     public String viewLogin(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -186,7 +106,6 @@ public class LoginController {
     }
 
 
-
     @GetMapping("accountWithdraw")
     public String accountWithdraw(HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
@@ -208,44 +127,6 @@ public class LoginController {
         return "reset-nickname";
     }
 
-//    @PostMapping("/reset-nickname-check")
-//    public String resetNicknameCheck(HttpServletRequest request, NicknameForm nicknameForm,Model model) throws Exception{
-//        HttpSession session = request.getSession();
-//        boolean nicknameDuplicateCondition=true;
-//        Member member = (Member)session.getAttribute("member");
-//        if(nicknameForm.getNickname().equals("")){
-//            System.out.println("닉네임을 입력해주세요");
-//            model.addAttribute("nicknameFlag",2);
-//            return "reset-nickname";
-//        }
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
-//        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-//        for(QueryDocumentSnapshot document : documents){
-//            if(document.toObject(Member.class).getNickname().equals(nicknameForm.getNickname())){
-//                System.out.println("닉네임이 중복되었습니다.");
-//                nicknameDuplicateCondition=false;
-//                model.addAttribute("nicknameFlag",1);
-//            }
-//        }
-//        if(nicknameDuplicateCondition){
-//            model.addAttribute("nicknameFlag",0);
-//            model.addAttribute("nicknameValue",nicknameForm.getNickname());
-//        }
-//        return "reset-nickname";
-//    }
-//
-//    @PostMapping("/reset-nickname-submit")
-//    public String resetNicknameSubmit(NicknameForm nicknameForm, HttpServletRequest request) throws Exception{
-//        HttpSession session = request.getSession();
-//        Member member = (Member)session.getAttribute("member");
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        DocumentReference documentReference = firestore.collection("member").document(member.getId());
-//        ApiFuture<WriteResult> future = documentReference.update("nickname",nicknameForm.getNickname());
-//        System.out.println("닉네임이 변경되었습니다.");
-//        return "reset-nickname";
-//    }
-
 
     /**
      * 회원가입시에 아이디 중복체크
@@ -253,16 +134,16 @@ public class LoginController {
 
     @PostMapping("validSignUpIdDuplicate")
     @ResponseBody
-    public boolean postValidSignUpIdDuplicate(@RequestParam("id") String id) throws Exception{
+    public boolean postValidSignUpIdDuplicate(@RequestBody String id) throws Exception{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
             if(document.toObject(Member.class).getId().equals(id)){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -271,16 +152,16 @@ public class LoginController {
 
     @PostMapping("validSignUpNicknameDuplicate")
     @ResponseBody
-    public boolean postValidSignUpNicknameDuplicate(@RequestParam("nickname") String nickname) throws Exception{
+    public boolean postValidSignUpNicknameDuplicate(@RequestBody String nickname) throws Exception{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
             if(document.toObject(Member.class).getNickname().equals(nickname)){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -289,15 +170,33 @@ public class LoginController {
 
     @PostMapping("validSignUpEmailDuplicate")
     @ResponseBody
-    public boolean postValidSignUpEmailDuplicate(@RequestParam("email") String email) throws Exception{
+    public boolean postValidSignUpEmailDuplicate(@RequestBody String email) throws Exception{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
             if(document.toObject(Member.class).getEmail().equals(email)){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    /**
+     * 회원정보들 넘어오면 회원가입 완료하고 데이터베이스에 정보들 넣기
+     */
+
+    @PostMapping("/postSignUp")
+    @ResponseBody
+    public void postSignUp(@RequestBody String id,@RequestBody String password,@RequestBody String nickname,
+                           @RequestBody String name,@RequestBody String email) throws Exception{
+        Member member = new Member();
+        member.setId(id);
+        member.setPassword(password);
+        member.setName(name);
+        member.setNickname(nickname);
+        member.setEmail(email);
+        memberService.join(member);
+        System.out.println("회원가입이 완료되었습니다.");
     }
 }
