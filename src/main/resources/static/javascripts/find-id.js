@@ -3,7 +3,7 @@
 // Button
 const sendingCertificationBtn = document.querySelector('#sending-certification');
 const enteringCertificationBtn = document.querySelector('#confirm-certification');
-const closingModalBtn = document.querySelector('.modal__clos-btn');
+const closingModalBtn = document.querySelector('.modal__close-btn');
 
 // Input
 const userEmail = document.querySelector('#user-email');
@@ -42,7 +42,6 @@ async function postUserEmail() {
       email: userEmail.value,
     });
     const validEmail = resValidEmail.data;
-    console.log(validEmail);
     showEmailAlert(validEmail);
   } catch(err) {
     console.log(err);
@@ -57,7 +56,6 @@ async function postUserCertification() {
       certification: userCertification.value,  
     })
     const userId = resUserId.data;
-    console.log(`서버 응답 값: ${userId}`);
     showCertificationAlert(userId);
   } catch(err) {
     console.log(err);
@@ -102,7 +100,6 @@ function showEmailAlert(validEmail) {
 
 function showCertificationAlert(userId) {
   // 인증번호를 입력하지 않았을 경우
-  console.log(`입력한 값: ${userCertification.value}`);
   if(userId === "") {
     // 인증번호가 틀렸을 경우 틀렸다는 알림
     userCertification.value = null;
