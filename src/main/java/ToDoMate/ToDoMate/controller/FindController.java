@@ -107,6 +107,7 @@ public class FindController {
         HttpSession session = request.getSession();
         String certification = (String) session.getAttribute("certification");
         certification=authenticationService.generateRandomNumber();
+        System.out.println(certification);
         if(timeout.equals("true")){    //timeout이 true일 때, 즉 시간초과가 났을 때
             return "";
         }
