@@ -48,12 +48,11 @@ class FriendControllerTest {
     @BeforeEach
     public void 테스트전_회원세션저장() throws Exception {
         Member member = new Member();
-        member.setId("admin");
-        member.setPassword("admin");
-        member.setNickname("admin");
-        member.setName("admin");
-        member.setEmail("admin");
-
+        member.setId("dasol199");
+        member.setPassword("0723");
+        member.setNickname("SOL");
+        member.setName("강다솔");
+        member.setEmail("dasol199@naver.com");
         session.setAttribute("member", member);
 
         // request = new MockHttpServletRequest();
@@ -119,7 +118,7 @@ class FriendControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/deleteFriend")
                 .session(session)
-                .param("friendName", "qwer"))
+                .param("friendName", "delete"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -140,7 +139,7 @@ class FriendControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/acceptFollower")
                 .session(session)
-                .param("follower", "test"))
+                .param("follower", "accept"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -155,152 +154,4 @@ class FriendControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
-
-    @Test
-    public void 친구가아닌멤버추가() throws Exception {
-        Firestore firestore = FirestoreClient.getFirestore();
-        CollectionReference friendCollection = firestore.collection("friend");
-        CollectionReference memberCollection = firestore.collection("member");
-
-        for (int i = 0; i < 50; i++) {
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
-            String random = memberMap.get("id");
-
-            Map<String, Object> friendMap = makeFriendUpdate(Collections.EMPTY_LIST, Collections.EMPTY_LIST,
-                    Collections.EMPTY_LIST);
-            ApiFuture<WriteResult> future1 = memberCollection.document(random).set(memberMap);
-            ApiFuture<WriteResult> future2 = friendCollection.document(random).set(friendMap);
-            System.out.println("future1 = " + future1.get().getUpdateTime());
-            System.out.println("future2 = " + future2.get().getUpdateTime());
-        }
-    }
-
-    @Test
-    public void 나를팔로워하는멤버추가() throws Exception {
-        Firestore firestore = FirestoreClient.getFirestore();
-        CollectionReference friendCollection = firestore.collection("friend");
-        CollectionReference memberCollection = firestore.collection("member");
-        Friend friend = friendCollection.document("admin").get().get().toObject(Friend.class);
-
-        for (int i = 0; i < 50; i++) {
-
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
-            String random = memberMap.get("id");
-
-            List<String> memFollowerList = friend.getFollower();
-            ArrayList<String> ranFolloweeList = new ArrayList<>();
-            memFollowerList.add(random);
-            ranFolloweeList.add("admin");
-
-            Map<String, Object> memFriendMap = makeFriendUpdate(friend.getFriend(), memFollowerList,
-                    friend.getFollowee());
-            Map<String, Object> ranFriendMap = makeFriendUpdate(Collections.EMPTY_LIST, Collections.EMPTY_LIST,
-                    ranFolloweeList);
-
-            ApiFuture<WriteResult> future1 = memberCollection.document(random).set(memberMap);
-            ApiFuture<WriteResult> future2 = friendCollection.document(random).set(ranFriendMap);
-            ApiFuture<WriteResult> future3 = friendCollection.document("admin").set(memFriendMap, SetOptions.merge());
-            System.out.println("future1 = " + future1.get().getUpdateTime());
-            System.out.println("future2 = " + future2.get().getUpdateTime());
-            System.out.println("future3 = " + future3.get().getUpdateTime());
-        }
-    }
-
-    @Test
-    public void 내가팔로우하는멤버추가() throws Exception {
-        Firestore firestore = FirestoreClient.getFirestore();
-        CollectionReference friendCollection = firestore.collection("friend");
-        CollectionReference memberCollection = firestore.collection("member");
-        Friend friend = friendCollection.document("admin").get().get().toObject(Friend.class);
-
-        for (int i = 0; i < 50; i++) {
-
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
-            String random = memberMap.get("id");
-            List<String> memFolloweeList = friend.getFollowee();
-            ArrayList<String> ranFollowerList = new ArrayList<>();
-            memFolloweeList.add(random);
-            ranFollowerList.add("admin");
-
-            Map<String, Object> memFriendMap = makeFriendUpdate(friend.getFriend(), friend.getFollower(),
-                    memFolloweeList);
-            Map<String, Object> ranFriendMap = makeFriendUpdate(Collections.EMPTY_LIST, ranFollowerList,
-                    Collections.EMPTY_LIST);
-
-            ApiFuture<WriteResult> future1 = memberCollection.document(random).set(memberMap);
-            ApiFuture<WriteResult> future2 = friendCollection.document(random).set(ranFriendMap);
-            ApiFuture<WriteResult> future3 = friendCollection.document("admin").set(memFriendMap, SetOptions.merge());
-            System.out.println("future1 = " + future1.get().getUpdateTime());
-            System.out.println("future2 = " + future2.get().getUpdateTime());
-            System.out.println("future3 = " + future3.get().getUpdateTime());
-        }
-    }
-
-    @Test
-    public void 나와친구인멤버추가() throws Exception {
-        Firestore firestore = FirestoreClient.getFirestore();
-        CollectionReference friendCollection = firestore.collection("friend");
-        CollectionReference memberCollection = firestore.collection("member");
-        Friend friend = friendCollection.document("admin").get().get().toObject(Friend.class);
-
-        for (int i = 0; i < 50; i++) {
-
-            HashMap<String, Object> memFriendMap = new HashMap<>();
-            HashMap<String, Object> ranFriendMap = new HashMap<>();
-
-            HashMap<String, String> memberMap = makeRandomUpdate(getRandomString(2));
-            String random = memberMap.get("id");
-            List<String> memFriendList = friend.getFriend();
-            ArrayList<String> ranFriendList = new ArrayList<>();
-            memFriendList.add(random);
-            ranFriendList.add("admin");
-
-            memFriendMap.put("friend", memFriendList);
-            memFriendMap.put("follower", friend.getFollower());
-            memFriendMap.put("followee", friend.getFollowee());
-
-            ranFriendMap.put("friend", ranFriendList);
-            ranFriendMap.put("follower", Collections.EMPTY_LIST);
-            ranFriendMap.put("followee", Collections.EMPTY_LIST);
-
-            ApiFuture<WriteResult> future1 = memberCollection.document(random).set(memberMap);
-            ApiFuture<WriteResult> future2 = friendCollection.document(random).set(ranFriendMap);
-            ApiFuture<WriteResult> future3 = friendCollection.document("admin").set(memFriendMap, SetOptions.merge());
-            System.out.println("future1 = " + future1.get().getUpdateTime());
-            System.out.println("future2 = " + future2.get().getUpdateTime());
-            System.out.println("future3 = " + future3.get().getUpdateTime());
-        }
-    }
-
-    static String getRandomString(int i) {
-        String randomInfo;
-        StringBuilder builder;
-        randomInfo = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789";
-        builder = new StringBuilder();
-        for (int j = 0; j < i; j++) {
-            int index = (int) (randomInfo.length() * Math.random());
-            builder.append(randomInfo.charAt(index));
-        }
-        return builder.toString();
-    }
-
-    HashMap<String, String> makeRandomUpdate(String random) {
-        HashMap<String, String> memberMap = new HashMap<>();
-        memberMap.put("id", random);
-        memberMap.put("password", random);
-        memberMap.put("name", random);
-        memberMap.put("nickname", random);
-        memberMap.put("email", "dasol199@naver.com");
-
-        return memberMap;
-    }
-
-    Map<String, Object> makeFriendUpdate(Object friendUpdate, Object followerUpdate, Object followeeUpdate) {
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put("friend", friendUpdate);
-        updateMap.put("follower", followerUpdate);
-        updateMap.put("followee", followeeUpdate);
-        return updateMap;
-    }
-
 }

@@ -18,11 +18,7 @@ input:focus {
 }
 
 /* Find ID */
-.find-id_ {
-  position: relative;
-}
-
-.find-id__form {
+.find-id {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -116,7 +112,6 @@ input:focus {
 
 /* Modal */
 .modal {
-  display: none;
   border: 1px solid #000;
   position: fixed;
   top: 50%;
