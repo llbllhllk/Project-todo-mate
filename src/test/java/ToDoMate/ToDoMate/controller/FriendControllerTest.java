@@ -25,14 +25,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @WebAppConfiguration
 class FriendControllerTest {
 
-//    private Member member=new Member();
-    protected MockHttpSession session=new MockHttpSession();
+    // private Member member=new Member();
+    protected MockHttpSession session = new MockHttpSession();
     protected MockHttpServletRequest request;
 
     @Autowired
@@ -54,44 +53,43 @@ class FriendControllerTest {
         member.setNickname("SOL");
         member.setName("강다솔");
         member.setEmail("dasol199@naver.com");
-
         session.setAttribute("member", member);
 
-//        request = new MockHttpServletRequest();
-//        request.setSession(session);
-//        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        // request = new MockHttpServletRequest();
+        // request.setSession(session);
+        // RequestContextHolder.setRequestAttributes(new
+        // ServletRequestAttributes(request));
     }
 
-/*
-    @AfterEach
-    public void 테스트후세션클리어() {
-        session.clearAttributes();
-        session=null;
-    }*/
+    /*
+     * @AfterEach
+     * public void 테스트후세션클리어() {
+     * session.clearAttributes();
+     * session=null;
+     * }
+     */
 
     @Test
-    public void 친구추가위한회원검색() throws Exception{
+    public void 친구추가위한회원검색() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/searchMember")
                 .session(session)
-                .param("user",""))
+                .param("user", ""))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 
-
     @Test
-    public void 친구추가요청() throws Exception{
+    public void 친구추가요청() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/requestFriend")
                 .session(session)
-                .param("followUser","request"))
+                .param("followUser", "request"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
-
 
     @Test
     public void 친구목록확인() throws Exception {
@@ -104,27 +102,26 @@ class FriendControllerTest {
     }
 
     @Test
-    public void 친구목록에서검색() throws Exception{
+    public void 친구목록에서검색() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/searchFriend")
                 .session(session)
-                .param("friendName","a"))
+                .param("friendName", "a"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
-    public void 친구삭제() throws Exception{
+    public void 친구삭제() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/deleteFriend")
                 .session(session)
-                .param("friendName","delete"))
+                .param("friendName", "delete"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
-
 
     @Test
     public void 팔로워목록확인() throws Exception {
@@ -135,7 +132,6 @@ class FriendControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
-
 
     @Test
     public void 팔로워수락하기() throws Exception {
@@ -148,7 +144,6 @@ class FriendControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-
     @Test
     public void 팔로워거절하기() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -159,5 +154,4 @@ class FriendControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
-
 }
