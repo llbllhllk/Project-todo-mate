@@ -103,13 +103,13 @@ public class FindController {
 
     @PostMapping("timeoutCertification")
     @ResponseBody
-    public String postTimeoutCertification(@RequestParam("timeout") boolean timeout) throws Exception{
-        String validationString = authenticationService.generateRandomNumber(); // 랜덤 certification 생성
+    public String postTimeoutCertification(@RequestBody boolean timeout) throws Exception{
+//        String validationString = authenticationService.generateRandomNumber(); // 랜덤 certification 생성
         if(timeout){    //timeout이 true일 때, 즉 시간초과가 났을 때
-            return validationString;
+            return "";
         }
         else{
-            return "";  //  시간초과가 안났을 때, 일단 빈칸 리턴 -> 나중에 병현님께 물어보기
+            return "error";  //  시간초과가 안났을 때, 일단 빈칸 리턴 -> 나중에 병현님께 물어보기
         }
     }
 
