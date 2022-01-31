@@ -166,6 +166,7 @@ body {
 	padding-right: 10px;
 }
 
+.user-table__btn-reset,
 .friend-table__btn-delete {
 	color: #f16767;
 	font-size: 17px;
