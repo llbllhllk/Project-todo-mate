@@ -103,22 +103,18 @@ public class FindController {
 
     @PostMapping("timeoutCertification")
     @ResponseBody
-    public String postTimeoutCertification(@RequestBody String timeout,HttpServletRequest request) throws Exception{
+    public void postTimeoutCertification(@RequestBody String timeout,HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         String certification = (String) session.getAttribute("certification");
-        certification=authenticationService.generateRandomNumber();
         System.out.println(certification);
         if(timeout.equals("true")){    //timeout이 true일 때, 즉 시간초과가 났을 때
-            return "";
-        }
-        else{
-            return "error";  //  시간초과가 안났을 때, 문자열 "error" 반환
+            certification=authenticationService.generateRandomNumber();
         }
     }
 
     @PostMapping("validId")
     @ResponseBody
-    public boolean postValidId(@RequestParam("user-id")String id) throws Exception{
+    public boolean postValidId(@RequestBody String id) throws Exception{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -132,7 +128,7 @@ public class FindController {
 
     @PostMapping("/changePw")
     @ResponseBody
-    public void postChangePw(@RequestParam("password")String password, HttpServletRequest request) throws Exception{
+    public void postChangePw(@RequestBody String password, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         Member member = (Member) session.getAttribute("member");
         Firestore firestore = FirestoreClient.getFirestore();
@@ -142,7 +138,7 @@ public class FindController {
 
     @PostMapping("/checkNickname")
     @ResponseBody
-    public boolean postCheckNickname(@RequestParam("nickname") String nickname) throws Exception{
+    public boolean postCheckNickname(@RequestBody String nickname) throws Exception{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -156,7 +152,7 @@ public class FindController {
 
     @PostMapping("/resetNickname")
     @ResponseBody
-    public void postResetNickname(@RequestParam("nickname") String nickname, HttpServletRequest request) throws Exception{
+    public void postResetNickname(@RequestBody String nickname, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         Member member = (Member) session.getAttribute("member");
         Firestore firestore = FirestoreClient.getFirestore();
