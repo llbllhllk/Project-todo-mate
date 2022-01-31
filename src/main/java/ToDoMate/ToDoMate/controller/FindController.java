@@ -91,7 +91,7 @@ public class FindController {
     public String postValidCertification(@RequestBody String certification, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         String userCertification = (String) session.getAttribute("certification");
-        System.out.println(certification);
+        certification=certification.substring(18,certification.length()-2);
         if(certification.equals(userCertification)){
             String id = (String)session.getAttribute("id");
             return id;
