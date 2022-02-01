@@ -10,4 +10,6 @@ public interface MemberRepository{
     Optional<Member> getMemberIdInformation(String id) throws Exception;
     Boolean nicknameDuplicateCheck(String nickname) throws Exception;
     Boolean emailDuplicateCheck(String email) throws Exception;
+    String registerMemberToFriend(Member member) throws Exception;
+    String registerMemberToGoal(Member member) throws Exception;
 }

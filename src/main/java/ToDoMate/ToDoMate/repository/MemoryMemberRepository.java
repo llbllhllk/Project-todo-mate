@@ -6,6 +6,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,8 @@ import java.util.Optional;
 public class MemoryMemberRepository implements MemberRepository {
 
     private static final String collectionMember = "member";
+    private static final String collectionFriend = "friend";
+    private static final String collectionGoal = "goal";
 
     @Override
     public String registerMember(Member member) throws Exception {
@@ -30,7 +33,6 @@ public class MemoryMemberRepository implements MemberRepository {
         DocumentSnapshot documentSnapshot = apiFuture.get();
         return Optional.ofNullable(documentSnapshot.toObject(Member.class));
     }
-
 
     @Override
     public Boolean nicknameDuplicateCheck(String nickname) throws Exception {
@@ -58,18 +60,23 @@ public class MemoryMemberRepository implements MemberRepository {
         return true;
     }
 
-    /**
-     * 데이터베이스에 컬렉션 및 다큐먼트 추가코드
-     */
+    @Override
+    public String registerMemberToFriend(Member member) throws Exception {
+        ArrayList<String> emptyList = new ArrayList<>();
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<WriteResult> collectionsApiFuture=
+                dbFirestore.collection(collectionFriend).document(member.getId()).set(emptyList);
+        return collectionsApiFuture.get().getUpdateTime().toString();
+    }
 
-//    HashMap<String,Boolean> map = new HashMap<>();
-//        map.put(goalType,false);
-//        map.put("basketball",false);
-//    HttpSession session = request.getSession();
-//    Member member = (Member)session.getAttribute("member");
-//    Firestore dbFirestore = FirestoreClient.getFirestore();
-//    ApiFuture<WriteResult> collectionsApiFuture=
-//            dbFirestore.collection(collectionGoal).document(member.getNickname()).set(map);
-//        return collectionsApiFuture.get().getUpdateTime().toString();
+    @Override
+    public String registerMemberToGoal(Member member) throws Exception {
+        ArrayList<String> emptyList = new ArrayList<>();
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<WriteResult> collectionsApiFuture=
+                dbFirestore.collection(collectionGoal).document(member.getId()).set(emptyList);
+        return collectionsApiFuture.get().getUpdateTime().toString();
+    }
+
 
 }

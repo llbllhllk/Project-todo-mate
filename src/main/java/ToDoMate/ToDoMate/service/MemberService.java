@@ -50,5 +50,14 @@ public class MemberService {
         }
     }
 
+    public String joinFriend(Member member) throws Exception{
+        memberRepository.registerMemberToFriend(member);
+        return member.getId();
+    }
+
+    public String joinGoal(Member member) throws Exception{
+        memberRepository.registerMemberToGoal(member);
+        return member.getId();
+    }
 
 }
