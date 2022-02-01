@@ -34,7 +34,6 @@ public class MemoryMemberRepository implements MemberRepository {
         return Optional.ofNullable(documentSnapshot.toObject(Member.class));
     }
 
-
     @Override
     public Boolean nicknameDuplicateCheck(String nickname) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
