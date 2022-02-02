@@ -15,6 +15,7 @@ public interface FriendRepository {
     List<String> getMemberNicknameList(String area, String search) throws Exception;
 
     Boolean requestFriend(String memberId, String memberNickname, String addId, String addNickname) throws Exception;
+    Boolean cancelFollow(String memberId, String memberNickname, String cancelId, String cancelNickname) throws Exception;
 
     List<String> deleteFriend(String memberId, String memberNickname, String deleteId, String deleteNickname) throws Exception;
 

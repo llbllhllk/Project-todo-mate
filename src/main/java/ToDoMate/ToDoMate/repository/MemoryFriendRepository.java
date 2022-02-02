@@ -63,6 +63,28 @@ public class MemoryFriendRepository implements FriendRepository {
         else return false;
     }
 
+    @Override
+    public Boolean cancelFollow(String memberId, String memberNickname, String cancelId, String cancelNickname) throws Exception {
+        Firestore firestore = FirestoreClient.getFirestore();
+        CollectionReference collection = firestore.collection(collectionName);
+        DocumentReference memDocRef = collection.document(memberId);
+        DocumentReference cancelDocRef = collection.document(cancelId);
+        Friend memDoc = memDocRef.get().get().toObject(Friend.class);
+        Friend cancelDoc = cancelDocRef.get().get().toObject(Friend.class);
+        List<String> memFollowee = memDoc.getFollowee();
+        List<String> cancelFollower = cancelDoc.getFollower();
+        memFollowee.remove(cancelNickname);
+        cancelFollower.remove(memberNickname);
+
+        Map<String, Object> memUpdate = makeUpdateMap(memDoc.getFriend(), memDoc.getFollower(), memFollowee);
+        boolean memUpdateDone = memDocRef.update(memUpdate).isCancelled();
+        Map<String, Object> addUpdate = makeUpdateMap(cancelDoc.getFriend(), cancelFollower, cancelDoc.getFollowee());
+        boolean addUpdateDone = cancelDocRef.update(addUpdate).isCancelled();
+
+        if (!memUpdateDone && !addUpdateDone) return true;
+        else return false;
+    }
+
 
     @Override
     public List<String> deleteFriend(String memberId, String memberNickname, String deleteId, String deleteNickname) throws Exception {
