@@ -119,9 +119,9 @@ function showCertificationAlert(userId) {
 }
 
 function onTimer() {
-  let minutes = 2;
-  let front = 5;
-  let back = 9;
+  let minutes = 0;
+  let front = 1;
+  let back = 0;
   interval = setInterval(() => {
     timer.innerText = `${minutes}:${front}${back}`;
     if(front === 0 && back === 0) {
