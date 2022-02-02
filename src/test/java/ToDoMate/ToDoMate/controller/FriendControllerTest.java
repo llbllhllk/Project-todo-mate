@@ -92,6 +92,17 @@ class FriendControllerTest {
     }
 
     @Test
+    public void 친구요청취소() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/cancelRequest")
+                .session(session)
+                .param("followUser", "request"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
     public void 친구목록확인() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
