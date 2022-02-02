@@ -70,6 +70,20 @@ public class FriendController {
         return friendService.requestFriend(member.getId(), followNickname);
     }
 
+    /**
+     * 친구요청 취소
+     * @param member
+     * @param cancelNickname
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("cancelRequest")
+    @ResponseBody
+    public Boolean cancelFollow(@SessionAttribute("member")Member member,
+                                @RequestParam("followUser")String cancelNickname) throws Exception {
+        return friendService.cancelFollow(member.getId(), cancelNickname);
+    }
+
 
     /**
      * 친구목록보여주기

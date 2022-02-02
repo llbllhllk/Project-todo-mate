@@ -65,9 +65,12 @@ public class FriendService {
         String memberNickname=friendRepository.findMemberNicknameById(memberId).get();
         return friendRepository.requestFriend(memberId, memberNickname, addId, addNickname);
     }
-    //친구목록 보여주기
-    //친구목록에서 친구 찾기
-    //친구신청목록보여주기
+
+    public Boolean cancelFollow(String memberId, String cancelNickname) throws Exception {
+        String cancelId = friendRepository.findMemberIdByNickname(cancelNickname).get();
+        String memberNickname = friendRepository.findMemberNicknameById(memberId).get();
+        return friendRepository.cancelFollow(memberId, memberNickname, cancelId, cancelNickname);
+    }
 
 
     public List<String> deleteFriend(String memberId, String deleteNickname) throws Exception {
