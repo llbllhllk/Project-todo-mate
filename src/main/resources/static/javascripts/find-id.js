@@ -35,42 +35,15 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-async function postUserEmail() {
+async function requestPost(url, data) {
   try {
-    const emailUrl = '/validEmail';
-    const resValidEmail = await axios.post(emailUrl, {
-      email: userEmail.value,
-    });
-    const validEmail = resValidEmail.data;
-    showEmailAlert(validEmail);
-  } catch(err) {
-    console.log(err);
-    throw new Error(err);
-  }
-}
-
-async function postUserCertification() {
-  try {
-    const certificationUrl = '/validCertification'
-    const resUserId = await axios.post(certificationUrl, {
-      certification: userCertification.value,  
-    })
-    const userId = resUserId.data;
-    showCertificationAlert(userId);
-  } catch(err) {
-    console.log(err);
-    throw new Error(err);
-  }
-}
-
-async function postTimeoutCertification() {
-  try {
-    const timeoutCertificationUrl = '/timeoutCertification'
-    const resTimeoutCertification = await axios.post(timeoutCertificationUrl, {
-      timeout: true,
-    })
-    const validCertification = resTimeoutCertification.data;
-    console.log(validCertification);
+    const options = {
+      method: "POST",
+      url: url,
+      data
+    };
+    const res =  await axios(options);
+    return res.data;
   } catch(err) {
     console.log(err);
     throw new Error(err);
@@ -83,12 +56,10 @@ function showEmailAlert(validEmail) {
     emptyEmail.classList.remove('active');
     wrongEmail.classList.remove('active');
     correctEmail.classList.add('active')
-    
     // 인증번호 입력창 생성
     form.classList.remove('close');
     clearInterval(interval);
     onTimer();
-
   } else {
     // 이메일이 틀렸을 경우 알림
     userEmail.value = null;
@@ -99,7 +70,6 @@ function showEmailAlert(validEmail) {
 }
 
 function showCertificationAlert(userId) {
-  // 인증번호를 입력하지 않았을 경우
   if(userId === "") {
     // 인증번호가 틀렸을 경우 틀렸다는 알림
     userCertification.value = null;
@@ -118,10 +88,10 @@ function showCertificationAlert(userId) {
   }
 }
 
-function onTimer() {
-  let minutes = 0;
-  let front = 1;
-  let back = 0;
+function onTimer(validCertification) {
+  let minutes = 2;
+  let front = 5;
+  let back = 9;
   interval = setInterval(() => {
     timer.innerText = `${minutes}:${front}${back}`;
     if(front === 0 && back === 0) {
@@ -137,13 +107,22 @@ function onTimer() {
     if(minutes < 0) {
       // 제한시간이 초과됐을 경우
       clearInterval(interval);
-      emptyCertification.classList.remove('active');
-      wrongCertification.classList.remove('active');
-      correctCertification.classList.remove('active');
-      timeoutCertification.classList.add('active');
-      postTimeoutCertification();
+      const timeout = {
+        timeout: true,
+      }
+      requestPost('/timeoutCertification', timeout).then(res => showTimeoutAlert(res));
     }
   }, 1000);
+}
+
+function showTimeoutAlert(validCertification) {
+  if(validCertification === true) {
+    emptyCertification.classList.remove('active');
+    wrongCertification.classList.remove('active');
+    correctCertification.classList.remove('active');
+    timeoutCertification.classList.add('active');
+    modal.classList.add('close');
+  }
 }
 
 function onClickSendingCertificationBtn() {
@@ -154,7 +133,10 @@ function onClickSendingCertificationBtn() {
       wrongEmail.classList.remove('active');
       correctEmail.classList.remove('active');
     } else {
-      postUserEmail();
+      const email = {
+        email: userEmail.value,
+      }
+      requestPost('/validEmail', email).then(res => showEmailAlert(res));
     }
   });
 }
@@ -168,7 +150,10 @@ function onClickEnteringCertificationBtn() {
       correctCertification.classList.remove('active');
       timeoutCertification.classList.remove('active');
     } else {
-      postUserCertification();
+      const certification = {
+        certification: userCertification.value,
+      }
+      requestPost('/validCertification', certification).then(res => showCertificationAlert(res));
     }
   });
 }
