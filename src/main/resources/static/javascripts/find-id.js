@@ -88,7 +88,7 @@ function showCertificationAlert(userId) {
   }
 }
 
-function onTimer(validCertification) {
+function onTimer() {
   let minutes = 2;
   let front = 5;
   let back = 9;
