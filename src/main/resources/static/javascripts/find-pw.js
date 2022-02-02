@@ -1,6 +1,6 @@
 'use strict'
 
-// Btn
+// Button
 const sendingCertificationBtn = document.querySelector('#sending-certification');
 const enteringCertificationBtn = document.querySelector('#confirm-certification');
 
@@ -10,14 +10,14 @@ const userEmail = document.querySelector('#user-email');
 const userCertification = document.querySelector('#user-certification');
 
 // List
-const list = document.querySelector('.find-pw__list.close');
+const form = document.querySelector('.find-pw__list.close');
 
 // Alert
 const emptyId = document.querySelector('#empty-id');
 const wrongId = document.querySelector('#wrong-id');
 const emptyEmail = document.querySelector('#empty-email');
 const wrongEmail = document.querySelector('#wrong-email');
-const correctEmail = document.querySelector('#correct-email');
+const correctBoth = document.querySelector('#correct-both');
 const emptyCertification = document.querySelector('#empty-certification');
 const wrongCertification = document.querySelector('#wrong-certification');
 const correctCertification = document.querySelector('#correct-certification');
@@ -27,78 +27,86 @@ const timeoutCertification = document.querySelector('#timeout-certification');
 const timer = document.querySelector('.find-pw__timer');
 let interval;
 
-async function postUserId() {
+document.addEventListener('keydown', (e) => {
+  if(e.keyCode == 13) {
+    e.preventDefault();  
+  }
+});
+
+async function requestPost(url, data) {
   try {
-    const idUrl = '/validId';
-    const resValidId = await axios.post(idUrl, {
-      id: userId.value
-    })
-    const validId = resValidId.data;
-    showIdAlert(validId);
+    const options = {
+      method: "POST",
+      url: url,
+      data
+    };
+    const res =  await axios(options);
+    console.log(res.data);
+    return res.data;
   } catch(err) {
     console.log(err);
     throw new Error(err);
   }
 }
 
-function showIdAlert(validId) {
+function emptyInputHandler() {
   // 아이디를 입력하지 않을 경우
-  if(userId.value === "") {
-    emptyId.classList.add('active');
+  userId.addEventListener('blur', (e) => {
+    if(userId.value === "") {
+      emptyId.classList.add('active');
+      wrongId.classList.remove('active');
+    } 
+  });
+  // 이메일을 입력하지 않을 경우
+  userEmail.addEventListener('blur', (e) => {
+    if(userEmail.value === "") {
+      emptyEmail.classList.add('active');
+      wrongEmail.classList.remove('active');
+      correctEmail.classList.remove('active');
+    }
+  });
+  // 인증번호를 입력하지 않았을 경우
+  userCertification.addEventListener('blur', (e) => {
+    if(userCertification.value === '') {
+      emptyCertification.classList.add('active');
+      wrongCertification.classList.remove('active');
+      correctCertification.classList.remove('active');
+      timeoutCertification.classList.remove('active');
+    }
+  });
+}
+
+function showUserInfoAlert(validUserInfo) {
+  const { validId, validEmail } = validUserInfo;
+  // 아이디, 이메일이 가입되어 있는 경우
+  if(validId && validEmail === true) {
+    emptyId.classList.remove('active');
     wrongId.classList.remove('active');
+    emptyEmail.classList.remove('active');
+    wrongEmail.classList.remove('active');
+    correctBoth.classList.add('active')
+    form.classList.remove('close');
+    onTimer();
   }
-  // 가입하지 않는 아이디면
+  // 가입되지 않는 아이디일 경우
   if(validId === false) {
+    userId.value = null;
     emptyId.classList.remove('active');
     wrongId.classList.add('active');
+  } else {
+    // 가입된 아이디일 경우
+    emptyId.classList.remove('active');
+    wrongId.classList.remove('active');
   }
-}
-
-async function postUserEmail() {
-  try {
-    const emailUrl = '/validEmail';
-    const resValidEmail = await axios.post(emailUrl, {
-      email: userEmail.value
-    })
-    const validEmail = resValidEmail.data;
-    showEmailAlert(validEmail);
-  } catch(err) {
-    console.log(err);
-    throw new Error(err);
-  }
-}
-
-function showEmailAlert(validEmail) {
-  // 이메일을 입력하지 않을 경우
-  if(userEmail.value === "") {
-    emptyEmail.classList.add('active');
-    wrongEmail.classList.remove('active');
-    correctEmail.classList.remove('active');
-  }
-  // 가입한 이메일이 아닐 경우 
+  // 가입되지 않는 이메일일 경우 
   if(validEmail === false) {
+    userEmail.value = null;
     emptyEmail.classList.remove('active');
     wrongEmail.classList.add('active');
-    correctEmail.classList.remove('active');
   } else {
-    // 가입한 이메일인 경우
+    // 가입된 이메일일 경우
     emptyEmail.classList.remove('active');
     wrongEmail.classList.remove('active');
-    correctEmail.classList.add('active');
-  }
-}
-
-async function postTimeoutCertification() {
-  try {
-    const timeoutCertificationUrl = '/timeoutCertification'
-    const resTimeoutCertification = await axios.post(timeoutCertificationUrl, {
-      timeout: true,
-    })
-    const validCertification = resTimeoutCertification.data;
-    showCertificationAlert(validCertification);
-  } catch(err) {
-    console.log(err);
-    throw new Error(err);
   }
 }
 
@@ -119,39 +127,27 @@ function onTimer() {
       back--;
     }
     if(minutes < 0) {
+      // 제한시간이 초과됐을 경우
       clearInterval(interval);
+      const timeout = {
+        timeout: true,
+      }
+      requestPost('/timeoutCertification', timeout).then(res => showTimeoutAlert(res));
     }
   }, 1000);
-  // 제한시간 안에 인증번호 입력 못할 경우
-  emptyCertification.classList.remove('active');
-  wrongCertification.classList.remoe('active');
-  correctCertification.classList.remove('active');
-  timeoutCertification.classList.add('active');
-  postTimeoutCertification();
 }
 
-async function postUserCertification() {
-  try {
-    const certificationUrl = '/validCertification';
-    const resValidCertification = await axios.post(certificationUrl, {
-      certification: userCertification.value
-    })
-    const validCertification = resValidCertification.data;
-    console.log(validCertification);
-  } catch(err) {
-    console.log(err);
-    throw new Error(err);
+function showTimeoutAlert(validCertification) {
+  if(validCertification === true) {
+    emptyCertification.classList.remove('active');
+    wrongCertification.classList.remove('active');
+    correctCertification.classList.remove('active');
+    timeoutCertification.classList.add('active');
+    modal.classList.add('close');
   }
 }
 
 function showCertificationAlert(validCertification) {
-  // 인증번호를 입력하지 않았을 경우
-  if(userCertification.value === '') {
-    emptyCertification.classList.add('active');
-    wrongCertification.classList.remove('active');
-    correctCertification.classList.remove('active');
-    timeoutCertification.classList.remove('active');
-  }
   // 인증번호가 틀릴 경우
   if(validCertification === false) {
     emptyCertification.classList.remove('active');
@@ -164,32 +160,33 @@ function showCertificationAlert(validCertification) {
     wrongCertification.classList.remove('active');
     correctCertification.classList.add('active');
     timeoutCertification.classList.remove('active');
-    // 비밀번호 재설정 페이지로 이동
     location.href = "reset-pw";
   }
 }
 
-function init() {
-  userId.addEventListener('blur', (e) => {
-    postUserId();
-  });
-  
-  userEmail.addEventListener('blur', (e) => {
-    postUserEmail();
-  })
-
+function onClickSendingCertificationBtn() {
   sendingCertificationBtn.addEventListener('click', (e) => {
-    // id와 email이 둘다 가입된 경우  
-    if(validId && validEmail === true) {
-      list.classList.remove('close');
-      clearInterval(interval);
-      onTimer();
+    const userInfo = {
+      id: userId.value,
+      email: userEmail.value,
     }
+    requestPost('/validInfo', userInfo).then(res => showUserInfoAlert(res));
   });
+}
 
+function onClickEnteringCertificationBtn() {
   enteringCertificationBtn.addEventListener('click', (e) => {
-    postUserCertification();
+    const certification = {
+      certification: userCertification.value,
+    }
+    requestPost('/validCertification', certification).then(res => showCertificationAlert(res));
   });
+}
+
+function init() {
+  emptyInputHandler();
+  onClickSendingCertificationBtn();
+  onClickEnteringCertificationBtn();
 }
 
 init();
