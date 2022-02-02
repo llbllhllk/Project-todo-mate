@@ -103,13 +103,15 @@ public class FindController {
 
     @PostMapping("timeoutCertification")
     @ResponseBody
-    public void postTimeoutCertification(@RequestBody String timeout,HttpServletRequest request) throws Exception{
+    public boolean postTimeoutCertification(@RequestBody String timeout,HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         timeout=timeout.substring(11,timeout.length()-1);
         String validationString = authenticationService.generateRandomNumber();
-        if(timeout.equals("true")){    //timeout이 true일 때, 즉 시간초과가 났을 때
-            session.setAttribute("certification",validationString);   //이메일 인증을 위한 인증번호 세션에 저장
+        if(timeout.equals("true")) {    //timeout이 true일 때, 즉 시간초과가 났을 때
+            session.setAttribute("certification", validationString);   //이메일 인증을 위한 인증번호 세션에 저장
+            return true;
         }
+        return false;
     }
 
     @PostMapping("validId")
