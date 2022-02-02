@@ -325,8 +325,9 @@ let resetFriend = async function(nickname, e) {
     resetBtnToAddBtn(button);
     numOfRequestFriend--;
     // try {
-    //     const res = await axios.get('/', {
+    //     const res = await axios.get('/cancelRequest', {
     //         params: {
+    //             followUser: nickname
     //         }
     //     });
     //     console.log(res);

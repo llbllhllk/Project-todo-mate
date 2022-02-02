@@ -112,22 +112,40 @@ body {
 	display: none;
 	width: 500px;
 	height: 65vh;
-	overflow: auto;
-	-ms-overflow-style: none;
+	position: relative;
 }
 
-.request-table::-webkit-scrollbar,
-.friend-table::-webkit-scrollbar,
-.user-table::-webkit-scrollbar {
-	background-color: rgb(38, 38, 38);
+.request-table:hover .cover-bar,
+.friend-table:hover .cover-bar,
+.user-table:hover .cover-bar {
+	opacity: 0;
+	transition: all 0.5s;
+}
+
+.request-table__contents,
+.friend-table__contents,
+.user-table__contents {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.request-table__contents::-webkit-scrollbar,
+.friend-table__contents::-webkit-scrollbar,
+.user-table__contents::-webkit-scrollbar {
 	width: 10px;
+	overflow: visible;
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.087);
 }
 
-.request-table::-webkit-scrollbar-thumb,
-.friend-table::-webkit-scrollbar-thumb,
-.user-table::-webkit-scrollbar-thumb {
-	background-color: rgb(143, 143, 143);
+.request-table__contents::-webkit-scrollbar-thumb,
+.friend-table__contents::-webkit-scrollbar-thumb,
+.user-table__contents::-webkit-scrollbar-thumb {
 	border-radius: 10px;
+	overflow: visible;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.2);
 }
 
 .request-table__list-item,
@@ -145,6 +163,7 @@ body {
 .friend-table.active,
 .user-table.active {
 	display: block;
+	position: relative;
 }
 
 .request-table__list:hover,
@@ -200,4 +219,15 @@ body {
 	color: aliceblue;
 	padding-right: 10px;
 	font-size: 15px;
+}
+
+.cover-bar {
+	width: 10px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	transition: all 0.5s;
+	opacity: 1;
+	background-color: black;
 }
