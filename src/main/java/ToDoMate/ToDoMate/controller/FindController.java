@@ -122,6 +122,8 @@ public class FindController {
         String[] info = information.split(",");
         String id = info[0];
         String email = info[1];
+        System.out.println(id);
+        System.out.println(email);
         String userId = id.substring(7,id.length()-1);
         String userEmail = email.substring(9,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
@@ -194,6 +196,23 @@ public class FindController {
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection("member").document(member.getId());
         ApiFuture<WriteResult> future = documentReference.update("nickname",userNickname);
+        return true;
+    }
+
+    @PostMapping("/changePwAxios")
+    @ResponseBody
+    public Boolean postTestChangePw(@RequestBody String userInformation) throws Exception{
+        //{id: "dlrlxo999", password: "@@aa0332601"} 데이터 넘어오는 형식
+        String[] info = userInformation.split(",");
+        String id = info[0];
+        String password = info[1];
+        //id = {"id":"dlrlxo999"
+        //email = "password":"@@aa0332601"}
+        String userId = id.substring(7,id.length()-1);
+        String userPassword = password.substring(12,password.length()-2);
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestore.collection("member").document(userId);
+        ApiFuture<WriteResult> future = documentReference.update("password",userPassword);
         return true;
     }
 
