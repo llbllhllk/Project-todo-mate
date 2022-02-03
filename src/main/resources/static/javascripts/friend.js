@@ -27,6 +27,7 @@
 // modal 
 const modal_delete = document.querySelector('.modal-delete');
 const modal_confirm = document.querySelector('.modal-confirm');
+const modal_background = document.querySelector('.modal-background');
 
 // modal button
 const modal_btn_exit = document.querySelector('.modal_btn-exit');
@@ -178,6 +179,7 @@ function onClickDeleteFriend() {
             const nickname = e.target.parentElement.querySelector('.friend-table__nickname').innerHTML;
             console.log(nickname);
             modal_delete.classList.toggle('active');
+            modal_background.classList.toggle('active');
             onClickModalDeleteFriend(nickname);
             onClickModalExitFriend();
         })
@@ -198,6 +200,7 @@ function onClickModalExitFriend() {
     exitBtn.addEventListener('click', (e) => {
         console.log('모달창 취소 버튼 누름');
         modal_delete.classList.toggle('active');
+        modal_background.classList.toggle('active');
     })
 }
 
