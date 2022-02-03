@@ -183,13 +183,13 @@ body {
 	padding-left: 10px;
 }
 
-.user-table__btn-plus {
+.user-table__btn-plus.active {
 	color: #00a3ff;
 	font-size: 17px;
 	margin-right: 10px;
 }
 
-.user-table__btn-reset,
+.user-table__btn-plus,
 .friend-table__btn-delete {
 	color: #f16767;
 	font-size: 17px;
@@ -234,4 +234,60 @@ body {
 	transition: all 0.5s;
 	opacity: 1;
 	background-color: black;
+}
+
+/* modal */
+.modal-delete,
+.modal-confirm {
+	display: none;
+	font-family: "Nanum Gothic", sans-serif;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 350px;
+	background-color: #262424;
+	border-radius: 14px;
+	color: #fff;
+	padding: 15px;
+}
+
+.modal-delete.active,
+.modal-confirm.active {
+	display: block;
+}
+
+.modal__description {
+	font-size: 16px;
+}
+
+.modal__description {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal_btn-group {
+	display: flex;
+	justify-content: space-between;
+}
+
+.modal_btn-exit,
+.modal_btn-delete,
+.modal_btn-ok {
+	height: 38px;
+	background-color: #474747;
+	margin-top: 20px;
+	color: white;
+	font-size: 16px;
+	font-weight: bold;
+	border-radius: 3px;
+	width: 167px;
+}
+
+.modal_btn-ok {
+	width: 350px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
