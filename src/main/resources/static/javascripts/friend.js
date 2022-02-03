@@ -15,7 +15,13 @@
  *  (2) onClickResetFriend()에서 click 이벤트 발생 시 resetFriend(nickname, e) 실행
  *  (3) resetFriend(nickname, e)  실행 시 서버에게 요청하고 (axios)
  *  (4) resetBtnToAddBtn(btn) 실행하여 친구 요청 취소 버튼을 친구 추가 버튼으로 바꾸기 
- * 7.
+ * 7. 친구 삭제 버튼 눌렀을 때 :
+ *  (1) searchFriend() 에서 onClickDeleteFriend() 실행
+ *  (2) onClickDeleteFriend()에서 click 이벤트 발생 시 deleteFriend(nickname, e) 실행 시
+ *  (3) deleteFriend(nickname, e) 실행 시 서버에게 요청하고 (axios) showSearchFriend() 실행하여 돔조작
+ *  (4) 
+ * 8. 친구 요청 수락 버튼 눌렀을 때 :
+ *  (1) 
  */
 
 //tab Btn
@@ -43,13 +49,23 @@ const request_table = document.querySelector('.request-table');
 // ul
 const user_table_contents = document.querySelector('.user-table__contents');
 const friend_table_contents = document.querySelector('.friend-table__contents');
-const request_table_contents = document.querySelector('.request-talbe__contents');
+const request_table_contents = document.querySelector('.request-table__contents');
 
-// 서로 친구가 아닌 유저 수
-var numOfnotFriend = 0;
+// 변수 
+var numOfnotFriend = 0; // 서로 친구가 아닌 유저 수
+var numOfRequestSend = 0; // 친구요청 보낸 수
+var numOfFriend = 0; // 친구 수
+var numOfRequestNotAccept = 0; // 친구요청 받은 수
+var inputOfUser = ""; // user input창에 입력한 값 
+var inputOfFriend = ""; // friend input창에 입력한 값
 
-// 친구요청 보낸 수
-var numOfRequestFriend = 0;
+// search창 비우기 
+function resetSearch() {
+    search_user.value = '';
+    search_friend.value = '';
+    inputOfUser = '';
+    inputOfFriend = '';
+}
 
 // tab Button 클릭할 때 
 function tabBtnClick() {
@@ -69,6 +85,8 @@ function tabBtnClick() {
         user_table.classList.add('active');
         friend_table.classList.remove('active');
         request_table.classList.remove('active');
+
+        resetSearch();
     })
     
     // 친구목록 
@@ -88,6 +106,7 @@ function tabBtnClick() {
         friend_table.classList.add('active');
         request_table.classList.remove('active');
 
+        resetSearch();
         // 친구 보여주기
         showFriend();
     })
@@ -106,6 +125,7 @@ function tabBtnClick() {
         friend_table.classList.remove('active');
         request_table.classList.add('active');
 
+        resetSearch();
         showRequest();
     })
 }
@@ -136,13 +156,39 @@ function onClickResetFriend() {
 }
 
 // 친구삭제 버튼 눌렀을 경우
+function onClickDeleteFriend() {
+    const delete_friend_btn = document.querySelector('.friend-table__btn-delete');
+    delete_friend_btn.addEventListener('click', (e) => {
+        const nickname = e.target.parentElement.querySelector('.friend-table__nickname').innerHTML;
+        console.log(nickname);
+        deleteFriend(nickname, e);
+    })
+}
 
 // 친구 받기 버튼 눌렀을 경우
+function onClickAcceptFriend() {
+    const accept_friend_btn = document.querySelector('.request-table__btn-accept');
+    accept_friend_btn.addEventListener('click', (e) => {
+        const nickname = e.target.parentElement.querySelector('.request-table__nickname').innerHTML;
+        console.log(nickname);
+        acceptFriend(nickname, e);
+    })
+}
 
 // 친구 거절 버튼 눌렀을 경우 
+function onClickRefuseFriend() {
+    const refuse_friend_btn = document.querySelector('.request-table__btn-refuse');
+    refuse_friend_btn.addEventListener('click', (e) => {
+        const nickname = e.target.parentElement.querySelector('.request-table__nickname').innerHTML;
+        console.log(nickname);
+        refuseFriend(nickname, e);
+    })
+}
 
 // 유저목록에서 검색 후 돔조작 
 function showSearchUser(data) {
+    user_table_contents.innerHTML = "";
+
     for (const [nickname, state] of Object.entries(data)) {
         var liTag = document.createElement('li');
         liTag.classList.add('user-table__list');
@@ -202,8 +248,9 @@ function resetBtnToAddBtn(btn) {
 
 // 친구목록에서 검색했을 때 돔조작 
 function showSearchFriend(data) {
+    friend_table_contents.innerHTML = "";
+
     for (const nickname of data) {
-        console.log(nickname);
         var liTag = document.createElement('li');
         liTag.classList.add('friend-table__list');
 
@@ -227,6 +274,7 @@ function showSearchFriend(data) {
 
 // 친구요청 리스트 돔조작 
 function showRequestList(data) {
+    request_table_contents.innerHTML = "";
     for (const nickname of data) {
         var liTag = document.createElement('li');
         liTag.classList.add('request-table__list');
@@ -261,6 +309,8 @@ function showRequestList(data) {
 // 유저 검색 axios
 let searchUser = async function() {
     var input = document.getElementById('search-user');
+    // if (inputOfUser === input.value) return;
+    inputOfUser = input.value;
     user_table_contents.innerHTML = "";
 
     try {
@@ -272,19 +322,16 @@ let searchUser = async function() {
 
         const data = res.data;
         if (data == null) return;
-        const size = Object.keys(data).length;
         console.log(Object.keys(data).length);
-        
-        console.log(data);
         user_table_contents.innerHTML = "";
 
         // 받아온 데이터에서 서로 친구가 아닌 수와 친구요청을 보낸 수를 계산함
         numOfnotFriend = Object.values(data).reduce((cnt, ele) => cnt + (0 === ele), 0);
-        numOfRequestFriend = Object.values(data).reduce((cnt, ele) => cnt + (1 === ele) , 0);
+        numOfRequestSend = Object.values(data).reduce((cnt, ele) => cnt + (1 === ele) , 0);
 
         showSearchUser(data);
         if (numOfnotFriend > 0) onClickAddFriend(); // 친구요청 버튼 눌렀을 때 
-        if (numOfRequestFriend > 0) onClickResetFriend(); // 친구요청 취소 버튼 눌렀을 때 
+        if (numOfRequestSend > 0) onClickResetFriend(); // 친구요청 취소 버튼 눌렀을 때 
         
     } catch (err) {
         console.log(err);
@@ -323,7 +370,7 @@ let resetFriend = async function(nickname, e) {
     const button = e.target.parentElement.parentElement.children[0].children[1];
     console.log(button);
     resetBtnToAddBtn(button);
-    numOfRequestFriend--;
+    numOfRequestSend--;
     // try {
     //     const res = await axios.get('/cancelRequest', {
     //         params: {
@@ -342,6 +389,10 @@ let resetFriend = async function(nickname, e) {
 // 친구 검색 axios
 let searchFriend = async function() {
     var input = document.getElementById('search-friend');
+    console.log('input.value: ' + input.value);
+    console.log('inputOfFriend : ' + inputOfFriend);
+    // if (inputOfFriend === input.value) return;
+    inputOfFriend = input.value;
     friend_table_contents.innerHTML = "";
 
     try {
@@ -352,12 +403,31 @@ let searchFriend = async function() {
         });
         console.log(res);
         const data = res.data;
-        
+        numOfFriend = data.size;
         showSearchFriend(data);
+
+        // 친구가 있다면, 친구 삭제 onClick 메소드 실행 
+        if (numOfFriend > 0) onClickDeleteFriend();
     } catch (err) {
         console.log(err);
         throw new Error(err);
     }
+}
+
+// 친구 삭제 버튼 눌렀을 때 
+let deleteFriend = async function(nickname, e) {
+    console.log("친구삭제 버튼 눌림");
+    const button = e.target.parentElement.parentElement.children[0].children[1];
+    console.log(button);
+    // try {
+    //     const res = await axios.get('/deleteFriend');
+    //     console.log(res);
+    //     const button = e.target.parentElement.parentElement.children[0].children[1];
+    //     console.log(button);
+    // } catch (err) {
+    //     console.log(err);
+    //     throw new Error(err);
+    // }
 }
 
 // 친구 목록 axios
@@ -388,6 +458,10 @@ let showRequest = async function() {
         console.log(err);
         throw new Error(err);
     }
+}
+
+let refuseFriend = async function() {
+
 }
 
 const scrollHandler = evt => {

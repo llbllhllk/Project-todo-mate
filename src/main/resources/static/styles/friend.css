@@ -115,6 +115,10 @@ body {
 	position: relative;
 }
 
+.request-table {
+	height: 70vh;
+}
+
 .request-table:hover .cover-bar,
 .friend-table:hover .cover-bar,
 .user-table:hover .cover-bar {
@@ -182,14 +186,14 @@ body {
 .user-table__btn-plus {
 	color: #00a3ff;
 	font-size: 17px;
-	padding-right: 10px;
+	margin-right: 10px;
 }
 
 .user-table__btn-reset,
 .friend-table__btn-delete {
 	color: #f16767;
 	font-size: 17px;
-	padding-right: 10px;
+	margin-right: 10px;
 }
 
 .request-table__btn {
@@ -199,7 +203,7 @@ body {
 .request-table__btn-accept {
 	color: #00a3ff;
 	font-size: 17px;
-	margin-right: 10px;
+	padding-right: 10px;
 }
 
 .request-table__btn-refuse {
@@ -216,9 +220,9 @@ body {
 
 /* btn description */
 .user-table__description {
-	color: aliceblue;
+	color: rgb(141, 141, 141);
 	padding-right: 10px;
-	font-size: 15px;
+	font-size: 17px;
 }
 
 .cover-bar {
