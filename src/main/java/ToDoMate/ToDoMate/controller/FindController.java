@@ -186,7 +186,7 @@ public class FindController {
 
     @PostMapping("/resetNickname")
     @ResponseBody
-    public void postResetNickname(@RequestBody String nickname, HttpServletRequest request) throws Exception{
+    public Boolean postResetNickname(@RequestBody String nickname, HttpServletRequest request) throws Exception{
         //{"nickname":"경주불주먹"}
         String userNickname = nickname.substring(13,nickname.length()-2);
         HttpSession session = request.getSession();
@@ -194,6 +194,7 @@ public class FindController {
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection("member").document(member.getId());
         ApiFuture<WriteResult> future = documentReference.update("nickname",userNickname);
+        return true;
     }
 
 
