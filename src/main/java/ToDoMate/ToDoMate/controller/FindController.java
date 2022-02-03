@@ -114,15 +114,24 @@ public class FindController {
         return false;
     }
 
-    @PostMapping("validId")
+    @PostMapping("validInfo")
     @ResponseBody
-    public boolean postValidId(@RequestBody String id) throws Exception{
+    public boolean postValidInfo(@RequestBody String id, @RequestBody String email) throws Exception{
+        //{"id":"dlrlxo999"}
+        //{"email":"dlrlxo999@naver.com"}
+        String userId = id.substring(7,id.length()-2);
+        String userEmail = id.substring(10,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getId().equals(id)){
-                return true;
+            if(document.toObject(Member.class).getId().equals(userId)){
+                if(document.toObject(Member.class).getEmail().equals(userEmail)){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
         return false;
@@ -131,21 +140,25 @@ public class FindController {
     @PostMapping("/changePw")
     @ResponseBody
     public void postChangePw(@RequestBody String password, HttpServletRequest request) throws Exception{
+        //{"password":"@@aa0332601"}
+        String userPassword = password.substring(13,password.length()-2);
         HttpSession session = request.getSession();
         Member member = (Member) session.getAttribute("member");
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection("member").document(member.getId());
-        ApiFuture<WriteResult> future = documentReference.update("password",password);
+        ApiFuture<WriteResult> future = documentReference.update("password",userPassword);
     }
 
     @PostMapping("/checkNickname")
     @ResponseBody
     public boolean postCheckNickname(@RequestBody String nickname) throws Exception{
+        //{"nickname":"경주불주먹"}
+        String userNickname = nickname.substring(13,nickname.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getNickname().equals(nickname)){
+            if(document.toObject(Member.class).getNickname().equals(userNickname)){
                 return true;
             }
         }
@@ -155,11 +168,13 @@ public class FindController {
     @PostMapping("/resetNickname")
     @ResponseBody
     public void postResetNickname(@RequestBody String nickname, HttpServletRequest request) throws Exception{
+        //{"nickname":"경주불주먹"}
+        String userNickname = nickname.substring(13,nickname.length()-2);
         HttpSession session = request.getSession();
         Member member = (Member) session.getAttribute("member");
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection("member").document(member.getId());
-        ApiFuture<WriteResult> future = documentReference.update("nickname",nickname);
+        ApiFuture<WriteResult> future = documentReference.update("nickname",userNickname);
     }
 
 
