@@ -14,9 +14,8 @@ const form = document.querySelector('.find-pw__list.close');
 
 // Alert
 const emptyId = document.querySelector('#empty-id');
-const wrongId = document.querySelector('#wrong-id');
 const emptyEmail = document.querySelector('#empty-email');
-const wrongEmail = document.querySelector('#wrong-email');
+const wrongInfo = document.querySelector('#wrong-info');
 const correctBoth = document.querySelector('#correct-both');
 const emptyCertification = document.querySelector('#empty-certification');
 const wrongCertification = document.querySelector('#wrong-certification');
@@ -54,15 +53,18 @@ function emptyInputHandler() {
   userId.addEventListener('blur', (e) => {
     if(userId.value === "") {
       emptyId.classList.add('active');
-      wrongId.classList.remove('active');
-    } 
+    } else {
+      emptyId.classList.remove('active');
+    }
   });
   // 이메일을 입력하지 않을 경우
   userEmail.addEventListener('blur', (e) => {
     if(userEmail.value === "") {
       emptyEmail.classList.add('active');
-      wrongEmail.classList.remove('active');
-      correctEmail.classList.remove('active');
+      wrongInfo.classList.remove('active');
+      correctBoth.classList.remove('active');
+    } else {
+      emptyEmail.classList.remove('active');
     }
   });
   // 인증번호를 입력하지 않았을 경우
@@ -72,41 +74,28 @@ function emptyInputHandler() {
       wrongCertification.classList.remove('active');
       correctCertification.classList.remove('active');
       timeoutCertification.classList.remove('active');
+    } else {
+      emptyCertification.classList.remove('active');
     }
   });
 }
 
 function showUserInfoAlert(validUserInfo) {
-  const { validId, validEmail } = validUserInfo;
   // 아이디, 이메일이 가입되어 있는 경우
-  if(validId && validEmail === true) {
+  if(validUserInfo === true) {
     emptyId.classList.remove('active');
-    wrongId.classList.remove('active');
     emptyEmail.classList.remove('active');
-    wrongEmail.classList.remove('active');
+    wrongInfo.classList.remove('active');
     correctBoth.classList.add('active')
     form.classList.remove('close');
     onTimer();
-  }
-  // 가입되지 않는 아이디일 경우
-  if(validId === false) {
-    userId.value = null;
-    emptyId.classList.remove('active');
-    wrongId.classList.add('active');
   } else {
-    // 가입된 아이디일 경우
+    // 아이디, 이메일이 하나라도 가입되어 있지 않을 경우
     emptyId.classList.remove('active');
-    wrongId.classList.remove('active');
-  }
-  // 가입되지 않는 이메일일 경우 
-  if(validEmail === false) {
-    userEmail.value = null;
     emptyEmail.classList.remove('active');
-    wrongEmail.classList.add('active');
-  } else {
-    // 가입된 이메일일 경우
-    emptyEmail.classList.remove('active');
-    wrongEmail.classList.remove('active');
+    wrongInfo.classList.add('active');
+    correctBoth.classList.remove('active')
+    form.classList.add('close');
   }
 }
 
@@ -137,19 +126,19 @@ function onTimer() {
   }, 1000);
 }
 
-function showTimeoutAlert(validCertification) {
-  if(validCertification === true) {
+function showTimeoutAlert(timeout) {
+  if(timeout === true) {
     emptyCertification.classList.remove('active');
     wrongCertification.classList.remove('active');
     correctCertification.classList.remove('active');
     timeoutCertification.classList.add('active');
-    modal.classList.add('close');
   }
 }
 
-function showCertificationAlert(validCertification) {
+function showCertificationAlert(id) {
+  const resId = id;
   // 인증번호가 틀릴 경우
-  if(validCertification === false) {
+  if(resId === "") {
     emptyCertification.classList.remove('active');
     wrongCertification.classList.add('active');
     correctCertification.classList.remove('active');
