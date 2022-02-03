@@ -114,15 +114,43 @@ public class FindController {
         return false;
     }
 
-    @PostMapping("validId")
+    @PostMapping("validInfo")
     @ResponseBody
-    public boolean postValidId(@RequestBody String id) throws Exception{
+    public boolean postValidInfo(@RequestBody String information,HttpServletRequest request) throws Exception{
+        //{id: "dlrlxo999", email: "dlrlxo999@naver.com"} 데이터 넘어오는 형식
+        HttpSession session = request.getSession();
+        String[] info = information.split(",");
+        String id = info[0];
+        String email = info[1];
+        String userId = id.substring(7,id.length()-1);
+        String userEmail = email.substring(9,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getId().equals(id)){
-                return true;
+            if(document.toObject(Member.class).getId().equals(userId)){
+                if(document.toObject(Member.class).getEmail().equals(userEmail)){
+                    String to = userEmail;
+                    String from = "kitaecoding999@gmail.com";
+                    String subject = "To Do Mate 이메일 인증 관련 메일";
+                    String validationString = authenticationService.generateRandomNumber();
+                    session.setAttribute("certification",validationString);   //이메일 인증을 위한 인증번호 세션에 저장
+                    StringBuilder body = new StringBuilder();
+                    body.append("<html><body><h3>안녕하세요. To Do Mate 관리자입니다. 이메일 인증번호 보내드립니다.<br>");
+                    body.append("인증번호는 " +validationString+"입니다.<br>");
+                    body.append("To Do Mate 사이트에 가셔서 인증번호를 올바르게 입력해주시기 바랍니다.</h3></body></html>");
+                    MimeMessage message = javaMailSender.createMimeMessage();
+                    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "UTF-8");
+                    mimeMessageHelper.setFrom(from,"To Do Mate Administrator");
+                    mimeMessageHelper.setTo(to);
+                    mimeMessageHelper.setSubject(subject);
+                    mimeMessageHelper.setText(body.toString(), true);
+                    javaMailSender.send(message);
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
         return false;
@@ -131,21 +159,25 @@ public class FindController {
     @PostMapping("/changePw")
     @ResponseBody
     public void postChangePw(@RequestBody String password, HttpServletRequest request) throws Exception{
+        //{"password":"@@aa0332601"}
+        String userPassword = password.substring(13,password.length()-2);
         HttpSession session = request.getSession();
         Member member = (Member) session.getAttribute("member");
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection("member").document(member.getId());
-        ApiFuture<WriteResult> future = documentReference.update("password",password);
+        ApiFuture<WriteResult> future = documentReference.update("password",userPassword);
     }
 
     @PostMapping("/checkNickname")
     @ResponseBody
     public boolean postCheckNickname(@RequestBody String nickname) throws Exception{
+        //{"nickname":"경주불주먹"}
+        String userNickname = nickname.substring(13,nickname.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getNickname().equals(nickname)){
+            if(document.toObject(Member.class).getNickname().equals(userNickname)){
                 return true;
             }
         }
@@ -155,11 +187,13 @@ public class FindController {
     @PostMapping("/resetNickname")
     @ResponseBody
     public void postResetNickname(@RequestBody String nickname, HttpServletRequest request) throws Exception{
+        //{"nickname":"경주불주먹"}
+        String userNickname = nickname.substring(13,nickname.length()-2);
         HttpSession session = request.getSession();
         Member member = (Member) session.getAttribute("member");
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection("member").document(member.getId());
-        ApiFuture<WriteResult> future = documentReference.update("nickname",nickname);
+        ApiFuture<WriteResult> future = documentReference.update("nickname",userNickname);
     }
 
 
