@@ -112,22 +112,44 @@ body {
 	display: none;
 	width: 500px;
 	height: 65vh;
-	overflow: auto;
-	-ms-overflow-style: none;
+	position: relative;
 }
 
-.request-table::-webkit-scrollbar,
-.friend-table::-webkit-scrollbar,
-.user-table::-webkit-scrollbar {
-	background-color: rgb(38, 38, 38);
+.request-table {
+	height: 70vh;
+}
+
+.request-table:hover .cover-bar,
+.friend-table:hover .cover-bar,
+.user-table:hover .cover-bar {
+	opacity: 0;
+	transition: all 0.5s;
+}
+
+.request-table__contents,
+.friend-table__contents,
+.user-table__contents {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.request-table__contents::-webkit-scrollbar,
+.friend-table__contents::-webkit-scrollbar,
+.user-table__contents::-webkit-scrollbar {
 	width: 10px;
+	overflow: visible;
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.087);
 }
 
-.request-table::-webkit-scrollbar-thumb,
-.friend-table::-webkit-scrollbar-thumb,
-.user-table::-webkit-scrollbar-thumb {
-	background-color: rgb(143, 143, 143);
+.request-table__contents::-webkit-scrollbar-thumb,
+.friend-table__contents::-webkit-scrollbar-thumb,
+.user-table__contents::-webkit-scrollbar-thumb {
 	border-radius: 10px;
+	overflow: visible;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.2);
 }
 
 .request-table__list-item,
@@ -145,6 +167,7 @@ body {
 .friend-table.active,
 .user-table.active {
 	display: block;
+	position: relative;
 }
 
 .request-table__list:hover,
@@ -160,17 +183,17 @@ body {
 	padding-left: 10px;
 }
 
-.user-table__btn-plus {
+.user-table__btn-plus.active {
 	color: #00a3ff;
 	font-size: 17px;
-	padding-right: 10px;
+	margin-right: 10px;
 }
 
-.user-table__btn-reset,
+.user-table__btn-plus,
 .friend-table__btn-delete {
 	color: #f16767;
 	font-size: 17px;
-	padding-right: 10px;
+	margin-right: 10px;
 }
 
 .request-table__btn {
@@ -180,7 +203,7 @@ body {
 .request-table__btn-accept {
 	color: #00a3ff;
 	font-size: 17px;
-	margin-right: 10px;
+	padding-right: 10px;
 }
 
 .request-table__btn-refuse {
@@ -197,7 +220,74 @@ body {
 
 /* btn description */
 .user-table__description {
-	color: aliceblue;
+	color: rgb(141, 141, 141);
 	padding-right: 10px;
-	font-size: 15px;
+	font-size: 17px;
+}
+
+.cover-bar {
+	width: 10px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	transition: all 0.5s;
+	opacity: 1;
+	background-color: black;
+}
+
+/* modal */
+.modal-delete,
+.modal-confirm {
+	display: none;
+	font-family: "Nanum Gothic", sans-serif;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 350px;
+	background-color: #262424;
+	border-radius: 14px;
+	color: #fff;
+	padding: 15px;
+}
+
+.modal-delete.active,
+.modal-confirm.active {
+	display: block;
+}
+
+.modal__description {
+	font-size: 16px;
+}
+
+.modal__description {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal_btn-group {
+	display: flex;
+	justify-content: space-between;
+}
+
+.modal_btn-exit,
+.modal_btn-delete,
+.modal_btn-ok {
+	height: 38px;
+	background-color: #474747;
+	margin-top: 20px;
+	color: white;
+	font-size: 16px;
+	font-weight: bold;
+	border-radius: 3px;
+	width: 167px;
+}
+
+.modal_btn-ok {
+	width: 350px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

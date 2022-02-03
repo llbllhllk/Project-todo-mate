@@ -15,8 +15,22 @@
  *  (2) onClickResetFriend()에서 click 이벤트 발생 시 resetFriend(nickname, e) 실행
  *  (3) resetFriend(nickname, e)  실행 시 서버에게 요청하고 (axios)
  *  (4) resetBtnToAddBtn(btn) 실행하여 친구 요청 취소 버튼을 친구 추가 버튼으로 바꾸기 
- * 7.
+ * 7. 친구 삭제 버튼 눌렀을 때 :
+ *  (1) searchFriend() 에서 onClickDeleteFriend() 실행
+ *  (2) onClickDeleteFriend()에서 click 이벤트 발생 시 deleteFriend(nickname, e) 실행 시
+ *  (3) deleteFriend(nickname, e) 실행 시 서버에게 요청하고 (axios) showSearchFriend() 실행하여 돔조작
+ *  (4) 
+ * 8. 친구 요청 수락 버튼 눌렀을 때 :
+ *  (1) 
  */
+
+// modal 
+const modal_delete = document.querySelector('.modal-delete');
+const modal_confirm = document.querySelector('.modal-confirm');
+
+// modal button
+const modal_btn_exit = document.querySelector('.modal_btn-exit');
+const modal_btn_delete = document.querySelector('.modal_btn-delete');
 
 //tab Btn
 const tabBtn_search = document.querySelector('.friend-tab__search-btn');
@@ -31,6 +45,10 @@ const tabLi_request = document.querySelector('.friend-tab__request');
 // form
 const search_form = document.querySelector('.search-form-control');
 
+// strong
+const domNumOfFriend = document.querySelector('.num-of-friend');
+const domNumOfRequest = document.querySelector('.num-of-request');
+
 // input
 const search_user = document.querySelector('.search-user');
 const search_friend = document.querySelector('.search-friend');
@@ -43,13 +61,36 @@ const request_table = document.querySelector('.request-table');
 // ul
 const user_table_contents = document.querySelector('.user-table__contents');
 const friend_table_contents = document.querySelector('.friend-table__contents');
-const request_table_contents = document.querySelector('.request-talbe__contents');
+const request_table_contents = document.querySelector('.request-table__contents');
 
-// 서로 친구가 아닌 유저 수
-var numOfnotFriend = 0;
+// 변수 
+var numOfnotFriend = 0; // 서로 친구가 아닌 유저 수
+var numOfRequestSend = 0; // 친구요청 보낸 수
+var numOfFriend = 0; // 친구 수
+var numOfRequestNotAccept = 0; // 친구요청 받은 수
 
-// 친구요청 보낸 수
-var numOfRequestFriend = 0;
+// axios Get통신 
+async function requestGet(url, params) {
+    try {
+        const options = {
+            method: "GET",
+            url: url,
+            params
+        };
+        const res = await axios(options);
+        console.log(res);
+        return res.data;
+    } catch(err) {
+        console.log(err);
+        throw new Error(err);
+    }
+}
+
+// search창 비우기 
+function resetSearch() {
+    search_user.value = '';
+    search_friend.value = '';
+}
 
 // tab Button 클릭할 때 
 function tabBtnClick() {
@@ -69,6 +110,8 @@ function tabBtnClick() {
         user_table.classList.add('active');
         friend_table.classList.remove('active');
         request_table.classList.remove('active');
+
+        resetSearch();
     })
     
     // 친구목록 
@@ -88,7 +131,7 @@ function tabBtnClick() {
         friend_table.classList.add('active');
         request_table.classList.remove('active');
 
-        // 친구 보여주기
+        resetSearch();
         showFriend();
     })
 
@@ -106,6 +149,7 @@ function tabBtnClick() {
         friend_table.classList.remove('active');
         request_table.classList.add('active');
 
+        resetSearch();
         showRequest();
     })
 }
@@ -115,31 +159,88 @@ function onScroll(lastNickName) {
 
 }
 
-// 친구추가 버튼을 눌렀을 경우
-function onClickAddFriend() {
-    const add_friend_btn = document.querySelector('.user-table__btn-plus'); 
-    add_friend_btn.addEventListener('click', (e) => {
-        const nickname = e.target.parentElement.querySelector('.user-table__nickname').innerHTML;
-        console.log(nickname);
-        addFriend(nickname, e); // 
-    })
-}
-
-// (친구추가)요청 취소 버튼을 눌렀을 경우
-function onClickResetFriend() {
-    const reset_friend_btn = document.querySelector('.user-table__btn-reset');
-    reset_friend_btn.addEventListener('click', (e) => {
-    const nickname = e.target.parentElement.querySelector('.user-table__nickname').innerHTML;
-    console.log(nickname);
-    resetFriend(nickname, e);
+// 친구추가 버튼 혹은 (친구추가)요청 취소 버튼을 눌렀을 경우
+function onClickAddOrResetFriend() {
+    document.querySelectorAll('.user-table__btn-plus').forEach((elem) => {
+        elem.addEventListener('click', (e) => {
+            const nickname = e.target.parentElement.querySelector('.user-table__nickname').innerHTML;
+            console.log(nickname);
+            if (elem.classList.contains('active')) addFriend(nickname, e);
+            else resetFriend(nickname, e);
+        })
     })
 }
 
 // 친구삭제 버튼 눌렀을 경우
+function onClickDeleteFriend() {
+    document.querySelectorAll('.friend-table__btn-delete').forEach((elem) => {
+        elem.addEventListener('click', (e) => {
+            const nickname = e.target.parentElement.querySelector('.friend-table__nickname').innerHTML;
+            console.log(nickname);
+            modal_delete.classList.toggle('active');
+            onClickModalDeleteFriend(nickname);
+            onClickModalExitFriend();
+        })
+    })
+}
+
+// 모달 창에서 삭제 버튼 눌렀을 경우
+function onClickModalDeleteFriend(nickname) {
+    const deleteBtn = document.querySelector('.modal_btn-delete');
+    deleteBtn.addEventListener('click', (e) => {
+        console.log('모달창 삭제 버튼 누름');
+    })
+}
+
+// 모달 창에서 취소 버튼 눌렀을 경우 
+function onClickModalExitFriend() {
+    const exitBtn = document.querySelector('.modal_btn-exit');
+    exitBtn.addEventListener('click', (e) => {
+        console.log('모달창 취소 버튼 누름');
+        modal_delete.classList.toggle('active');
+    })
+}
 
 // 친구 받기 버튼 눌렀을 경우
+function onClickAcceptFriend() {
+    const accept_friend_btn = document.querySelector('.request-table__btn-accept');
+    accept_friend_btn.addEventListener('click', (e) => {
+        const nickname = e.target.parentElement.querySelector('.request-table__nickname').innerHTML;
+        console.log(nickname);
+        acceptFriend(nickname, e);
+    })
+}
 
 // 친구 거절 버튼 눌렀을 경우 
+function onClickRefuseFriend() {
+    const refuse_friend_btn = document.querySelector('.request-table__btn-refuse');
+    refuse_friend_btn.addEventListener('click', (e) => {
+        const nickname = e.target.parentElement.querySelector('.request-table__nickname').innerHTML;
+        console.log(nickname);
+        refuseFriend(nickname, e);
+    })
+}
+
+// 유저목록에서 친구추가 버튼 눌렀을 경우, 요청취소 버튼으로 변경
+function addBtnToResetBtn(btn) { 
+    btn.classList.toggle('active');
+    btn.innerHTML = "요청 취소";
+}
+
+// 유저목록에서 요청취소 버튼 눌렀을 경우, 친구추가 버튼으로 변경
+function resetBtnToAddBtn(btn) { 
+    btn.classList.toggle('active');
+    btn.innerHTML = "추가";
+}
+
+// 친구목록 수 변경
+function modifyFriendNum() {
+    domNumOfFriend.innerHTML = numOfFriend;
+}
+
+function modifyRequestNum() {
+    domNumOfRequest.innerHTML = numOfRequest;
+}
 
 // 유저목록에서 검색 후 돔조작 
 function showSearchUser(data) {
@@ -154,11 +255,8 @@ function showSearchUser(data) {
         strongTag.classList.add('user-table__nickname');
         strongTag.innerHTML = nickname;
 
-        var button_plus = document.createElement('button');
-        button_plus.classList.add('user-table__btn-plus');
-
-        var button_reset = document.createElement('button');
-        button_reset.classList.add('user-table__btn-reset');
+        var button = document.createElement('button');
+        button.classList.add('user-table__btn-plus');
 
         var spanTag = document.createElement('span');
         spanTag.classList.add('user-table__description');
@@ -167,13 +265,14 @@ function showSearchUser(data) {
         divTag.append(strongTag);
         switch (state) {
             case 0 : 
-            button_plus.innerHTML = "추가";
-            divTag.append(button_plus);
+            button.innerHTML = "추가";
+            button.classList.add('active');
+            divTag.append(button);
             break;
 
             case 1 : 
-            button_reset.innerHTML = "요청 취소";
-            divTag.append(button_reset);
+            button.innerHTML = "요청 취소";
+            divTag.append(button);
             break;
 
             case 2 : 
@@ -181,29 +280,13 @@ function showSearchUser(data) {
             divTag.append(spanTag);
             break;
         }
-        
         user_table_contents.append(liTag);
     }
-}
-
-// 유저목록에서 친구추가 버튼 눌렀을 경우, 요청취소 버튼으로 변경
-function addBtnToResetBtn(btn) { 
-    btn.classList.remove("user-table__btn-plus");
-    btn.classList.add("user-table__btn-reset");
-    btn.innerHTML = "요청 취소";
-}
-
-// 유저목록에서 요청취소 버튼 눌렀을 경우, 친구추가 버튼으로 변경
-function resetBtnToAddBtn(btn) { 
-    btn.classList.remove("user-table__btn-reset");
-    btn.classList.add("user-table__btn-plus");
-    btn.innerHTML = "추가";
 }
 
 // 친구목록에서 검색했을 때 돔조작 
 function showSearchFriend(data) {
     for (const nickname of data) {
-        console.log(nickname);
         var liTag = document.createElement('li');
         liTag.classList.add('friend-table__list');
 
@@ -227,6 +310,7 @@ function showSearchFriend(data) {
 
 // 친구요청 리스트 돔조작 
 function showRequestList(data) {
+    request_table_contents.innerHTML = "";
     for (const nickname of data) {
         var liTag = document.createElement('li');
         liTag.classList.add('request-table__list');
@@ -261,132 +345,129 @@ function showRequestList(data) {
 // 유저 검색 axios
 let searchUser = async function() {
     var input = document.getElementById('search-user');
-    user_table_contents.innerHTML = "";
-
-    try {
-        const res = await axios.get('/searchMember', {
-            params: {
-                user: input.value
-            }
-        });
-
-        const data = res.data;
-        if (data == null) return;
-        const size = Object.keys(data).length;
-        console.log(Object.keys(data).length);
-        
-        console.log(data);
-        user_table_contents.innerHTML = "";
-
-        // 받아온 데이터에서 서로 친구가 아닌 수와 친구요청을 보낸 수를 계산함
-        numOfnotFriend = Object.values(data).reduce((cnt, ele) => cnt + (0 === ele), 0);
-        numOfRequestFriend = Object.values(data).reduce((cnt, ele) => cnt + (1 === ele) , 0);
-
-        showSearchUser(data);
-        if (numOfnotFriend > 0) onClickAddFriend(); // 친구요청 버튼 눌렀을 때 
-        if (numOfRequestFriend > 0) onClickResetFriend(); // 친구요청 취소 버튼 눌렀을 때 
-        
-    } catch (err) {
-        console.log(err);
-        throw new Error(err);
+    const params = {
+        user: input.value
     }
+    requestGet('/searchMember', params)
+        .then(res => {
+            user_table_contents.innerHTML = "";
+
+            if (res == null) return;
+            console.log(Object.keys(res).length);
+        
+            // 받아온 데이터에서 서로 친구가 아닌 수와 친구요청을 보낸 수를 계산함
+            numOfnotFriend = Object.values(res).reduce((cnt, ele) => cnt + (0 === ele), 0);
+            numOfRequestSend = Object.values(res).reduce((cnt, ele) => cnt + (1 === ele) , 0);
+        
+            showSearchUser(res);
+            if (numOfnotFriend > 0 || numOfRequestSend > 0) onClickAddOrResetFriend(); // 친구요청 버튼이나 요청 취소 버튼 눌렀을 때 
+        })
 }
 
 // 친구 추가 버튼 눌렀을 때 axios
 let addFriend = async function(nickname, e) {
-    console.log("친구추가 버튼 눌림");
     const button = e.target.parentElement.parentElement.children[0].children[1];
-    console.log(button);
     addBtnToResetBtn(button);
     numOfnotFriend--;
-    console.log('이후 클래스들은 ');
-    console.log(button.classList);
-    // try {
-    //     const res = await axios.get('/requestFriend', {
-    //         params: {
-    //             followUser: nickname
+    numOfRequestSend++;
+    const params = {
+        followUser: nickname
+    }
+    // requestGet('/requestFriend', params)
+    //     .then(res => {
+    //         if (res === true) {
+    //             const button = e.target.parentElement.parentElement.children[0].children[1];
+    //             addBtnToResetBtn(button);
+    //             numOfnotFriend--;
+    //             numOfRequestSend++;
     //         }
-    //     });
-    //     console.log(res);
-    //     const button = e.target.parentElement.parentElement.children[0].children[1];
-    //     console.log(button);
-    //     // addBtnToResetBtn({"nickname": 1}); // dom 조작 
-    // } catch (err) {
-    //     console.log(err);
-    //     throw new Error(err);
-    // }
+    //     })
 }
 
 // 친구요청 취소 버튼 눌렀을 떄 axios
 let resetFriend = async function(nickname, e) {
-    console.log('친구요청 취소 버튼 눌림');
     const button = e.target.parentElement.parentElement.children[0].children[1];
-    console.log(button);
     resetBtnToAddBtn(button);
-    numOfRequestFriend--;
-    // try {
-    //     const res = await axios.get('/', {
-    //         params: {
+    numOfRequestSend--;
+    numOfnotFriend++;
+    const params = {
+        followUser: nickname
+    }
+    // requestGet('/cancelRequest', params)
+    //     .then(res => {
+    //         if (res === true) {
+    //             const button = e.target.parentElement.parentElement.children[0].children[1];
+    //             resetBtnToAddBtn(button);
+    //             numOfRequestSend--;
+    //             numOfnotFriend++;
     //         }
-    //     });
-    //     console.log(res);
-        
-        
-    // } catch (err) {
-    //     console.log(err);
-    //     throw new Error(err);
-    // }
+    //     })
 }
 
 // 친구 검색 axios
 let searchFriend = async function() {
     var input = document.getElementById('search-friend');
-    friend_table_contents.innerHTML = "";
 
-    try {
-        const res = await axios.get('/searchFriend', {
-            params: {
-                friendName: input.value
-            }
-        });
-        console.log(res);
-        const data = res.data;
-        
-        showSearchFriend(data);
-    } catch (err) {
-        console.log(err);
-        throw new Error(err);
+    const params = {
+        friendName: input.value
     }
+    requestGet('/searchFriend', params)
+        .then(res => {
+            friend_table_contents.innerHTML = "";
+            showSearchFriend(res);
+            if (res.length > 0) onClickDeleteFriend();
+        })
+}
+
+// 친구 삭제 버튼 눌렀을 때 
+let deleteFriend = async function(nickname, e) {
+    const button = e.target.parentElement.parentElement.children[0].children[1];
+    console.log(button);
+    const params = {
+        friendName: nickname
+    }
+    // requestGet('/deleteFriend', params)
+    //     .then(res => {
+
+    //     })
 }
 
 // 친구 목록 axios
 let showFriend = async function() {
     friend_table_contents.innerHTML = "";
 
-    try {
-        const res = await axios.get('/friendList');
-        console.log(res);
-        const data = res.data;
-        showSearchFriend(data);
-    } catch (err) {
-        console.log(err);
-        throw new Error(err);
-    }
+    requestGet('/friendList', {})
+        .then (res => {
+            numOfFriend = res.length;
+            console.log(numOfFriend);
+            showSearchFriend(res);
+            modifyFriendNum();
+            if (numOfFriend > 0) onClickDeleteFriend();
+        })
 }
 
 // 친구 요청 보여주기 
 let showRequest = async function() {
     request_table_contents.innerHTML = "";
 
-    try {
-        const res = await axios.get('/followerList');
-        console.log(res);
-        const data = res.data;
-        showRequestList(data);
-    } catch (err) {
-        console.log(err);
-        throw new Error(err);
-    }
+    requestGet('/followerList', {})
+        .then (res => {
+            console.log(res);
+            showRequestList(res);
+        })
+}
+
+let refuseFriend = async function() {
+    
+}
+
+// modal 창
+function onClickModalExitBtn() {
+    modal_btn_exit.addEventListener('click', )
+}
+
+function onClickModalDeleteBtn() {
+    
 }
 
 const scrollHandler = evt => {

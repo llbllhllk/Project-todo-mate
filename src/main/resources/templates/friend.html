@@ -53,13 +53,13 @@
                 <button type="button" class="friend-tab__list-btn">
                     <strong>친구목록</strong>
                 </button>
-                <span class="num-of-friend"><strong>1</strong></span>
+                <strong class="num-of-friend">1</strong>
             </li>
             <li class="friend-tab__request">
                 <button type="button" class="friend-tab__request-btn">
                     <strong>친구요청</strong>
                 </button>
-                <span class="num-of-request"><strong>2</strong></span>
+                <strong class="num-of-request">2</strong>
             </li>
         </ul>
 
@@ -91,13 +91,13 @@
                     <li class="user-table__list">
                         <div class="user-table__list-item">
                             <strong class="user-table__nickname">하랭</strong>
-                            <button type="button" class="user-table__btn-plus">추가</button>
+                            <button type="button" class="user-table__btn-plus active">추가</button>
                         </div>
                     </li>
                     <li class="user-table__list">
                         <div class="user-table__list-item">
                             <strong class="user-table__nickname">하랭</strong>
-                            <button type="button" class="user-table__btn-reset">요청 취소</button>
+                            <button type="button" class="user-table__btn-plus">요청 취소</button>
                         </div>
                     </li>
                     <li class="user-table__list">
@@ -197,7 +197,7 @@
                         </div>
                     </li>
                 </ul>
-                
+                <div class="cover-bar"></div>
             </div>
 
             <!-- friend table -->
@@ -210,11 +210,12 @@
                         </div>
                     </li>
                 </ul>
+                <div class="cover-bar"></div>
             </div>
 
             <!-- request table -->
             <div class="request-table">
-                <ul class="request-talbe__contents">
+                <ul class="request-table__contents">
                     <li class="request-table__list">
                         <div class="request-table__list-item">
                             <strong class="request-table__nickname">하랭</strong>
@@ -225,9 +226,25 @@
                         </div>
                     </li>
                 </ul>
+                <div class="cover-bar"></div>
             </div>
         </div>
         
+    </div>
+    <div class="modal-delete">
+        <strong class="modal__description">친구를 삭제하시겠습니까?</strong>
+        <ul class="modal_btn-group">
+            <li class="modal_btn-item">
+                <button type="button" class="modal_btn-exit">취소</button>
+            </li>
+            <li class="modal_btn-item">
+                <button type="button" class="modal_btn-delete">삭제</button>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-confirm">
+        <strong class="modal__description">삭제되었습니다.</strong>
+        <button type="button" class="modal_btn-ok">확인</button>
     </div>
 </body>
 </html>
