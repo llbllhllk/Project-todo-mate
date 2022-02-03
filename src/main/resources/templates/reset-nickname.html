@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="/styles/reset-nickname.css">
 
   <!-- JS -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
   <script src="/javascripts/reset-nickname.js" defer></script>
   <title>닉네임 재설정 - ToDo Mate</title>
 </head>
@@ -45,18 +46,21 @@
         닉네임
       </label>
       <div class="reset-nickname__input-container">
-        <input class="reset-nickname__input" id="user-nickname" name="nickname" type="text" placeholder="닉네임을 입력해주세요." th:value="${nicknameValue}">
+        <input class="reset-nickname__input" id="user-nickname" name="nickname" type="text" placeholder="닉네임을 입력해주세요.">
       </div>
 
       <!-- Alert -->
       <div class="reset-nickname__alert">
-        <strong th:if="${nicknameFlag}==2" id="empty-user-nickname" class="reset-nickname__alert-info wrong">
+        <strong id="empty-user-nickname" class="reset-nickname__alert-info wrong">
           닉네임을 입력하세요.
         </strong>
-        <strong th:if="${nicknameFlag}==1" id="double-checked-user-nickname" class="reset-nickname__alert-info wrong">
+        <strong id="double-checked-user-nickname" class="reset-nickname__alert-info wrong">
           닉네임이 중복되었습니다.
         </strong>
-        <strong th:if="${nicknameFlag}==0" id="correct-user-nickname" class="reset-nickname__alert-info correct">
+        <strong id="fix-user-nickname" class="reset-nickname__alert-info wrong">
+          닉네임 중복확인을 해주세요.
+        </strong>
+        <strong  id="correct-user-nickname" class="reset-nickname__alert-info correct">
           사용 가능한 닉네임 입니다.
         </strong>
       </div>

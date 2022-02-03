@@ -36,8 +36,8 @@ async function requestPost(url, data) {
   try {
     const options = {
       method: "POST",
-      url: url,
-      data
+      url,
+      data,
     };
     const res =  await axios(options);
     console.log(res.data);
