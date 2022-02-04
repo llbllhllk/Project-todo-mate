@@ -87,6 +87,13 @@ async function requestGet(url, params) {
     }
 }
 
+// 문자, 특수문자 제외 키는 인식하지 않기
+function isValidInput(input) {
+    console.log(input.charCodeAt(input.length-1));
+    if (input.charCodeAt(input.length-1) < 34) return false;
+    return true;
+}
+
 // search창 비우기 
 function resetSearch() {
     search_user.value = '';
@@ -165,7 +172,6 @@ function onClickAddOrResetFriend() {
     document.querySelectorAll('.user-table__btn-plus').forEach((elem) => {
         elem.addEventListener('click', (e) => {
             const nickname = e.target.parentElement.querySelector('.user-table__nickname').innerHTML;
-            console.log(nickname);
             if (elem.classList.contains('active')) addFriend(nickname, e);
             else resetFriend(nickname, e);
         })
@@ -355,6 +361,7 @@ let searchUser = async function() {
     const params = {
         user: input.value
     }
+    if (isValidInput(input.value) === false) return;
     requestGet('/searchMember', params)
         .then(res => {
             user_table_contents.innerHTML = "";
@@ -410,6 +417,7 @@ let searchFriend = async function() {
     const params = {
         friendName: input.value
     }
+    if (isValidInput(input.value) === false) return;
     requestGet('/searchFriend', params)
         .then(res => {
             friend_table_contents.innerHTML = "";
