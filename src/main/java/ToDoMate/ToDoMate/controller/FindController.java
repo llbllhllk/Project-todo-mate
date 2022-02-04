@@ -91,6 +91,7 @@ public class FindController {
     public String postValidCertification(@RequestBody String certification, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         String userCertification = (String) session.getAttribute("certification");
+        System.out.println("2 : "+userCertification);
         certification=certification.substring(18,certification.length()-2);
         if(certification.equals(userCertification)){
             String id = (String)session.getAttribute("id");
@@ -122,8 +123,6 @@ public class FindController {
         String[] info = information.split(",");
         String id = info[0];
         String email = info[1];
-        System.out.println(id);
-        System.out.println(email);
         String userId = id.substring(7,id.length()-1);
         String userEmail = email.substring(9,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
@@ -160,7 +159,7 @@ public class FindController {
 
     @PostMapping("/changePw")
     @ResponseBody
-    public void postChangePw(@RequestBody String password, HttpServletRequest request) throws Exception{
+    public Boolean postChangePw(@RequestBody String password, HttpServletRequest request) throws Exception{
         //{"password":"@@aa0332601"}
         String userPassword = password.substring(13,password.length()-2);
         HttpSession session = request.getSession();
@@ -168,6 +167,8 @@ public class FindController {
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection("member").document(member.getId());
         ApiFuture<WriteResult> future = documentReference.update("password",userPassword);
+        session.invalidate();
+        return true;
     }
 
     @PostMapping("/checkNickname")
