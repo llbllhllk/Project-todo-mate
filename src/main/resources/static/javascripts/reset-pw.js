@@ -64,7 +64,6 @@ function showPwAlert() {
       emptyPw.classList.remove("active");
     }
   }
-  console.log(validPw);
 }
 
 function showPwEnterAlert() {
@@ -83,22 +82,20 @@ function showPwEnterAlert() {
     emptyPwEnter.classList.remove('active');
     wrongPwEnter.classList.remove('active');
   }
-  console.log(validPwEnter);
 }
 
 function onClickChangePwBtn() {
   changePwBtn.addEventListener('click', (e) => {
+    showPwAlert()
+    showPwEnterAlert();
     if(validPw && validPwEnter === true) {
-      console.log('werwer');
       const password = {
         password: SHA256(userPwEnter.value),
       }
-      requestPost('/changePw', password).then(res => modalHandler(res));
-      console.log('All true!');
-      modal.classList.add('active');
-    } else {
-      showPwAlert()
-      showPwEnterAlert();
+      requestPost('/changePw', password).then(res => {
+        modalHandler(res);
+        modal.classList.add('active');
+      });
     }
   });
 }
