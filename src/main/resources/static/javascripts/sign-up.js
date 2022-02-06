@@ -47,6 +47,22 @@ const inputInfoArr = [
   },
 ];
 
+async function requestPost(url, data) {
+  try {
+    const options = {
+      method: "POST",
+      url,
+      data,
+    };
+    const res =  await axios(options);
+    console.log(res.data);
+    return res.data;
+  } catch(err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 // 입력창이 focus되면 메세지들을 없애준다.
 document.querySelectorAll('input').forEach((elem) => {
   elem.addEventListener('focus', (e) => {
@@ -97,6 +113,64 @@ function checkValidation(elem) {
     inputInfo.isEmpty = true;
     return;
   }
+  
+  if(inputInfo.id === 'userId') {
+    const idElem = document.querySelector('#userId');
+    const userId = {
+      id: idElem.value,
+    }
+    requestPost('/validSignUpIdDuplicate', userId).then(res => {
+      if(res === false) {
+        signErrElem.classList.remove('hidden');
+        inputInfo.isValid = false;
+        inputInfo.isEmpty = true;
+      } else {
+        signErrElem.classList.add('hidden');
+        inputInfo.isValid = true;
+        inputInfo.isEmpty = true;
+        inputInfo.data = idElem.value;
+      }
+    });
+  }
+
+  if(inputInfo.id === 'userNickname') {
+    const nicknameElem = document.querySelector('#userNickname');
+    const userNickname = {
+      nickname: nicknameElem.value,
+    }
+    requestPost('/validSignUpNicknameDuplicate', userNickname).then(res => {
+      if(res === false) {
+        signErrElem.classList.remove('hidden');
+        inputInfo.isValid = false;
+        inputInfo.isEmpty = true;
+      } else {
+        signErrElem.classList.add('hidden');
+        inputInfo.isValid = true;
+        inputInfo.isEmpty = true;
+        inputInfo.data = nicknameElem.value;
+      }
+    });
+  }
+
+  if(inputInfo.id === 'userEmail') {
+    const emailElem = document.querySelector('#userEmail');
+    const userEmail = {
+      email: emailElem.value,
+    }
+    requestPost('/validSignUpEmailDuplicate', userEmail).then(res => {
+      if(res === false) {
+        signErrElem.classList.remove('hidden');
+        inputInfo.isValid = false;
+        inputInfo.isEmpty = true;
+      } else {
+        signErrElem.classList.add('hidden');
+        inputInfo.isValid = true;
+        inputInfo.isEmpty = true;
+        inputInfo.data = emailElem.value;
+      }
+    });
+  }
+
   if (validationCb instanceof RegExp) {
     if (validationCb.test(value)) {
       signErrElem.classList.add('hidden');
@@ -165,4 +239,12 @@ submit.addEventListener('click', () => {
       return;
     }
   }
+
+  // inputInfoArr.forEach(res => {
+  //   console.log(res.data)
+  // });
+  
+  // requestPost('/postSignUp', userInfo).then(res => {
+  //   // 모달창 구현
+  // });
 });
