@@ -186,20 +186,20 @@ public class LoginController {
      * 회원정보들 넘어오면 회원가입 완료하고 데이터베이스에 정보들 넣기
      */
 
-    @PostMapping("/postSignUp")
-    @ResponseBody
-    public void postSignUp(@RequestBody String id,@RequestBody String password,@RequestBody String nickname,
-                           @RequestBody String name,@RequestBody String email) throws Exception{
-        Member member = new Member();
-        member.setId(id);
-        member.setPassword(password);
-        member.setName(name);
-        member.setNickname(nickname);
-        member.setEmail(email);
-        memberService.join(member);
-        memberService.joinFriend(member);
-        memberService.joinGoal(member);
-        System.out.println("회원가입이 완료되었습니다.");
-        System.out.println("friend 컬렉션과 goal 컬렉션에 member 데이터가 추가되었습니다.");
-    }
+//    @PostMapping("/postSignUp")
+//    @ResponseBody
+//    public void postSignUp(@RequestBody String id,@RequestBody String password,@RequestBody String nickname,
+//                           @RequestBody String name,@RequestBody String email) throws Exception{
+//        Member member = new Member();
+//        member.setId(id);
+//        member.setPassword(password);
+//        member.setName(name);
+//        member.setNickname(nickname);
+//        member.setEmail(email);
+//        memberService.join(member);
+//        memberService.joinFriend(member);
+//        memberService.joinGoal(member);
+//        System.out.println("회원가입이 완료되었습니다.");
+//        System.out.println("friend 컬렉션과 goal 컬렉션에 member 데이터가 추가되었습니다.");
+//    }
 }
