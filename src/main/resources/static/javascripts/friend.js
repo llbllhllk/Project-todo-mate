@@ -64,6 +64,9 @@ const user_table_contents = document.querySelector('.user-table__contents');
 const friend_table_contents = document.querySelector('.friend-table__contents');
 const request_table_contents = document.querySelector('.request-table__contents');
 
+// pagination
+const pagination = document.querySelector('.pagination');
+
 // 변수 
 var numOfnotFriend = 0; // 서로 친구가 아닌 유저 수
 var numOfRequestSend = 0; // 친구요청 보낸 수
@@ -184,8 +187,8 @@ function onClickDeleteFriend() {
         elem.addEventListener('click', (e) => {
             const nickname = e.target.parentElement.querySelector('.friend-table__nickname').innerHTML;
             console.log(nickname);
-            modal_delete.classList.toggle('active');
-            modal_background.classList.toggle('active');
+            modal_delete.classList.add('active');
+            modal_background.classList.add('active');
             onClickModalDeleteFriend(nickname);
             onClickModalExitFriend();
         })
@@ -205,8 +208,8 @@ function onClickModalExitFriend() {
     const exitBtn = document.querySelector('.modal_btn-exit');
     exitBtn.addEventListener('click', (e) => {
         console.log('모달창 취소 버튼 누름');
-        modal_delete.classList.toggle('active');
-        modal_background.classList.toggle('active');
+        modal_delete.classList.remove('active');
+        modal_background.classList.remove('active');
     })
 }
 
@@ -500,6 +503,23 @@ let refuseFriend = async function(nickname) {
         })
 }
 
+
+
+function isScroll() {
+    const screenHeight = screen.height; // 화면 크기
+    let onTime = false;
+
+    document.addEventListener("scroll", onScroll, {passive:true});
+    function onScroll() {
+        const fullHeight = user_table_contents.clientHeight;
+        const scrollPosition = scrollY;
+
+        if (fullHeight-screenHeight/2 <= scrollPosition && !oneTime) {}
+        oneTime = true;
+        madeBox();
+    }
+    
+}
 const scrollHandler = evt => {
     //현재 스크롤이 일어나는 이벤트의 속성값을 구해준다
         const scrollHeight = evt.nativeEvent.srcElement.scrollHeight;
@@ -512,7 +532,7 @@ const scrollHandler = evt => {
             setCurrentPostId(prev => prev + 1);
             fetchData(currentPostId);
         }
-    };
+};
 
 function init() {
     tabBtnClick();
