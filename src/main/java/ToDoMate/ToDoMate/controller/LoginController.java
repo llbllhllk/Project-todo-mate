@@ -135,11 +135,13 @@ public class LoginController {
     @PostMapping("validSignUpIdDuplicate")
     @ResponseBody
     public boolean postValidSignUpIdDuplicate(@RequestBody String id) throws Exception{
+        //{"id":"dlrlxo999"}
+        String userId = id.substring(7,id.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getId().equals(id)){
+            if(document.toObject(Member.class).getId().equals(userId)){
                 return false;
             }
         }
@@ -153,11 +155,13 @@ public class LoginController {
     @PostMapping("validSignUpNicknameDuplicate")
     @ResponseBody
     public boolean postValidSignUpNicknameDuplicate(@RequestBody String nickname) throws Exception{
+        //{"nickname":"경주불주먹"}
+        String userNickname = nickname.substring(13,nickname.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getNickname().equals(nickname)){
+            if(document.toObject(Member.class).getNickname().equals(userNickname)){
                 return false;
             }
         }
@@ -171,11 +175,13 @@ public class LoginController {
     @PostMapping("validSignUpEmailDuplicate")
     @ResponseBody
     public boolean postValidSignUpEmailDuplicate(@RequestBody String email) throws Exception{
+        //{"email":"dlrlxo999@naver.com"}
+        String userEmail = email.substring(10,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getEmail().equals(email)){
+            if(document.toObject(Member.class).getEmail().equals(userEmail)){
                 return false;
             }
         }
