@@ -135,11 +135,13 @@ public class LoginController {
     @PostMapping("validSignUpIdDuplicate")
     @ResponseBody
     public boolean postValidSignUpIdDuplicate(@RequestBody String id) throws Exception{
+        //{"id":"dlrlxo999"}
+        String userId = id.substring(7,id.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getId().equals(id)){
+            if(document.toObject(Member.class).getId().equals(userId)){
                 return false;
             }
         }
@@ -153,11 +155,13 @@ public class LoginController {
     @PostMapping("validSignUpNicknameDuplicate")
     @ResponseBody
     public boolean postValidSignUpNicknameDuplicate(@RequestBody String nickname) throws Exception{
+        //{"nickname":"경주불주먹"}
+        String userNickname = nickname.substring(13,nickname.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getNickname().equals(nickname)){
+            if(document.toObject(Member.class).getNickname().equals(userNickname)){
                 return false;
             }
         }
@@ -171,11 +175,13 @@ public class LoginController {
     @PostMapping("validSignUpEmailDuplicate")
     @ResponseBody
     public boolean postValidSignUpEmailDuplicate(@RequestBody String email) throws Exception{
+        //{"email":"dlrlxo999@naver.com"}
+        String userEmail = email.substring(10,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for(QueryDocumentSnapshot document : documents){
-            if(document.toObject(Member.class).getEmail().equals(email)){
+            if(document.toObject(Member.class).getEmail().equals(userEmail)){
                 return false;
             }
         }
@@ -186,20 +192,31 @@ public class LoginController {
      * 회원정보들 넘어오면 회원가입 완료하고 데이터베이스에 정보들 넣기
      */
 
-//    @PostMapping("/postSignUp")
-//    @ResponseBody
-//    public void postSignUp(@RequestBody String id,@RequestBody String password,@RequestBody String nickname,
-//                           @RequestBody String name,@RequestBody String email) throws Exception{
-//        Member member = new Member();
-//        member.setId(id);
-//        member.setPassword(password);
-//        member.setName(name);
-//        member.setNickname(nickname);
-//        member.setEmail(email);
-//        memberService.join(member);
-//        memberService.joinFriend(member);
-//        memberService.joinGoal(member);
-//        System.out.println("회원가입이 완료되었습니다.");
-//        System.out.println("friend 컬렉션과 goal 컬렉션에 member 데이터가 추가되었습니다.");
-//    }
+    @PostMapping("/postSignUp")
+    @ResponseBody
+    public void postSignUp(@RequestBody String userInfo) throws Exception{
+        //{"id": "dlrlxo999", "password": "@@aa0332601", "name" : "이기태" , "nickname" : "경주불주먹", "email" : "dlrlxo999@naver.com"} 데이터 넘어오는 형식
+        String[] info = userInfo.split(",");
+        String id = info[0];    //{"id":"dlrlxo999"
+        id=id.substring(7,id.length()-1);
+        String password = info[1];  //"password":"@@aa0332601"
+        password=password.substring(12,password.length()-1);
+        String name = info[2];  //"name":"이기태"
+        name=name.substring(8,name.length()-1);
+        String nickname = info[3];  //"nickname":"경주불주먹"
+        nickname=nickname.substring(12,nickname.length()-1);
+        String email = info[4]; //"email":"dlrlxo999@naver.com"}
+        email=email.substring(9,email.length()-2);
+        Member member = new Member();
+        member.setId(id);
+        member.setPassword(password);
+        member.setName(name);
+        member.setNickname(nickname);
+        member.setEmail(email);
+        memberService.join(member);
+        memberService.joinFriend(member);
+        memberService.joinGoal(member);
+        System.out.println("회원가입이 완료되었습니다.");
+        System.out.println("friend 컬렉션과 goal 컬렉션에 member 데이터가 추가되었습니다.");
+    }
 }
