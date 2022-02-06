@@ -118,11 +118,13 @@ public class FindController {
     @PostMapping("validInfo")
     @ResponseBody
     public boolean postValidInfo(@RequestBody String information,HttpServletRequest request) throws Exception{
-        //{id: "dlrlxo999", email: "dlrlxo999@naver.com"} 데이터 넘어오는 형식
+        //{"id": "dlrlxo999", "email": "dlrlxo999@naver.com"} 데이터 넘어오는 형식
         HttpSession session = request.getSession();
         String[] info = information.split(",");
         String id = info[0];
         String email = info[1];
+        System.out.println(id);
+        System.out.println(email);
         String userId = id.substring(7,id.length()-1);
         String userEmail = email.substring(9,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
