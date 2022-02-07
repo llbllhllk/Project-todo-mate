@@ -86,12 +86,26 @@ public class FindController {
      * 인증번호 확인 Server to Client
      */
 
-    @PostMapping("validCertification")
+    @PostMapping("validIdCertification")
     @ResponseBody
     public String postValidCertification(@RequestBody String certification, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         String userCertification = (String) session.getAttribute("certification");
-        System.out.println("2 : "+userCertification);
+        certification=certification.substring(18,certification.length()-2);
+        if(certification.equals(userCertification)){
+            String id = (String)session.getAttribute("id");
+            return id;
+        }
+        else{
+            return "";
+        }
+    }
+
+    @PostMapping("/validPasswordCertification")
+    @ResponseBody
+    public String postValidPasswordCertification(@RequestBody String certification, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        String userCertification = (String) session.getAttribute("certification");
         certification=certification.substring(18,certification.length()-2);
         if(certification.equals(userCertification)){
             String id = (String)session.getAttribute("id");
@@ -118,12 +132,13 @@ public class FindController {
     @PostMapping("validInfo")
     @ResponseBody
     public boolean postValidInfo(@RequestBody String information,HttpServletRequest request) throws Exception{
-        //{id: "dlrlxo999", email: "dlrlxo999@naver.com"} 데이터 넘어오는 형식
+        //{"id": "dlrlxo999", "email": "dlrlxo999@naver.com"} 데이터 넘어오는 형식
         HttpSession session = request.getSession();
         String[] info = information.split(",");
         String id = info[0];
         String email = info[1];
         String userId = id.substring(7,id.length()-1);
+        session.setAttribute("id",userId);
         String userEmail = email.substring(9,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
@@ -136,6 +151,7 @@ public class FindController {
                     String subject = "To Do Mate 이메일 인증 관련 메일";
                     String validationString = authenticationService.generateRandomNumber();
                     session.setAttribute("certification",validationString);   //이메일 인증을 위한 인증번호 세션에 저장
+                    session.setAttribute("id",userId);
                     StringBuilder body = new StringBuilder();
                     body.append("<html><body><h3>안녕하세요. To Do Mate 관리자입니다. 이메일 인증번호 보내드립니다.<br>");
                     body.append("인증번호는 " +validationString+"입니다.<br>");

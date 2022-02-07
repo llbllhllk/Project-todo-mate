@@ -10,9 +10,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface FriendRepository {
+    List<Integer> getFriendNumInfo(String memberId) throws Exception;
+
     Optional<Friend> getFriendList(String id) throws Exception;
 
-    List<String> getMemberNicknameList(String area, String search) throws Exception;
+    List<String> getMemberNicknameList(String lastMem) throws Exception;
 
     Boolean requestFriend(String memberId, String memberNickname, String addId, String addNickname) throws Exception;
     Boolean cancelFollow(String memberId, String memberNickname, String cancelId, String cancelNickname) throws Exception;
