@@ -194,7 +194,7 @@ public class LoginController {
 
     @PostMapping("/postSignUp")
     @ResponseBody
-    public void postSignUp(@RequestBody String userInfo) throws Exception{
+    public boolean postSignUp(@RequestBody String userInfo) throws Exception{
         //{"id": "dlrlxo999", "password": "@@aa0332601", "name" : "이기태" , "nickname" : "경주불주먹", "email" : "dlrlxo999@naver.com"} 데이터 넘어오는 형식
         String[] info = userInfo.split(",");
         String id = info[0];    //{"id":"dlrlxo999"
@@ -214,9 +214,10 @@ public class LoginController {
         member.setNickname(nickname);
         member.setEmail(email);
         memberService.join(member);
-        memberService.joinFriend(member);
-        memberService.joinGoal(member);
+//        memberService.joinFriend(member);
+//        memberService.joinGoal(member);
         System.out.println("회원가입이 완료되었습니다.");
-        System.out.println("friend 컬렉션과 goal 컬렉션에 member 데이터가 추가되었습니다.");
+//        System.out.println("friend 컬렉션과 goal 컬렉션에 member 데이터가 추가되었습니다.");
+        return true;
     }
 }

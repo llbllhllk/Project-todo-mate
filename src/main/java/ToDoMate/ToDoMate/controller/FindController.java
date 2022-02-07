@@ -86,12 +86,26 @@ public class FindController {
      * 인증번호 확인 Server to Client
      */
 
-    @PostMapping("validCertification")
+    @PostMapping("validIdCertification")
     @ResponseBody
     public String postValidCertification(@RequestBody String certification, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         String userCertification = (String) session.getAttribute("certification");
-        System.out.println("2 : "+userCertification);
+        certification=certification.substring(18,certification.length()-2);
+        if(certification.equals(userCertification)){
+            String id = (String)session.getAttribute("id");
+            return id;
+        }
+        else{
+            return "";
+        }
+    }
+
+    @PostMapping("/validPasswordCertification")
+    @ResponseBody
+    public String postValidPasswordCertification(@RequestBody String certification, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        String userCertification = (String) session.getAttribute("certification");
         certification=certification.substring(18,certification.length()-2);
         if(certification.equals(userCertification)){
             String id = (String)session.getAttribute("id");
@@ -123,9 +137,8 @@ public class FindController {
         String[] info = information.split(",");
         String id = info[0];
         String email = info[1];
-        System.out.println(id);
-        System.out.println(email);
         String userId = id.substring(7,id.length()-1);
+        session.setAttribute("id",userId);
         String userEmail = email.substring(9,email.length()-2);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = firestore.collection("member").get();
