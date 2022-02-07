@@ -72,6 +72,7 @@ var numOfnotFriend = 0; // 서로 친구가 아닌 유저 수
 var numOfRequestSend = 0; // 친구요청 보낸 수
 var numOfFriend = 0; // 친구 수
 var numOfRequestNotAccept = 0; // 친구요청 받은 수
+var lastUserNickname = ""; // 마지막으로 보여진 닉네임 
 
 // axios Get통신 
 async function requestGet(url, params) {
@@ -200,6 +201,7 @@ function onClickModalDeleteFriend(nickname) {
     const deleteBtn = document.querySelector('.modal_btn-delete');
     deleteBtn.addEventListener('click', (e) => {
         console.log('모달창 삭제 버튼 누름');
+        deleteFriend(nickname, e);
     })
 }
 
@@ -210,6 +212,18 @@ function onClickModalExitFriend() {
         console.log('모달창 취소 버튼 누름');
         modal_delete.classList.remove('active');
         modal_background.classList.remove('active');
+    })
+}
+
+// 모달 창에서 확인 버튼 눌렀을 경우
+function onClickModalOK(data) {
+    const okBtn = document.querySelector('.modal_btn-ok');
+    okBtn.addEventListener('click', (e) => {
+        console.log('모달창 확인 버튼 누름');
+        modal_background.classList.remove('active');
+        modal_confirm.classList.remove('active');
+        showSearchFriend(data);
+        modifyFriendNum();
     })
 }
 
@@ -260,6 +274,7 @@ function modifyRequestNum() {
 
 // 유저목록에서 검색 후 돔조작 
 function showSearchUser(data) {
+    var num = 1;
     for (const [nickname, state] of Object.entries(data)) {
         var liTag = document.createElement('li');
         liTag.classList.add('user-table__list');
@@ -270,6 +285,7 @@ function showSearchUser(data) {
         var strongTag = document.createElement('strong');
         strongTag.classList.add('user-table__nickname');
         strongTag.innerHTML = nickname;
+        if (num === Object.keys(res).length) lastUserNickname = nickname;
 
         var button = document.createElement('button');
         button.classList.add('user-table__btn-plus');
@@ -297,11 +313,13 @@ function showSearchUser(data) {
             break;
         }
         user_table_contents.append(liTag);
+        num++;
     }
 }
 
 // 친구목록에서 검색했을 때 돔조작 
 function showSearchFriend(data) {
+    var num = 1;
     for (const nickname of data) {
         var liTag = document.createElement('li');
         liTag.classList.add('friend-table__list');
@@ -312,6 +330,7 @@ function showSearchFriend(data) {
         var strongTag = document.createElement('strong');
         strongTag.classList.add('friend-table__nickname');
         strongTag.innerHTML = nickname;
+        if (num === data.length) lastUserNickname = nickname;
 
         var button = document.createElement('button');
         button.classList.add('friend-table__btn-delete');
@@ -321,11 +340,13 @@ function showSearchFriend(data) {
         divTag.append(strongTag);
         divTag.append(button);
         friend_table_contents.append(liTag);
+        num++;
     }
 }
 
 // 친구요청 리스트 돔조작 
 function showRequestList(data) {
+    var num = 1;
     request_table_contents.innerHTML = "";
     for (const nickname of data) {
         var liTag = document.createElement('li');
@@ -337,6 +358,7 @@ function showRequestList(data) {
         var strongTag = document.createElement('strong');
         strongTag.classList.add('request-table__nickname');
         strongTag.innerHTML = nickname;
+        if (num === data.length) lastUserNickname = nickname;
 
         var btnDivTag = document.createElement('div');
         btnDivTag.classList.add('request-table__btn');
@@ -355,6 +377,7 @@ function showRequestList(data) {
         btnDivTag.append(acceptBtn);
         btnDivTag.append(refuseBtn);
         request_table_contents.append(liTag);
+        num++;
     }
 }
 
@@ -436,10 +459,12 @@ let deleteFriend = async function(nickname, e) {
     const params = {
         friendName: nickname
     }
-    // requestGet('/deleteFriend', params)
-    //     .then(res => {
-
-    //     })
+    requestGet('/deleteFriend', params)
+        .then(res => {
+            modal_delete.classList.remove('active');
+            modal_confirm.classList.add('active');
+            onClickModalOK(res);
+        })
 }
 
 // 친구 목록 axios
@@ -503,39 +528,58 @@ let refuseFriend = async function(nickname) {
         })
 }
 
-
-
-function isScroll() {
-    const screenHeight = screen.height; // 화면 크기
-    let onTime = false;
-
-    document.addEventListener("scroll", onScroll, {passive:true});
-    function onScroll() {
-        const fullHeight = user_table_contents.clientHeight;
-        const scrollPosition = scrollY;
-
-        if (fullHeight-screenHeight/2 <= scrollPosition && !oneTime) {}
-        oneTime = true;
-        madeBox();
+function debounce(callback, limit = 100) {
+    let timeout
+    return function(...args) {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            callback.apply(this, args)
+        }, limit)
     }
-    
 }
-const scrollHandler = evt => {
-    //현재 스크롤이 일어나는 이벤트의 속성값을 구해준다
-        const scrollHeight = evt.nativeEvent.srcElement.scrollHeight;
-        const scrollTop = evt.nativeEvent.srcElement.scrollTop;
-        const clientHeight = evt.nativeEvent.srcElement.clientHeight;
-    
-    //조건이 만족될때 현재 데이터의 페이지 상태값이 추가되고 추가된 값을 
-    //인자로 받아서 데이터를 더 불러온다.
-        if (scrollTop + clientHeight >= scrollHeight) {
-            setCurrentPostId(prev => prev + 1);
-            fetchData(currentPostId);
+
+function onScrollEventListener() {
+    user_table_contents.addEventListener("scroll", debounce(e => {
+        onScrollEvent(e, 0);
+    }, 200))
+
+    friend_table_contents.addEventListener("scroll", debounce(e => {
+        onScrollEvent(e, 1);
+    }, 200))
+
+    request_table_contents.addEventListener("scroll", debounce(e => {
+        onScrollEvent(e, 2);
+    }, 200))
+}
+
+function onScrollEvent(e, num) {
+// clientHeight : 웹 브라우저 창의 높이
+    // scrollTop : 현재 스크롤된 부분의 맨 위의 높이
+    // scrollHeight : 문서의 총 높이 (= 스크롤의 총 높이)
+    // 스크롤의 마지막에 도달 : clientHeight + scrollTop >= scrollHeight
+    console.log('scroll event');
+    const clientHeight = e.target.clientHeight;
+    const scrollTop = e.target.scrollTop;
+    const scrollHeight = e.target.scrollHeight;
+
+    if(clientHeight + scrollTop >= scrollHeight) {
+        switch (num) {
+            case 0: 
+                nextLoad(url);
+                break;
+            case 1: 
+                nextLoad(url);
+                break;
+            case 2: 
+                nextLoad(url);
+                break;
         }
-};
+    }
+}
 
 function init() {
     tabBtnClick();
+    onScrollEventListener();
 }
 
 init();
