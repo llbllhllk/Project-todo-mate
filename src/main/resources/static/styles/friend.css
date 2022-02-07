@@ -111,12 +111,12 @@ body {
 .user-table {
 	display: none;
 	width: 500px;
-	height: 65vh;
+	height: 20vh;
 	position: relative;
 }
 
 .request-table {
-	height: 70vh;
+	height: 20vh;
 }
 
 .request-table:hover .cover-bar,

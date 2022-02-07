@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,13 +53,13 @@
                 <button type="button" class="friend-tab__list-btn">
                     <strong>친구목록</strong>
                 </button>
-                <strong class="num-of-friend">1</strong>
+                <strong class="num-of-friend" th:text="${friendNum}"></strong>
             </li>
             <li class="friend-tab__request">
                 <button type="button" class="friend-tab__request-btn">
                     <strong>친구요청</strong>
                 </button>
-                <strong class="num-of-request">2</strong>
+                <strong class="num-of-request" th:text="${followerNum}"></strong>
             </li>
         </ul>
 
@@ -197,6 +197,7 @@
                         </div>
                     </li>
                 </ul>
+                <div class="pagination"></div>
                 <div class="cover-bar"></div>
             </div>
 
