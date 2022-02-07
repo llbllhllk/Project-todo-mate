@@ -320,6 +320,7 @@ function showSearchUser(data) {
 // 친구목록에서 검색했을 때 돔조작 
 function showSearchFriend(data) {
     var num = 1;
+    friend_table_contents.innerHTML = "";
     for (const nickname of data) {
         var liTag = document.createElement('li');
         liTag.classList.add('friend-table__list');
@@ -463,6 +464,7 @@ let deleteFriend = async function(nickname, e) {
         .then(res => {
             modal_delete.classList.remove('active');
             modal_confirm.classList.add('active');
+            numOfFriend = res.length;
             onClickModalOK(res);
         })
 }
@@ -579,7 +581,7 @@ function onScrollEvent(e, num) {
 
 function init() {
     tabBtnClick();
-    onScrollEventListener();
+    // onScrollEventListener();
 }
 
 init();
