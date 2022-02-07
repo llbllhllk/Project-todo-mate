@@ -151,6 +151,7 @@ public class FindController {
                     String subject = "To Do Mate 이메일 인증 관련 메일";
                     String validationString = authenticationService.generateRandomNumber();
                     session.setAttribute("certification",validationString);   //이메일 인증을 위한 인증번호 세션에 저장
+                    session.setAttribute("id",userId);
                     StringBuilder body = new StringBuilder();
                     body.append("<html><body><h3>안녕하세요. To Do Mate 관리자입니다. 이메일 인증번호 보내드립니다.<br>");
                     body.append("인증번호는 " +validationString+"입니다.<br>");
