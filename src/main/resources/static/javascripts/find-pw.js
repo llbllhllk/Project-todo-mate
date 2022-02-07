@@ -168,7 +168,7 @@ function onClickEnteringCertificationBtn() {
     const certification = {
       certification: userCertification.value,
     }
-    requestPost('/validCertification', certification).then(res => showCertificationAlert(res));
+    requestPost('/validPasswordCertification', certification).then(res => showCertificationAlert(res));
   });
 }
 
