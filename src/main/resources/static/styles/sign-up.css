@@ -124,3 +124,67 @@ p.sign_err {
 .sign-info {
 	height: 15px;
 }
+
+/* Modal */
+.modal {
+  border: 1px solid #000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 300px;
+  background-color: #fff;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.modal__header {
+  position: relative;
+  height: 40px;
+  border: 1px solid #000;
+  background-color: #000;
+}
+
+.modal__close-btn {
+  display: block;
+  position: absolute;
+  top: 25%;
+  right: 10px;
+  background: url('/images/tab-delete-button.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.modal__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 260px;
+}
+
+.modal__description {
+  margin-bottom: 20px;
+}
+
+.modal__login-btn {
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  background-color: #c4c4c4;
+  border: 1px solid black;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.modal__login-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.close {
+  display: none;
+}
