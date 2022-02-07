@@ -1,7 +1,7 @@
 /**
  * @typedef InputInfo
  * @property {string} id
- * @property {(value: string) => boolean} validationCb
+ * @property {(value: string) => boolean} validationPw
  * @property {boolean} isValid
  * @property {boolean} isEmpty
  * @property {string} data
@@ -11,39 +11,44 @@
 const inputInfoArr = [
   {
     id: 'userId',
+    isValid: false,
     isEmpty: true,
-    data: "아이디",
+    alert: "아이디",
+    data: "",
   },
   {
     id: 'userPw',
-    validationCb: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~@$^!%<>&*?&])[A-Za-z\d~@$^!%<>&*?&]{8,20}$/,
+    validationPw: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~@$^!%<>&*?&])[A-Za-z\d~@$^!%<>&*?&]{8,20}$/,
     isValid: false,
     isEmpty: true,
-    data: "비밀번호",
+    alert: "비밀번호",
   },
   {
     id: 'userPwConfirm',
-    validationCb: 'PW_CONFIRM',
     isValid: false,
     isEmpty: true,
-    data: "비밀번호 확인",
+    alert: "비밀번호 확인",
+    data: "",
   },
   {
     id: 'userName',
     isEmpty: true,
-    data: "이름",
+    alert: "이름",
+    data: "",
   },
   {
     id: 'userNickname',
     isEmpty: true,
-    data: "닉네임",
+    alert: "닉네임",
+    data: "",
   },
   {
     id: 'userEmail',
-    validationCb: /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/,
+    validationEmail: /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/,
     isValid: false,
     isEmpty: true,
-    data: "이메일",
+    alert: "이메일",
+    data: "",
   },
 ];
 
@@ -103,17 +108,22 @@ function checkValidation(elem) {
   const {id, value} = elem;
 
   let inputInfo = inputInfoArr.find((inputObj) => inputObj.id === id);
-  let validationCb = inputInfo.validationCb;
+  let validationPw = inputInfo.validationPw;
+  let validationEmail = inputInfo.validationEmail;
 
   const signErrElem = elem.parentElement.parentElement.querySelector('.sign_err');
+  const emailErrElem = elem.parentElement.parentElement.querySelector('.email_err');
   const infoElem = elem.parentElement.parentElement.querySelector('.sign_info');
 
   if (value === "") {
     infoElem.classList.remove('hidden');
     inputInfo.isEmpty = true;
     return;
+  } else {
+    inputInfo.data = value;
   }
   
+  // 아이디
   if(inputInfo.id === 'userId') {
     const idElem = document.querySelector('#userId');
     const userId = {
@@ -123,56 +133,19 @@ function checkValidation(elem) {
       if(res === false) {
         signErrElem.classList.remove('hidden');
         inputInfo.isValid = false;
-        inputInfo.isEmpty = true;
-      } else {
+      } else if(res === true) {
         signErrElem.classList.add('hidden');
         inputInfo.isValid = true;
-        inputInfo.isEmpty = true;
-        inputInfo.data = idElem.value;
+      } else {
+        inputInfo.isEmpty = false;
       }
+      turnCheck(elem);
     });
   }
 
-  if(inputInfo.id === 'userNickname') {
-    const nicknameElem = document.querySelector('#userNickname');
-    const userNickname = {
-      nickname: nicknameElem.value,
-    }
-    requestPost('/validSignUpNicknameDuplicate', userNickname).then(res => {
-      if(res === false) {
-        signErrElem.classList.remove('hidden');
-        inputInfo.isValid = false;
-        inputInfo.isEmpty = true;
-      } else {
-        signErrElem.classList.add('hidden');
-        inputInfo.isValid = true;
-        inputInfo.isEmpty = true;
-        inputInfo.data = nicknameElem.value;
-      }
-    });
-  }
-
-  if(inputInfo.id === 'userEmail') {
-    const emailElem = document.querySelector('#userEmail');
-    const userEmail = {
-      email: emailElem.value,
-    }
-    requestPost('/validSignUpEmailDuplicate', userEmail).then(res => {
-      if(res === false) {
-        signErrElem.classList.remove('hidden');
-        inputInfo.isValid = false;
-        inputInfo.isEmpty = true;
-      } else {
-        signErrElem.classList.add('hidden');
-        inputInfo.isValid = true;
-        inputInfo.isEmpty = true;
-        inputInfo.data = emailElem.value;
-      }
-    });
-  }
-
-  if (validationCb instanceof RegExp) {
-    if (validationCb.test(value)) {
+  // 비밀번호
+  if (validationPw instanceof RegExp) {
+    if (validationPw.test(value)) {
       signErrElem.classList.add('hidden');
       inputInfo.isValid = true;
     }
@@ -180,8 +153,12 @@ function checkValidation(elem) {
       signErrElem.classList.remove('hidden');
       inputInfo.isValid = false;
     }
+  } else {
+    inputInfo.isEmpty = false;
   }
-  else if (validationCb === 'PW_CONFIRM') {
+  
+  // 비밀번호 확인
+  if (inputInfo.id === 'userPwConfirm') {
     const pwElem = document.querySelector('#userPw');
     if (pwElem.value === value) {
       signErrElem.classList.add('hidden');
@@ -191,8 +168,56 @@ function checkValidation(elem) {
       signErrElem.classList.remove('hidden');
       inputInfo.isValid = false;
     }
+  } else {
+    inputInfo.isEmpty = false;
   }
-  inputInfo.isEmpty = false;
+
+  // 닉네임
+  if(inputInfo.id === 'userNickname') {
+    const nicknameElem = document.querySelector('#userNickname');
+    const userNickname = {
+      nickname: nicknameElem.value,
+    }
+    requestPost('/validSignUpNicknameDuplicate', userNickname).then(res => {
+      if(res === false) {
+        signErrElem.classList.remove('hidden');
+        inputInfo.isValid = false;
+      } else if (res === true){
+        signErrElem.classList.add('hidden');
+        inputInfo.isValid = true;
+      } else {
+        inputInfo.isEmpty = false;
+      }
+      turnCheck(elem);
+    });
+  }
+
+  // 이메일 
+  if (validationEmail instanceof RegExp) {
+    const emailElem = document.querySelector('#userEmail');
+    const userEmail = {
+      email: emailElem.value,
+    }
+    if(validationEmail.test(emailElem.value)) {
+      requestPost('/validSignUpEmailDuplicate', userEmail).then(res => {
+        if(res === false) {
+          signErrElem.classList.add('hidden');
+          emailErrElem.classList.remove('hidden');
+          inputInfo.isValid = false;
+        } else if(res === true) {
+          signErrElem.classList.add('hidden');
+          emailErrElem.classList.add('hidden');
+          inputInfo.isValid = true;
+        } else {
+          inputInfo.isEmpty = false;
+        }
+        turnCheck(elem);
+      });
+    } else {
+      emailErrElem.classList.add('hidden');
+      signErrElem.classList.remove('hidden');
+    }
+  }
 }
 
 /**
@@ -206,9 +231,8 @@ function turnCheck(elem) {
   let isEmpty = inputInfo.isEmpty;
   
   let signInput = elem.parentElement;
-
   if (inputInfo.hasOwnProperty('isValid')) {
-    if (isValid && !(isEmpty)) {
+    if (isValid === true && isEmpty === false) {
       signInput.classList.add('valid');
     } else {
       signInput.classList.remove('valid');
@@ -227,24 +251,42 @@ function turnCheck(elem) {
  * 제출했을 때 빈칸인 항목을 팝업창 띄워준다.
  * @type {HTMLButtonElement}
  * */
-const submit = document.querySelector('.sign-up_button');
+const submit = document.querySelector('.sign-up_button button');
+const modal = document.querySelector('.modal.close');
+const deleteBtn = document.querySelector('.modal__close-btn');
+const loginBtn = document.querySelector('.modal__login-btn');
+
 submit.addEventListener('click', () => {
   const main = document.querySelector('.sign-up');
-  if (!main) return;
-
-  for (const key in inputInfoArr) {
-    const inputInfo = inputInfoArr[key];
-    if (inputInfo.isEmpty) {
-      alert(inputInfo.data + " 창이 비어있습니다!");
-      return;
+  if (!main) {
+    return;
+  } else {
+    for (const key in inputInfoArr) {
+      const inputInfo = inputInfoArr[key];
+      if (inputInfo.isEmpty) {
+        alert(inputInfo.alert + " 창이 비어있습니다!");
+        return;
+      }
     }
+    const userInfo = {
+      id: inputInfoArr[0].data,
+      password: inputInfoArr[2].data,
+      name: inputInfoArr[3].data,
+      nickname: inputInfoArr[4].data,
+      email: inputInfoArr[5].data,
+    }
+    requestPost('/postSignUp', userInfo).then(res => {
+      if(res === true) {
+        modal.classList.remove('close');
+        deleteBtn.addEventListener('click', () => {
+          modal.classList.add('close');
+        });
+        loginBtn.addEventListener('click', () => {
+          location.href = "login";
+        });
+      } else {
+        modal.classList.add('close');
+      }
+    });
   }
-
-  // inputInfoArr.forEach(res => {
-  //   console.log(res.data)
-  // });
-  
-  // requestPost('/postSignUp', userInfo).then(res => {
-  //   // 모달창 구현
-  // });
 });
