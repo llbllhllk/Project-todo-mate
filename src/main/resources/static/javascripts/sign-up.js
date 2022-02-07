@@ -163,6 +163,7 @@ function checkValidation(elem) {
     if (pwElem.value === value) {
       signErrElem.classList.add('hidden');
       inputInfo.isValid = true;
+      inputInfo.data = SHA256(value);
     }
     else {
       signErrElem.classList.remove('hidden');
