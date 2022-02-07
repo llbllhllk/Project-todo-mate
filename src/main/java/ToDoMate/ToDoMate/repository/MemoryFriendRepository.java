@@ -18,6 +18,17 @@ public class MemoryFriendRepository implements FriendRepository {
     private static final String collectionName = "friend";
 
     @Override
+    public List<Integer> getFriendNumInfo(String memberId) throws Exception {
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<DocumentSnapshot> apiFuture = firestore.collection(collectionName).document(memberId).get();
+        Friend friendInfo = apiFuture.get().toObject(Friend.class);
+        int friendNum = friendInfo.getFriend().size();
+        int followerNum = friendInfo.getFollower().size();
+        return Arrays.asList(friendNum, followerNum);
+    }
+
+
+    @Override
     public Optional<Friend> getFriendList(String id) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestore.collection(collectionName).document(id);
@@ -28,18 +39,20 @@ public class MemoryFriendRepository implements FriendRepository {
 
 
     @Override
-    public List<String> getMemberNicknameList(String area, String search) throws Exception {
+    public List<String> getMemberNicknameList(String lastMem) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> allMember = firestore.collection("member").get(); //전체문서
-        List<QueryDocumentSnapshot> allMemberList = allMember.get().getDocuments();
-
-        List<String> allMemberNicknameList=new ArrayList<>();
-        for (QueryDocumentSnapshot document : allMemberList) {
-            Member member = document.toObject(Member.class);
-            allMemberNicknameList.add(member.getNickname());
+        Query memberQuery = firestore.collection("member")
+                .orderBy("nickname")
+                .limit(5)
+                .startAfter(lastMem);
+        List<Member> memberList = memberQuery.get().get().toObjects(Member.class);
+        List<String> nicknameList = new ArrayList<>();
+        for (Member mem : memberList) {
+            nicknameList.add(mem.getNickname());
         }
-        return allMemberNicknameList;
+        return nicknameList;
     }
+
 
     @Override
     public Boolean requestFriend(String memberId, String memberNickname, String addId, String addNickname) throws Exception {
@@ -129,8 +142,6 @@ public class MemoryFriendRepository implements FriendRepository {
 
         ArrayList<String> updateFollower = new ArrayList<>();
         ArrayList<String> updateFollowee = new ArrayList<>();
-        Map<String, Object> memberFriendUpdate = new HashMap<>();
-        Map<String, Object> followerFriendUpdate = new HashMap<>();
         for (String f : memberFriendDoc.getFollower()) {
             if (Objects.equals(f, followerNickname)){
                 continue;
@@ -195,32 +206,18 @@ public class MemoryFriendRepository implements FriendRepository {
     @Override
     public Optional<String> findMemberIdByNickname(String nickname) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> allMember = firestore.collection("member").get(); //전체문서
-        List<QueryDocumentSnapshot> allMemberList = allMember.get().getDocuments();
-        String result="";
-        for (QueryDocumentSnapshot document : allMemberList) {
-            Member member = document.toObject(Member.class);
-            if (Objects.equals(member.getNickname(), nickname)){
-                result = member.getId();
-            }
-        }
-        return Optional.ofNullable(result);
+        Query query = firestore.collection("member").whereEqualTo("nickname", nickname);
+        Member member = query.get().get().toObjects(Member.class).get(0);
+        return Optional.ofNullable(member.getId());
     }
 
 
     @Override
     public Optional<String> findMemberNicknameById(String memberId) throws Exception {
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> allMember = firestore.collection("member").get(); //전체문서
-        List<QueryDocumentSnapshot> allMemberList = allMember.get().getDocuments();
-        String result="";
-        for (QueryDocumentSnapshot document : allMemberList) {
-            Member member = document.toObject(Member.class);
-            if (Objects.equals(member.getId(), memberId)){
-                result = member.getNickname();
-            }
-        }
-        return Optional.ofNullable(result);
+        Query query = firestore.collection("member").whereEqualTo("id", memberId);
+        Member member = query.get().get().toObjects(Member.class).get(0);
+        return Optional.ofNullable(member.getNickname());
     }
 
 
