@@ -2,7 +2,6 @@ package ToDoMate.ToDoMate.controller;
 
 import ToDoMate.ToDoMate.domain.Friend;
 import ToDoMate.ToDoMate.domain.Member;
-import ToDoMate.ToDoMate.repository.MemberRepository;
 import ToDoMate.ToDoMate.service.FriendService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
@@ -50,7 +49,7 @@ class FriendControllerTest {
         Member member = new Member();
         member.setId("dasol199");
         member.setPassword("0723");
-        member.setNickname("SOL");
+        member.setNickname("dori");
         member.setName("강다솔");
         member.setEmail("dasol199@naver.com");
         session.setAttribute("member", member);
@@ -69,13 +68,25 @@ class FriendControllerTest {
      * }
      */
 
+
+    @Test
+    public void 친구창으로이동() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/friend")
+                .session(session))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     @Test
     public void 친구추가위한회원검색() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/searchMember")
                 .session(session)
-                .param("user", ""))
+                .param("user", "k")
+                .param("lastMem", "4U4I37"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
