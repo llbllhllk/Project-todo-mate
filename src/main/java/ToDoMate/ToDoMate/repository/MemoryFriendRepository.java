@@ -43,7 +43,7 @@ public class MemoryFriendRepository implements FriendRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         Query memberQuery = firestore.collection("member")
                 .orderBy("nickname")
-                .limit(5)
+                .limit(10)
                 .startAfter(lastMem);
         List<Member> memberList = memberQuery.get().get().toObjects(Member.class);
         List<String> nicknameList = new ArrayList<>();

@@ -85,8 +85,8 @@ class FriendControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/searchMember")
                 .session(session)
-                .param("user", "k")
-                .param("lastMem", "4U4I37"))
+                .param("user", "z")
+                .param("lastMem", "ZZ"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }

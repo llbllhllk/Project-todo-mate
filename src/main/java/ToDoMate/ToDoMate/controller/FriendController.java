@@ -111,29 +111,29 @@ public class FriendController {
     }
 
 
-//    /**
-//     * 친구목록에서 친구검색하기
-//     * @param member
-//     * @param searchName
-//     * @return searchResultList
-//     * @throws Exception
-//     */
-//    @GetMapping(value="searchFriend")
-//    @ResponseBody
-//    public List<String> searchFriendList(@SessionAttribute(name = "member")Member member,
-//                                         @RequestParam("friendName")String searchName) throws Exception{
-//        List<String> friend = friendService.friendList(member.getId()).get().getFriend();//저장된 친구리스트
-//        List<String> searchFriendList = new ArrayList<>();
-//        //친구검색
-//        for (int i =0; i<friend.size(); i++)
-//        {
-//            if(friend.get(i).contains(searchName) == true)
-//            {
-//                searchFriendList.add(friend.get(i));
-//            }
-//        }
-//        return searchFriendList;
-//    }
+    /**
+     * 친구목록에서 친구검색하기
+     * @param member
+     * @param searchName
+     * @return searchResultList
+     * @throws Exception
+     */
+    @GetMapping(value="searchFriend")
+    @ResponseBody
+    public List<String> searchFriendList(@SessionAttribute(name = "member")Member member,
+                                         @RequestParam("friendName")String searchName) throws Exception{
+        List<String> friend = friendService.friendList(member.getId()).get().getFriend();//저장된 친구리스트
+        List<String> searchFriendList = new ArrayList<>();
+        //친구검색
+        for (int i =0; i<friend.size(); i++)
+        {
+            if(friend.get(i).contains(searchName) == true)
+            {
+                searchFriendList.add(friend.get(i));
+            }
+        }
+        return searchFriendList;
+    }
 
 
     /**
@@ -151,20 +151,20 @@ public class FriendController {
     }
 
 
-//    /**
-//     * 나를 친구로 추가한 목록 보여주기
-//     * @param member
-//     * @return followerList
-//     * @throws Exception
-//     */
-//    @GetMapping(value="followerList")
-//    @ResponseBody
-//    public List<String> viewFollower(@SessionAttribute("member")Member member) throws Exception{
-//
-//        Optional<Friend> friend = friendService.friendList(member.getId()); //저장된 친구리스트
-//        List<String> followerList = friend.get().getFollower();
-//        return followerList;
-//    }
+    /**
+     * 나를 친구로 추가한 목록 보여주기
+     * @param member
+     * @return followerList
+     * @throws Exception
+     */
+    @GetMapping(value="followerList")
+    @ResponseBody
+    public List<String> viewFollower(@SessionAttribute("member")Member member) throws Exception{
+
+        Optional<Friend> friend = friendService.friendList(member.getId()); //저장된 친구리스트
+        List<String> followerList = friend.get().getFollower();
+        return followerList;
+    }
 
 
     /**
