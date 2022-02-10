@@ -4,20 +4,32 @@ import ToDoMate.ToDoMate.domain.Goal;
 import ToDoMate.ToDoMate.domain.Member;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.SetOptions;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class MemoryGoalRepository implements GoalRepository{
+
+    @Override
+    public List<Map<String, String>> getGoalList(String memberId) throws Exception {
+        Firestore firestore = FirestoreClient.getFirestore();
+        Query query = firestore.collection("goal").whereEqualTo("memberId", memberId);
+        QuerySnapshot queryDocSnapshot = query.get().get();
+        List<Map<String, String>> goalList = new ArrayList<>();
+        if (queryDocSnapshot.size()!=0){
+            for (Goal goal : queryDocSnapshot.toObjects(Goal.class)) {
+                HashMap<String, String> temp = new HashMap<>();
+                temp.put("title", goal.getTitle());
+                temp.put("color", goal.getColor());
+                temp.put("memberId", goal.getMemberId());
+                goalList.add(temp);
+            }
+        }
+        return goalList;
+    }
 
     @Override
     public Boolean addGoal(String memberId, String title, String color, String goalKey) throws Exception {
