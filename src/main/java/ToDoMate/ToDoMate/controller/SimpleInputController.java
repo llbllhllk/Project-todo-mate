@@ -53,8 +53,8 @@ public class SimpleInputController {
         return true;
     }
 
-    @GetMapping("/simple-input")
+    @GetMapping("/simpleInput")
     public String viewSimpleInput() throws Exception{
-        return "simple-input";
+        return "simpleInput";
     }
 }
