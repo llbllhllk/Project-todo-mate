@@ -72,20 +72,9 @@ class GoalControllerTest {
         setSession();
         mockMvc.perform(MockMvcRequestBuilders.get("/addGoal")
                 .session(session)
-        .param("color", "빨강")
-        .param("title", "스터디")
-        .param("goalKey", "1234"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-    }
-
-    @Test
-    public void 목표삭제() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-        setSession();
-        mockMvc.perform(MockMvcRequestBuilders.get("/deleteGoal")
-                .session(session)
-                .param("goalKey", "1234"))
+        .param("color", "파랑")
+        .param("title", "공부")
+        .param("goalKey", "1111"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -96,12 +85,22 @@ class GoalControllerTest {
         setSession();
         mockMvc.perform(MockMvcRequestBuilders.get("/addGoal")
                 .session(session)
-                .param("color", "노랑")
-                .param("title", "운동")
-                .param("goalKey", "1234"))
+                .param("color", "검정")
+                .param("title", "게임")
+                .param("goalKey", "1111"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    public void 목표삭제() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        setSession();
+        mockMvc.perform(MockMvcRequestBuilders.get("/deleteGoal")
+                .session(session)
+                .param("goalKey", "1111"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
 
 }
