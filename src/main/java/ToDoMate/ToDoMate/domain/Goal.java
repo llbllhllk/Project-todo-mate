@@ -12,10 +12,6 @@ public class Goal {
     String title;
     String color;
     String memberId;
+    String viewId;
 
-    public Goal(String title, String color, String memberId) {
-        this.title = title;
-        this.color = color;
-        this.memberId = memberId;
-    }
 }
