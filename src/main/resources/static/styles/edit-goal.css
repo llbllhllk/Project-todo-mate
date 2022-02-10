@@ -104,7 +104,9 @@ button {
 }
 
 /* modal */
-.modal {
+.modal-create,
+.modal-edit,
+.modal-delete {
 	display: none;
 	font-family: "Nanum Gothic", sans-serif;
 	position: fixed;
@@ -118,7 +120,9 @@ button {
 	padding: 15px;
 }
 
-.modal.active {
+.modal-create.active,
+.modal-edit.active,
+.modal-delete.active {
 	display: block;
 }
 
@@ -209,3 +213,4 @@ button {
 	background-color: #474747;
 	color: white;
 }
+
