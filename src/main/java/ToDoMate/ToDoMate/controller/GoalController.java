@@ -1,12 +1,17 @@
 package ToDoMate.ToDoMate.controller;
 
+import ToDoMate.ToDoMate.domain.Goal;
 import ToDoMate.ToDoMate.domain.Member;
 import ToDoMate.ToDoMate.service.GoalService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @SessionAttributes("member")
@@ -17,7 +22,10 @@ public class GoalController {
     private final GoalService goalService;
 
     @GetMapping("editGoal")
-    public String viewGoal() throws Exception {
+    public String viewGoal(@SessionAttribute("member")Member member,
+                           Model model) throws Exception {
+        List<Map<String, String>> goalList = goalService.getGoalList(member.getId());
+        model.addAttribute("goalList", goalList);
         return "editGoal";
     }
 
