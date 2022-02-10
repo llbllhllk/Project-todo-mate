@@ -22,7 +22,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +53,17 @@ class GoalControllerTest {
         member.setEmail("dasol199@naver.com");
 
         session.setAttribute("member", member);
+    }
+
+    @Test
+    public void 목표페이지로이동() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        List<String> result = Arrays.asList();
+        setSession();
+        mockMvc.perform(MockMvcRequestBuilders.get("/editGoal")
+                .session(session))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
