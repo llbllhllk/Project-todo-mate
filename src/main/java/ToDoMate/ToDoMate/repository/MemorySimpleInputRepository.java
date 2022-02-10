@@ -16,7 +16,14 @@ public class MemorySimpleInputRepository implements SimpleInputRepository{
      */
 
     @Override
-    public String registerSimpleInput(SimpleInput simpleInput) throws Exception {
+    public String registerSimpleInput(String title, String startDate, String endDate, String day, String simpleInputKey, String goalKey) throws Exception {
+        SimpleInput simpleInput = new SimpleInput();
+        simpleInput.setTitle(title);
+        simpleInput.setStartDate(startDate);
+        simpleInput.setEndDate(endDate);
+        simpleInput.setDay(day);
+        simpleInput.setSimpleInputKey(simpleInputKey);
+        simpleInput.setGoalKey(goalKey);
         Firestore dbFirestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionsApiFuture=
                 dbFirestore.collection(collectionSimpleInput).document(simpleInput.getSimpleInputKey()).set(simpleInput);
@@ -72,7 +79,7 @@ public class MemorySimpleInputRepository implements SimpleInputRepository{
      */
 
     @Override
-    public void deleteSimpleInput(String goalKey, String simpleInputKey) throws Exception {
+    public void deleteSimpleInput(String simpleInputKey) throws Exception {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         dbFirestore.collection("simpleInput").document(simpleInputKey).delete();
     }
