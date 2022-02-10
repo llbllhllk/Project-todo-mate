@@ -16,9 +16,9 @@ public class GoalController {
     @Autowired
     private final GoalService goalService;
 
-    @GetMapping("edit-goal")
+    @GetMapping("editGoal")
     public String viewGoal() throws Exception {
-        return "edit-goal";
+        return "editGoal";
     }
 
     @GetMapping("addGoal")

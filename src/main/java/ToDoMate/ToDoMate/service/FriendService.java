@@ -38,6 +38,7 @@ public class FriendService {
         search = search.toUpperCase();
         List<String> findList=new ArrayList<>();
         int loopNum=0;
+        int wantNum=5;
         while (true){
             loopNum++;
             //페이징 처리된 nicknameList받아오기
@@ -45,14 +46,14 @@ public class FriendService {
             loopNum++;
             for (String nick : nicknameList) {
                 String temp = nick.toUpperCase(Locale.ROOT);
-                if (findList.size()<3){
+                if (findList.size()<wantNum){
                     if (temp.contains(search) && !Objects.equals(nick, memberNickname) && friendList.contains(nick)==false) {
                         findList.add(nick);
                     }
                 } else break;
             }
             if (!findList.isEmpty()) lastMem=findList.get(findList.size()-1);
-            if (findList.size()>=3 || loopNum>100) break;
+            if (findList.size()>=wantNum || loopNum>3) break;
         }
 
         Map<String, Integer> result = new HashMap<>();
