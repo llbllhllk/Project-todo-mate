@@ -2,9 +2,13 @@
 
 // Btn
 const addSimpleInputBtn = document.querySelectorAll('.simple-input__goal-btn');
+const editSimpleInputBtn = document.querySelectorAll('.simple-input__edit-btn');
 
 // Section
 const sections = document.querySelectorAll('.simple-input__content');
+
+// Modal
+const editModal = document.querySelector('.modal.edit');
 
 // Date
 let date = new Date();
@@ -48,7 +52,7 @@ function addSimpleInputHandler() {
           for(const key in initData) {
             const listItem = document.createElement('li');
             listItem.className = "simple-input__list-item";
-            
+
             const strong = document.createElement('strong');
             strong.className = "simple-input__list-title";
             strong.innerText = title[i];
@@ -72,8 +76,33 @@ function addSimpleInputHandler() {
   });
 }
 
+function editsimpleInputHandler() {
+  editSimpleInputBtn.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      console.log('ddd')
+      const editBtn = document.querySelector('#edit_modal--edit');
+      const deleteBtn = document.querySelector('#edit_modal--delete');
+      const cancleBtn = document.querySelector('#edit_modal--cancle');
+
+      // 수정 버튼을 눌렀을 경우
+      editBtn.addEventListener('click', (e) => {
+
+      });
+      // 삭제 버튼을 눌렀을 경우
+      deleteBtn.addEventListener('click', (e) => {
+
+      });
+      // 취소 버튼을 눌렀을 경우
+      cancleBtn.addEventListener('click', (edit) => {
+        editModal.classList.remove('active');
+      });
+    });
+  });   
+}
+
 function init() {
   addSimpleInputHandler();
+  editsimpleInputHandler();
 }
 
 init();
