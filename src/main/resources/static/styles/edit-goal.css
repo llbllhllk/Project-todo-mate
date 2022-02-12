@@ -62,18 +62,32 @@ button {
 /* goal list */
 .goal-list {
 	height: 70vh;
-	overflow: auto;
-	-ms-overflow-style: none;
+	position: relative;
 }
 
-.goal-list::-webkit-scrollbar {
-	background-color: rgb(38, 38, 38);
+.goal-list:hover .cover-bar {
+	opacity: 0;
+	transition: all 0.5s;
+}
+
+.goal-list__contents {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.goal-list__contents::-webkit-scrollbar {
 	width: 10px;
+	overflow: visible;
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.087);
 }
 
-.goal-list::-webkit-scrollbar-thumb {
-	background-color: rgb(143, 143, 143);
+.goal-list__contents::-webkit-scrollbar-thumb {
 	border-radius: 10px;
+	overflow: visible;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.2);
 }
 
 .goal-list__item {
@@ -103,7 +117,34 @@ button {
 	color: #a7a7a7;
 }
 
+.cover-bar {
+	width: 10px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	transition: all 0.5s;
+	opacity: 1;
+	background-color: black;
+}
+
 /* modal */
+.modal-background {
+	display: none;
+	position: fixed;
+	z-index: 99;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-background.active {
+	display: block;
+}
+
 .modal-create,
 .modal-edit,
 .modal-delete {
@@ -112,6 +153,7 @@ button {
 	position: fixed;
 	top: 50%;
 	left: 50%;
+	z-index: 100;
 	transform: translate(-50%, -50%);
 	width: 350px;
 	background-color: #262424;
@@ -176,8 +218,9 @@ button {
 	background-color: #d07e7e;
 }
 
-.color-list .active {
-	border: 2px solid white;
+.color-picker__list-item.active {
+	opacity: 0.3;
+	border: 3px solid;
 }
 
 .modal_btn {
@@ -213,4 +256,3 @@ button {
 	background-color: #474747;
 	color: white;
 }
-
