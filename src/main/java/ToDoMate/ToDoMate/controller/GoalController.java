@@ -25,6 +25,7 @@ public class GoalController {
     public String viewGoal(@SessionAttribute("member")Member member,
                            Model model) throws Exception {
         List<Map<String, String>> goalList = goalService.getGoalList(member.getId());
+        model.addAttribute("goalCount", goalList.size());
         model.addAttribute("goalList", goalList);
         return "editGoal";
     }
