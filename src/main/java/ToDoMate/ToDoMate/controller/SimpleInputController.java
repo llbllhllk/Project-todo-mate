@@ -1,11 +1,22 @@
 package ToDoMate.ToDoMate.controller;
 
+import ToDoMate.ToDoMate.domain.SimpleInput;
 import ToDoMate.ToDoMate.repository.SimpleInputRepository;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class SimpleInputController {
@@ -54,7 +65,16 @@ public class SimpleInputController {
     }
 
     @GetMapping("/simpleInput")
-    public String viewSimpleInput() throws Exception{
+    public String viewSimpleInput(Model model) throws Exception{
+        ArrayList<SimpleInput> simpleInputs = new ArrayList<>();
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("simpleInput").get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            simpleInputs.add(document.toObject(SimpleInput.class));
+            System.out.println(document.toObject(SimpleInput.class).getTitle());
+        }
+        model.addAttribute("simpleInputList",simpleInputs);
         return "simpleInput";
     }
 }
