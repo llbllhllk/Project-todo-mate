@@ -16,8 +16,9 @@ const edit_goal_confirm_btn = document.querySelector('.edit_confirm');
 const edit_goal_delete_btn = document.querySelectorAll('.modal_btn.edit')[0];
 const delete_goal_exit_btn = document.querySelectorAll('.modal_btn.exit')[0];
 const delete_goal_delete_btn = document.querySelectorAll('.modal_btn.delete')[0];
-const modal_color_btn = document.querySelectorAll('.color-picker__list-item');
-
+const add_modal_color_btn = document.querySelectorAll('.color-picker__list-item.create');
+const edit_modal_color_btn = document.querySelectorAll('.color-picker__list-item.edit');
+console.log(add_modal_color_btn);
 // modal-input
 const modal_create_input = document.querySelectorAll('.input-goal.create')[0];
 const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
@@ -25,9 +26,7 @@ const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
 // modal color
 
 // 목표 수
-var num_of_goal = 2;
-alert(test);
-
+var num_of_goal = test;
 
 async function requestGet(url, params) {
     try {
@@ -45,26 +44,48 @@ async function requestGet(url, params) {
     }
 }
 
-// 모달창 초기화
+// create 모달창 초기화
 function initCreateModal() {
     modal_create_input.value = "";
-    
+
+    var cnt = 1;
+    modal_color_btn.forEach((elem) => {
+        if (cnt === 1) {
+            var color = elem.style.backgroundColor;
+            modal_create_input.style.borderBottom = "1px solid " + color;
+            modal_create_input.style.color = color;
+
+            elem.classList.add('active');
+        } else {
+            elem.classList.remove('active');
+        }
+        cnt++;
+    })
 }
 
-function initEditModal() {
-    modal_edit_input.value = "";
+// edit 모달창 초기화 
+function initEditModal(e) {
+
+    modal_edit_input.value = e.target.parentElement.parentElement.querySelector('.goal-list__name').innerHTML;
+    var color = e.target.parentElement.parentElement.querySelector('.goal-list__name').style.color;
+    
+    modal_edit_input.style.borderBottom = "1px solid " + color;
+    modal_edit_input.style.color = color;
+    
+    
     
 }
 
 // 목표 리스트 수정 버튼을 눌렀을 경우
 function onClickGoalList() {
     if (num_of_goal > 0) {
-        document.querySelectorAll('.goal-list__edit-btn').forEach((e) => {
-            e.addEventListener('click', (e) => {
+        document.querySelectorAll('.goal-list__edit-btn').forEach((elem) => {
+            elem.addEventListener('click', (e) => {
                 modal_edit.classList.add('active');
                 modal_background.classList.add('active');
 
                 // 색상 정보 초기화 추가 
+                initEditModal(e);
                 onClickEditGoalConfirmBtn();
                 onClickEditGoalDeleteBtn();
             })
@@ -78,6 +99,7 @@ function onClickAddGoal() {
         modal_create.classList.add('active');
         modal_background.classList.add('active');
 
+        initCreateModal();
         // 색상 정보 초기화 추가 
         onClickAddGoalConfirmBtn();
         onClickAddGoalBackBtn();
@@ -89,7 +111,6 @@ function onClickAddGoalConfirmBtn() {
     add_goal_confirm_btn.addEventListener('click', (e) => {
         // axios
 
-        initModal();
         modal_create.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -99,7 +120,7 @@ function onClickAddGoalConfirmBtn() {
 function onClickAddGoalBackBtn() {
     add_goal_back_btn.addEventListener('click', (e) => {
         // 초기화
-        initModal();
+
         modal_create.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -110,7 +131,7 @@ function onClickEditGoalConfirmBtn() {
     edit_goal_confirm_btn.addEventListener("click", (e) => {
         // axios 
 
-        initModal();
+        initEditModal();
         modal_edit.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -129,7 +150,7 @@ function onClickEditGoalDeleteBtn() {
 // delete 모달창에서 취소 버튼 눌렀을 경우 
 function onClickDeleteGoalExitBtn() {
     delete_goal_exit_btn.addEventListener('click', (e) => {
-        initModal();
+        initEditModal();
         modal_delete.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -140,7 +161,7 @@ function onClickDeleteGoalDeleteBtn() {
     delete_goal_delete_btn.addEventListener('click', (e) => {
         // 목표 삭제 axios 요청 
 
-        initModal();
+        initEditModal();
         modal_delete.classList.remove('active');
         modal_background.classList.remove('active');
     })

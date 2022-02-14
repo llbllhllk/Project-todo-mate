@@ -46,7 +46,7 @@
         <div class="goal-list">
             <ul class="goal-list__contents">
                 <li class="goal-list__item" th:each="goal : ${goalList}" >
-                    <strong class="goal-list__name" id="" th:text="${goal.title}" th:style="'color : ${goal.color};'"></strong>
+                    <strong class="goal-list__name" id="" th:text="${goal.title}" th:style="'color: ' + ${goal.color} + ';'"></strong>
                     <button type="button" class="goal-list__edit-btn"><i class="fas fa-chevron-right"></i></button>
                 </li>
             </ul>
@@ -72,37 +72,37 @@
         <div class="color create">
             <strong class="color__description">색상</strong>
             <ul class="color-picker">
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item active" style="background-color:#F08080"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#BC8F8F"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FF4500"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFE4C4"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFD700"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFFF00"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#ADFF2F"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#32CD32"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#008000"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create active" style="background-color:#F08080"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#BC8F8F"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FF4500"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FFE4C4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FFD700"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FFFF00"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#ADFF2F"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#32CD32"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#008000"></button></li>
             </ul>
             <ul class="color-picker">
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#008080"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#4682B4"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#7FFFD4"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#AFEEEE"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#00FFFF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#0000FF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#00BFFF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#7B68EE"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#DDA0DD"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#008080"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#4682B4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#7FFFD4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#AFEEEE"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#00FFFF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#0000FF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#00BFFF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#7B68EE"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#DDA0DD"></button></li>
             </ul>
             <ul class="color-picker">
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#E6E6FA"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#EE82EE"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FF1493"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFB6C1"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFEBCD"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFFFE0"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#E0FFFF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#F0F8FF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#F0FFF0"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#E6E6FA"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#EE82EE"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FF1493"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FFB6C1"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FFEBCD"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#FFFFE0"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#E0FFFF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#F0F8FF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item create" style="background-color:#F0FFF0"></button></li>
             </ul>
             <button type="button" class="modal_btn back">뒤로가기</button>
         </div>
@@ -123,37 +123,37 @@
         <div class="color edit">
             <strong color="color__description">색상</strong>
             <ul class="color-picker">
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item active" style="background-color:#F08080"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#BC8F8F"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FF4500"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFE4C4"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFD700"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFFF00"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#ADFF2F"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#32CD32"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#008000"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit active" style="background-color:#F08080"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit style="background-color:#BC8F8F"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FF4500"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FFE4C4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FFD700"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FFFF00"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#ADFF2F"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#32CD32"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#008000"></button></li>
             </ul>
             <ul class="color-picker">
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#008080"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#4682B4"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#7FFFD4"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#AFEEEE"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#00FFFF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#0000FF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#00BFFF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#7B68EE"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#DDA0DD"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#008080"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#4682B4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#7FFFD4"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#AFEEEE"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#00FFFF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#0000FF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#00BFFF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#7B68EE"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#DDA0DD"></button></li>
             </ul>
             <ul class="color-picker">
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#E6E6FA"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#EE82EE"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FF1493"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFB6C1"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFEBCD"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#FFFFE0"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#E0FFFF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#F0F8FF"></button></li>
-                <li class="color-picker__list"><button type="button" class="color-picker__list-item" style="background-color:#F0FFF0"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#E6E6FA"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#EE82EE"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FF1493"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FFB6C1"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FFEBCD"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#FFFFE0"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#E0FFFF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#F0F8FF"></button></li>
+                <li class="color-picker__list"><button type="button" class="color-picker__list-item edit" style="background-color:#F0FFF0"></button></li>
             </ul>
             <button type="button" class="modal_btn edit">삭제</button>
         </div>
