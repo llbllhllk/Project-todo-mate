@@ -31,8 +31,8 @@ public class SimpleInputController {
     @GetMapping("/addSimpleInput")
     @ResponseBody
     public boolean getAddSimpleInput(@RequestParam("title") String title,@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,@RequestParam("day") String day,
-                                    @RequestParam("simpleInputKey") String simpleInputKey, @RequestParam("goalKey") String goalKey) throws Exception{
-        simpleInputRepository.registerSimpleInput(title,startDate,endDate,day,simpleInputKey,goalKey);
+                                    @RequestParam("simpleInputKey") String simpleInputKey, @RequestParam("goalKey") String goalKey, @RequestParam("memberId") String memberId) throws Exception{
+        simpleInputRepository.registerSimpleInput(title,startDate,endDate,day,simpleInputKey,goalKey,memberId);
         return true;
     }
 

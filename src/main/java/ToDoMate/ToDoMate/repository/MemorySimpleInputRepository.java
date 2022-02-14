@@ -16,7 +16,7 @@ public class MemorySimpleInputRepository implements SimpleInputRepository{
      */
 
     @Override
-    public String registerSimpleInput(String title, String startDate, String endDate, String day, String simpleInputKey, String goalKey) throws Exception {
+    public String registerSimpleInput(String title, String startDate, String endDate, String day, String simpleInputKey, String goalKey, String memberId) throws Exception {
         SimpleInput simpleInput = new SimpleInput();
         simpleInput.setTitle(title);
         simpleInput.setStartDate(startDate);
@@ -24,6 +24,7 @@ public class MemorySimpleInputRepository implements SimpleInputRepository{
         simpleInput.setDay(day);
         simpleInput.setSimpleInputKey(simpleInputKey);
         simpleInput.setGoalKey(goalKey);
+        simpleInput.setMemberId(memberId);
         Firestore dbFirestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionsApiFuture=
                 dbFirestore.collection(collectionSimpleInput).document(simpleInput.getSimpleInputKey()).set(simpleInput);
