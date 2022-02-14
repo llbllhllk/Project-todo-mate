@@ -1,5 +1,6 @@
 package ToDoMate.ToDoMate.controller;
 
+import ToDoMate.ToDoMate.domain.Member;
 import ToDoMate.ToDoMate.domain.SimpleInput;
 import ToDoMate.ToDoMate.repository.SimpleInputRepository;
 import com.google.api.core.ApiFuture;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +34,11 @@ public class SimpleInputController {
     @GetMapping("/addSimpleInput")
     @ResponseBody
     public boolean getAddSimpleInput(@RequestParam("title") String title,@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,@RequestParam("day") String day,
-                                    @RequestParam("simpleInputKey") String simpleInputKey, @RequestParam("goalKey") String goalKey, @RequestParam("memberId") String memberId) throws Exception{
+                                    @RequestParam("simpleInputKey") String simpleInputKey,
+                                     @RequestParam("goalKey") String goalKey, HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        Member member = (Member)session.getAttribute("member");
+        String memberId = member.getId();
         simpleInputRepository.registerSimpleInput(title,startDate,endDate,day,simpleInputKey,goalKey,memberId);
         return true;
     }

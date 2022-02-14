@@ -2,6 +2,8 @@ package ToDoMate.ToDoMate.repository;
 
 import ToDoMate.ToDoMate.domain.SimpleInput;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface SimpleInputRepository {
 
     String registerSimpleInput(String title, String startDate, String endDate, String day, String simpleInputKey, String goalKey, String memberId) throws Exception;
