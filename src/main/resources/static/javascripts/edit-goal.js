@@ -24,10 +24,9 @@ const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
 
 // modal color
 
-
-
 // 목표 수
 var num_of_goal = 2;
+
 
 async function requestGet(url, params) {
     try {
@@ -46,9 +45,14 @@ async function requestGet(url, params) {
 }
 
 // 모달창 초기화
-function initModal() {
+function initCreateModal() {
     modal_create_input.value = "";
+    
+}
+
+function initEditModal() {
     modal_edit_input.value = "";
+    
 }
 
 // 목표 리스트 수정 버튼을 눌렀을 경우
