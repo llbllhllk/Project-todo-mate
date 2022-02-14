@@ -1,5 +1,6 @@
 package ToDoMate.ToDoMate.controller;
 
+import ToDoMate.ToDoMate.domain.Goal;
 import ToDoMate.ToDoMate.domain.Member;
 import ToDoMate.ToDoMate.domain.SimpleInput;
 import ToDoMate.ToDoMate.repository.SimpleInputRepository;
@@ -72,15 +73,31 @@ public class SimpleInputController {
     }
 
     @GetMapping("/simpleInput")
-    public String viewSimpleInput(Model model) throws Exception{
+    public String viewSimpleInput(Model model,HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+        Member member = (Member)session.getAttribute("member");
+        String memberId = member.getId();
+//        System.out.println(member.getId());
         ArrayList<SimpleInput> simpleInputs = new ArrayList<>();
+        ArrayList<Goal> goalArrayList = new ArrayList<>();
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = firestore.collection("simpleInput").get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        for(QueryDocumentSnapshot document : documents){
-            simpleInputs.add(document.toObject(SimpleInput.class));
-            System.out.println(document.toObject(SimpleInput.class).getTitle());
+        ApiFuture<QuerySnapshot> goalFuture = firestore.collection("goal").get();
+        ApiFuture<QuerySnapshot> simpleInputFuture = firestore.collection("simpleInput").get();
+        List<QueryDocumentSnapshot> goalDocuments = goalFuture.get().getDocuments();
+        List<QueryDocumentSnapshot> simpleInputDocuments = simpleInputFuture.get().getDocuments();
+        for(QueryDocumentSnapshot goalDocument : goalDocuments){
+            if(goalDocument.toObject(Goal.class).getMemberId().equals(memberId)){    // 현재 로그인한 멤버랑 목표의 아이디가 같을 때
+                goalArrayList.add(goalDocument.toObject(Goal.class));
+                for(QueryDocumentSnapshot simpleInputDocument : simpleInputDocuments){
+                    if(simpleInputDocument.toObject(SimpleInput.class).getMemberId().equals(memberId) && simpleInputDocument.toObject(SimpleInput.class).getGoalKey().equals(goalDocument.toObject(Goal.class).getViewId())){
+                        simpleInputs.add(simpleInputDocument.toObject(SimpleInput.class));
+                    }
+                }
+//                System.out.println(document.toObject(SimpleInput.class).getMemberId());
+            }
+
         }
+        model.addAttribute("goalList",goalArrayList);
         model.addAttribute("simpleInputList",simpleInputs);
         return "simpleInput";
     }
