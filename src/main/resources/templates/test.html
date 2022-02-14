@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST</title>
+</head>
+<body>
+<table>
+    <tr th:each="simpleInput : ${simpleInputList}">
+        <td th:text="${simpleInput.title}"></td>
+        <td th:text="${simpleInput.startDate}"></td>
+        <td th:text="${simpleInput.endDate}"></td>
+        <td th:text="${simpleInput.day}"></td>
+        <td th:text="${simpleInput.simpleInputKey}"></td>
+        <td th:text="${simpleInput.goalKey}"></td>
+    </tr>
+</table>
+</body>
+</html>
