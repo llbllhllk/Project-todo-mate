@@ -26,6 +26,7 @@ const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
 
 // 목표 수
 var num_of_goal = 2;
+alert(test);
 
 
 async function requestGet(url, params) {
