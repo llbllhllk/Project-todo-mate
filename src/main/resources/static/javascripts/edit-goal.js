@@ -25,9 +25,7 @@ const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
 // modal color
 
 // 목표 수
-var num_of_goal = 2;
-alert(test);
-
+var num_of_goal = test;
 
 async function requestGet(url, params) {
     try {
@@ -45,12 +43,26 @@ async function requestGet(url, params) {
     }
 }
 
-// 모달창 초기화
+// create 모달창 초기화
 function initCreateModal() {
     modal_create_input.value = "";
-    
+
+    var cnt = 1;
+    modal_color_btn.forEach((elem) => {
+        if (cnt === 1) {
+            var color = elem.style.backgroundColor;
+            modal_create_input.style.borderBottom = "1px solid " + color;
+            modal_create_input.style.color = color;
+
+            elem.classList.add('active');
+        } else {
+            elem.classList.remove('active');
+        }
+        cnt++;
+    })
 }
 
+// edit 모달창 초기화 
 function initEditModal() {
     modal_edit_input.value = "";
     
@@ -78,6 +90,7 @@ function onClickAddGoal() {
         modal_create.classList.add('active');
         modal_background.classList.add('active');
 
+        initCreateModal();
         // 색상 정보 초기화 추가 
         onClickAddGoalConfirmBtn();
         onClickAddGoalBackBtn();
@@ -89,7 +102,6 @@ function onClickAddGoalConfirmBtn() {
     add_goal_confirm_btn.addEventListener('click', (e) => {
         // axios
 
-        initModal();
         modal_create.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -99,7 +111,7 @@ function onClickAddGoalConfirmBtn() {
 function onClickAddGoalBackBtn() {
     add_goal_back_btn.addEventListener('click', (e) => {
         // 초기화
-        initModal();
+
         modal_create.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -110,7 +122,7 @@ function onClickEditGoalConfirmBtn() {
     edit_goal_confirm_btn.addEventListener("click", (e) => {
         // axios 
 
-        initModal();
+        initEditModal();
         modal_edit.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -129,7 +141,7 @@ function onClickEditGoalDeleteBtn() {
 // delete 모달창에서 취소 버튼 눌렀을 경우 
 function onClickDeleteGoalExitBtn() {
     delete_goal_exit_btn.addEventListener('click', (e) => {
-        initModal();
+        initEditModal();
         modal_delete.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -140,7 +152,7 @@ function onClickDeleteGoalDeleteBtn() {
     delete_goal_delete_btn.addEventListener('click', (e) => {
         // 목표 삭제 axios 요청 
 
-        initModal();
+        initEditModal();
         modal_delete.classList.remove('active');
         modal_background.classList.remove('active');
     })
