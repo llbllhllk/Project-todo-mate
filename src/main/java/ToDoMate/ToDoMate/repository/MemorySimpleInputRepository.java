@@ -1,11 +1,15 @@
 package ToDoMate.ToDoMate.repository;
 
+import ToDoMate.ToDoMate.domain.Member;
 import ToDoMate.ToDoMate.domain.SimpleInput;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class MemorySimpleInputRepository implements SimpleInputRepository{
 
@@ -16,7 +20,8 @@ public class MemorySimpleInputRepository implements SimpleInputRepository{
      */
 
     @Override
-    public String registerSimpleInput(String title, String startDate, String endDate, String day, String simpleInputKey, String goalKey) throws Exception {
+    public String registerSimpleInput(String title, String startDate, String endDate, String day,
+                                      String simpleInputKey, String goalKey, String memberId) throws Exception {
         SimpleInput simpleInput = new SimpleInput();
         simpleInput.setTitle(title);
         simpleInput.setStartDate(startDate);
@@ -24,6 +29,7 @@ public class MemorySimpleInputRepository implements SimpleInputRepository{
         simpleInput.setDay(day);
         simpleInput.setSimpleInputKey(simpleInputKey);
         simpleInput.setGoalKey(goalKey);
+        simpleInput.setMemberId(memberId);
         Firestore dbFirestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionsApiFuture=
                 dbFirestore.collection(collectionSimpleInput).document(simpleInput.getSimpleInputKey()).set(simpleInput);

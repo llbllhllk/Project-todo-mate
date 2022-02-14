@@ -16,8 +16,9 @@ const edit_goal_confirm_btn = document.querySelector('.edit_confirm');
 const edit_goal_delete_btn = document.querySelectorAll('.modal_btn.edit')[0];
 const delete_goal_exit_btn = document.querySelectorAll('.modal_btn.exit')[0];
 const delete_goal_delete_btn = document.querySelectorAll('.modal_btn.delete')[0];
-const modal_color_btn = document.querySelectorAll('.color-picker__list-item');
-
+const add_modal_color_btn = document.querySelectorAll('.color-picker__list-item.create');
+const edit_modal_color_btn = document.querySelectorAll('.color-picker__list-item.edit');
+console.log(add_modal_color_btn);
 // modal-input
 const modal_create_input = document.querySelectorAll('.input-goal.create')[0];
 const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
@@ -63,20 +64,28 @@ function initCreateModal() {
 }
 
 // edit 모달창 초기화 
-function initEditModal() {
-    modal_edit_input.value = "";
+function initEditModal(e) {
+
+    modal_edit_input.value = e.target.parentElement.parentElement.querySelector('.goal-list__name').innerHTML;
+    var color = e.target.parentElement.parentElement.querySelector('.goal-list__name').style.color;
+    
+    modal_edit_input.style.borderBottom = "1px solid " + color;
+    modal_edit_input.style.color = color;
+    
+    
     
 }
 
 // 목표 리스트 수정 버튼을 눌렀을 경우
 function onClickGoalList() {
     if (num_of_goal > 0) {
-        document.querySelectorAll('.goal-list__edit-btn').forEach((e) => {
-            e.addEventListener('click', (e) => {
+        document.querySelectorAll('.goal-list__edit-btn').forEach((elem) => {
+            elem.addEventListener('click', (e) => {
                 modal_edit.classList.add('active');
                 modal_background.classList.add('active');
 
                 // 색상 정보 초기화 추가 
+                initEditModal(e);
                 onClickEditGoalConfirmBtn();
                 onClickEditGoalDeleteBtn();
             })
