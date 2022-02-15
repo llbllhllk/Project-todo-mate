@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,13 @@ public class GoalController {
     public String viewGoal(@SessionAttribute("member")Member member,
                            Model model) throws Exception {
         List<Map<String, String>> goalList = goalService.getGoalList(member.getId());
+        List<Integer> viewIdList = new ArrayList<>();
+        for (Map<String, String> goal : goalList) {
+            String viewId = goal.get("viewId");
+            viewIdList.add(Integer.parseInt(viewId));
+        }
         model.addAttribute("goalCount", goalList.size());
+        model.addAttribute("viewIdList", viewIdList);
         model.addAttribute("goalList", goalList);
         return "editGoal";
     }
@@ -35,24 +42,24 @@ public class GoalController {
     public Boolean addGoal(@SessionAttribute("member")Member member,
                            @RequestParam("title")String title,
                            @RequestParam("color")String color,
-                           @RequestParam("goalKey")String goalKey) throws Exception {
-        return goalService.addGoal(member.getId(), title, color, goalKey);
+                           @RequestParam("goalKey")Integer viewId) throws Exception {
+        return goalService.addGoal(member.getId(), title, color, viewId);
     }
 
     @GetMapping("deleteGoal")
     @ResponseBody
     public Boolean deleteGoal(@SessionAttribute("member")Member member,
-                           @RequestParam("goalKey")String goalKey) throws Exception {
-        return goalService.deleteGoal(goalKey);
+                           @RequestParam("goalKey")Integer viewId) throws Exception {
+        return goalService.deleteGoal(viewId);
     }
 
     @GetMapping("fixGoal")
     @ResponseBody
     public Boolean fixGoal(@SessionAttribute("member")Member member,
-                           @RequestParam("goalKey")String goalKey,
+                           @RequestParam("goalKey")Integer viewId,
                            @RequestParam("color")String color,
                            @RequestParam("title")String title) throws Exception {
-        return goalService.fixGoal(member.getId(), title, color, goalKey);
+        return goalService.fixGoal(member.getId(), title, color, viewId);
     }
 
 }

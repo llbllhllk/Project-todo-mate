@@ -45,12 +45,18 @@ class GoalControllerTest {
     private ObjectMapper objectMapper;
 
     public void setSession() throws Exception {
+//        Member member = new Member();
+//        member.setId("dasol199");
+//        member.setPassword("0723");
+//        member.setNickname("dori");
+//        member.setName("강다솔");
+//        member.setEmail("dasol199@naver.com");
         Member member = new Member();
-        member.setId("dasol199");
-        member.setPassword("0723");
-        member.setNickname("dori");
-        member.setName("강다솔");
-        member.setEmail("dasol199@naver.com");
+        member.setId("admin");
+        member.setPassword("admin");
+        member.setNickname("admin");
+        member.setName("admin");
+        member.setEmail("dlrlxo999@naver.com");
 
         session.setAttribute("member", member);
     }
@@ -58,7 +64,6 @@ class GoalControllerTest {
     @Test
     public void 목표페이지로이동() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-        List<String> result = Arrays.asList();
         setSession();
         mockMvc.perform(MockMvcRequestBuilders.get("/editGoal")
                 .session(session))
@@ -68,37 +73,47 @@ class GoalControllerTest {
 
     @Test
     public void 목표추가() throws Exception {
+        //전달할 값들
+        Integer viewId=1111;
+        String color="red";
+        String title="game";
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
         setSession();
-        mockMvc.perform(MockMvcRequestBuilders.get("/addGoal")
+        mockMvc.perform(MockMvcRequestBuilders.get("/addGoal?goalKey="+viewId)
                 .session(session)
-        .param("color", "파랑")
-        .param("title", "공부")
-        .param("goalKey", "1111"))
+                .param("color",color)
+                .param("title", title))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     public void 목표수정() throws Exception {
+        //전달할 값들
+        Integer viewId=1111;
+        String color="노랑";
+        String title="놀기";
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
         setSession();
-        mockMvc.perform(MockMvcRequestBuilders.get("/addGoal")
+        mockMvc.perform(MockMvcRequestBuilders.get("/addGoal?goalKey="+viewId)
                 .session(session)
-                .param("color", "검정")
-                .param("title", "게임")
-                .param("goalKey", "1111"))
+                .param("color", color)
+                .param("title", title))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     public void 목표삭제() throws Exception {
+        //전달할 값
+        Integer viewId=1111;
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
         setSession();
-        mockMvc.perform(MockMvcRequestBuilders.get("/deleteGoal")
-                .session(session)
-                .param("goalKey", "1111"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/deleteGoal?goalKey="+viewId)
+                .session(session))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
