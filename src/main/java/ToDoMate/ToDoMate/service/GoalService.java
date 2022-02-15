@@ -21,15 +21,15 @@ public class GoalService {
         return goalRepository.getGoalList(memberId);
     }
 
-    public Boolean addGoal(String memberId, String title, String color, String goalKey) throws Exception {
-        return goalRepository.addGoal(memberId, title, color, goalKey);
+    public Boolean addGoal(String memberId, String title, String color, Integer viewId) throws Exception {
+        return goalRepository.addGoal(memberId, title, color, String.valueOf(viewId));
     }
 
-    public Boolean deleteGoal(String goalKey) throws Exception {
-        return goalRepository.deleteGoal(goalKey);
+    public Boolean deleteGoal(Integer viewId) throws Exception {
+        return goalRepository.deleteGoal(String.valueOf(viewId));
     }
 
-    public Boolean fixGoal(String memberId, String title, String color, String goalKey) throws Exception {
-        return goalRepository.fixGoal(memberId, title, color, goalKey);
+    public Boolean fixGoal(String memberId, String title, String color, Integer viewId) throws Exception {
+        return goalRepository.fixGoal(memberId, title, color, String.valueOf(viewId));
     }
 }

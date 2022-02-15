@@ -39,7 +39,7 @@ public class MemoryGoalRepository implements GoalRepository{
         docData.put("color", color);
         docData.put("memberId", memberId);
         docData.put("viewId", goalKey);
-        ApiFuture<WriteResult> setGoal = firestore.collection("goal").document(goalKey).set(docData);
+        ApiFuture<WriteResult> setGoal = firestore.collection("goal").document(String.valueOf(goalKey)).set(docData);
         Timestamp updateTime = setGoal.get().getUpdateTime();
         if (updateTime.equals(null)) return false;
         else return true;
@@ -60,7 +60,8 @@ public class MemoryGoalRepository implements GoalRepository{
         HashMap<String, String> chageData = new HashMap<>();
         chageData.put("title", title);
         chageData.put("color", color);
-        ApiFuture<WriteResult> updateGoal = firestore.collection("goal").document(goalKey).set(chageData, SetOptions.merge());
+        ApiFuture<WriteResult> updateGoal = firestore.collection("goal").document(String.valueOf(goalKey))
+                .set(chageData, SetOptions.merge());
         Timestamp updateTime = updateGoal.get().getUpdateTime();
         if (updateTime.equals(null)) return false;
         else return true;
