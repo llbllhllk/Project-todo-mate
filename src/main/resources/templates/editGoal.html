@@ -46,7 +46,7 @@
         <div class="goal-list">
             <ul class="goal-list__contents">
                 <li class="goal-list__item" th:each="goal : ${goalList}" >
-                    <strong class="goal-list__name" id="" th:text="${goal.title}" th:style="'color: ' + ${goal.color} + ';'"></strong>
+                    <strong class="goal-list__name" th:id="${goal.viewId}" th:text="${goal.title}" th:style="'color: ' + ${goal.color} + ';'"></strong>
                     <button type="button" class="goal-list__edit-btn"><i class="fas fa-chevron-right"></i></button>
                 </li>
             </ul>
@@ -173,6 +173,7 @@
     </div>
 <script th:inline = "javascript">
     var test = /*[[ ${goalCount} ]]*/;
+    // var goalId = /**/;
 </script>
 </body>
 </html>

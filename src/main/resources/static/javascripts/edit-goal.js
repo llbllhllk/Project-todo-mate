@@ -1,5 +1,8 @@
 'use strict';
 
+// list 
+const goal_list_contents = document.querySelector('.goal-list__contents');
+
 // button
 const add_goal_btn = document.querySelector('.goal__add-btn');
 
@@ -18,15 +21,15 @@ const delete_goal_exit_btn = document.querySelectorAll('.modal_btn.exit')[0];
 const delete_goal_delete_btn = document.querySelectorAll('.modal_btn.delete')[0];
 const add_modal_color_btn = document.querySelectorAll('.color-picker__list-item.create');
 const edit_modal_color_btn = document.querySelectorAll('.color-picker__list-item.edit');
-console.log(add_modal_color_btn);
+
 // modal-input
 const modal_create_input = document.querySelectorAll('.input-goal.create')[0];
 const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
 
-// modal color
-
 // 목표 수
 var num_of_goal = test;
+// goal ID
+var goalID = [];
 
 async function requestGet(url, params) {
     try {
@@ -44,12 +47,22 @@ async function requestGet(url, params) {
     }
 }
 
+// 중복되지 않는 랜덤 수 생성 
+function makeGoalId() {
+    var randomNumber;
+    while (1) {
+        randomNumber = Math.floor(Math.random() * 1000 + 1);
+        if (goalID.includes(randomNumber) === false) break;
+    }
+    return randomNumber;
+}
+
 // create 모달창 초기화
 function initCreateModal() {
     modal_create_input.value = "";
 
     var cnt = 1;
-    modal_color_btn.forEach((elem) => {
+    add_modal_color_btn.forEach((elem) => {
         if (cnt === 1) {
             var color = elem.style.backgroundColor;
             modal_create_input.style.borderBottom = "1px solid " + color;
@@ -65,15 +78,17 @@ function initCreateModal() {
 
 // edit 모달창 초기화 
 function initEditModal(e) {
-
     modal_edit_input.value = e.target.parentElement.parentElement.querySelector('.goal-list__name').innerHTML;
     var color = e.target.parentElement.parentElement.querySelector('.goal-list__name').style.color;
     
+    edit_modal_color_btn.forEach((elem) => {
+        if (elem.style.backgroundColor === color) {
+            elem.classList.add('active');
+        } else elem.classList.remove('active');
+    })
+
     modal_edit_input.style.borderBottom = "1px solid " + color;
     modal_edit_input.style.color = color;
-    
-    
-    
 }
 
 // 목표 리스트 수정 버튼을 눌렀을 경우
@@ -83,8 +98,8 @@ function onClickGoalList() {
             elem.addEventListener('click', (e) => {
                 modal_edit.classList.add('active');
                 modal_background.classList.add('active');
-
                 // 색상 정보 초기화 추가 
+                console.log(elem.id);
                 initEditModal(e);
                 onClickEditGoalConfirmBtn();
                 onClickEditGoalDeleteBtn();
@@ -131,7 +146,6 @@ function onClickEditGoalConfirmBtn() {
     edit_goal_confirm_btn.addEventListener("click", (e) => {
         // axios 
 
-        initEditModal();
         modal_edit.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -167,26 +181,30 @@ function onClickDeleteGoalDeleteBtn() {
     })
 }
 
-// 모달 창에서 색상 선택했을 경우 
-function onClickModalColor() {
-    modal_color_btn.forEach((elem) => {
+// add 모달 창에서 색상 선택했을 경우 
+function onClickAddModalColor() {
+    add_modal_color_btn.forEach((elem) => {
         elem.addEventListener('click', (e) => {
-            // border-radius 초기화 
             if (e.target.classList.contains('active') == false) inItColorPicker(e);
-            var isEdit = e.target.parentElement.parentElement.parentElement.classList.contains('edit');
             var color = getColorId(e);
-            if (isEdit == false) { // goal 생성일 경우 
-                console.log('이건 생성');
-                modal_create_input.style.borderBottom = "1px solid " + color;
-                modal_create_input.style.color = color;
-            } else { // goal 수정일 경우 
-                console.log('이건 수정');
-                modal_edit_input.style.borderBottom = "1px solid " + color;
-                modal_edit_input.style.color = color;
-                console.log(modal_edit_input.placeholder.style);
-            }
+            console.log('이건 생성');
+            modal_create_input.style.borderBottom = "1px solid " + color;
+            modal_create_input.style.color = color;
         })
         
+    })
+}
+
+// edit 모달 창에서 색상 선택했을 경우 
+function onClickEditModalColor() {
+    edit_modal_color_btn.forEach((elem) => {
+        elem.addEventListener('click', (e) => {
+            if (e.target.classList.contains('active') == false) inItColorPicker(e);
+            var color = getColorId(e);
+            console.log('이건 수정');
+            modal_edit_input.style.borderBottom = "1px solid " + color;
+            modal_edit_input.style.color = color;
+        })
     })
 }
 
@@ -203,9 +221,70 @@ function inItColorPicker(e) {
     e.target.classList.add('active');
 }
 
+// 목표 추가한 것 dom조작
+function addGoalDom(title, color, id) {
+    var liTag = document.createElement('li');
+    var strongTag = document.createElement('strong');
+    var buttonTag = document.createElement('button');
+
+    liTag.classList.add('goal-list__item');
+
+    strongTag.classList.add('goal-list__name');
+    strongTag.innerHTML = title;
+    strongTag.style.color = color;
+    strongTag.id = id;
+
+    buttonTag.classList.add('goal-list__edit-btn');
+    buttonTag.type = button;
+    buttonTag.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+    liTag.add(strongTag);
+    liTag.add(buttonTag);
+    goal_list_contents.add(liTag);
+}
+
+// axios 목표등록 
+let axiosAddGoal = async function() {
+    var color;
+    var ID = makeGoalId();
+    add_modal_color_btn.forEach((elem) => {
+        if (elem.classList.contains('active')) {
+            color = elem.style.backgroundColor;
+        }
+    })
+    const params = {
+        title: modal_create_input.value,
+        color: color,
+        goalKey: ID
+    }
+    requestGet('/addGoal', params)
+        .then(res => {
+            if (res === false) return; 
+            goalID.push(ID);
+            addGoalDom(title, color, goalKey);
+        })
+}
+
+// axios 목표수정 
+let axiosEditGoal = async function() {
+    var color;
+    var ID = 
+    const params = {
+        title: modal_create_input.value,
+        color: color,
+        goalKey: ID
+    }
+}
+
+// axios 목표삭제 
+let axiosDeleteGoal = async function() {
+
+}
+
 function init() {
     onClickAddGoal();
     onClickGoalList();
-    onClickModalColor();
+    onClickAddModalColor();
+    onClickEditModalColor();
 }
 init();
