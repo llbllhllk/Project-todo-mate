@@ -20,7 +20,7 @@
 
     <!-- JS -->
     <script src="/javascripts/edit-goal.js" defer></script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <title>목표 수정 - ToDo Mate</title>
 </head>
@@ -115,7 +115,7 @@
             <button type="submit" class="edit_confirm">확인</button>
         </div>
         <input type="text"
-                placeholder="TEST"
+                placeholder=""
                 class="input-goal edit"
                 id="goal"
                 name="goal"
@@ -173,7 +173,7 @@
     </div>
 <script th:inline = "javascript">
     var test = /*[[ ${goalCount} ]]*/;
-    // var goalId = /**/;
+    var goalId = /*[[ ${viewIdList} ]]*/;
 </script>
 </body>
 </html>

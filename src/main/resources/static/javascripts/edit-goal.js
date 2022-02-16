@@ -20,7 +20,7 @@ const edit_goal_delete_btn = document.querySelectorAll('.modal_btn.edit')[0];
 const delete_goal_exit_btn = document.querySelectorAll('.modal_btn.exit')[0];
 const delete_goal_delete_btn = document.querySelectorAll('.modal_btn.delete')[0];
 const add_modal_color_btn = document.querySelectorAll('.color-picker__list-item.create');
-const edit_modal_color_btn = document.querySelectorAll('.color-picker__list-item.edit');
+var edit_modal_color_btn = document.querySelectorAll('.color-picker__list-item.edit');
 
 // modal-input
 const modal_create_input = document.querySelectorAll('.input-goal.create')[0];
@@ -28,8 +28,6 @@ const modal_edit_input = document.querySelectorAll('.input-goal.edit')[0];
 
 // 목표 수
 var num_of_goal = test;
-// goal ID
-var goalID = [];
 
 async function requestGet(url, params) {
     try {
@@ -52,7 +50,7 @@ function makeGoalId() {
     var randomNumber;
     while (1) {
         randomNumber = Math.floor(Math.random() * 1000 + 1);
-        if (goalID.includes(randomNumber) === false) break;
+        if (goalId.includes(randomNumber) === false) break;
     }
     return randomNumber;
 }
@@ -78,6 +76,7 @@ function initCreateModal() {
 
 // edit 모달창 초기화 
 function initEditModal(e) {
+    console.log(e.target);
     modal_edit_input.value = e.target.parentElement.parentElement.querySelector('.goal-list__name').innerHTML;
     var color = e.target.parentElement.parentElement.querySelector('.goal-list__name').style.color;
     
@@ -99,10 +98,10 @@ function onClickGoalList() {
                 modal_edit.classList.add('active');
                 modal_background.classList.add('active');
                 // 색상 정보 초기화 추가 
-                console.log(elem.id);
+                const id = elem.parentElement.querySelector('.goal-list__name').id;
                 initEditModal(e);
-                onClickEditGoalConfirmBtn();
-                onClickEditGoalDeleteBtn();
+                onClickEditGoalConfirmBtn(id);
+                onClickEditGoalDeleteBtn(id);
             })
         })
     }
@@ -125,7 +124,7 @@ function onClickAddGoal() {
 function onClickAddGoalConfirmBtn() {
     add_goal_confirm_btn.addEventListener('click', (e) => {
         // axios
-
+        axiosAddGoal();
         modal_create.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -134,48 +133,44 @@ function onClickAddGoalConfirmBtn() {
 // create 모달창에서 뒤로가기 버튼 눌렀을 경우 
 function onClickAddGoalBackBtn() {
     add_goal_back_btn.addEventListener('click', (e) => {
-        // 초기화
-
         modal_create.classList.remove('active');
         modal_background.classList.remove('active');
     })
 }
 
 // edit 모달창에서 확인 버튼 눌렀을 경우 
-function onClickEditGoalConfirmBtn() {
+function onClickEditGoalConfirmBtn(id) {
     edit_goal_confirm_btn.addEventListener("click", (e) => {
         // axios 
-
+        axiosEditGoal(id);
         modal_edit.classList.remove('active');
         modal_background.classList.remove('active');
     })
 }
 
 // edit 모달창에서 삭제 버튼 눌렀을 경우 
-function onClickEditGoalDeleteBtn() {
+function onClickEditGoalDeleteBtn(id) {
     edit_goal_delete_btn.addEventListener('click', (e) => {
         modal_edit.classList.remove('active');
         modal_delete.classList.add('active');
         onClickDeleteGoalExitBtn();
-        onClickDeleteGoalDeleteBtn();
+        onClickDeleteGoalDeleteBtn(id);
     })
 }
 
 // delete 모달창에서 취소 버튼 눌렀을 경우 
 function onClickDeleteGoalExitBtn() {
     delete_goal_exit_btn.addEventListener('click', (e) => {
-        initEditModal();
         modal_delete.classList.remove('active');
         modal_background.classList.remove('active');
     })
 }
 
 // delete 모달창에서 삭제 버튼 눌렀을 경우 
-function onClickDeleteGoalDeleteBtn() {
+function onClickDeleteGoalDeleteBtn(id) {
     delete_goal_delete_btn.addEventListener('click', (e) => {
         // 목표 삭제 axios 요청 
-
-        initEditModal();
+        axiosDeleteGoal(id);
         modal_delete.classList.remove('active');
         modal_background.classList.remove('active');
     })
@@ -235,16 +230,30 @@ function addGoalDom(title, color, id) {
     strongTag.id = id;
 
     buttonTag.classList.add('goal-list__edit-btn');
-    buttonTag.type = button;
+    buttonTag.setAttribute('type', 'button');
     buttonTag.innerHTML = '<i class="fas fa-chevron-right"></i>';
 
-    liTag.add(strongTag);
-    liTag.add(buttonTag);
-    goal_list_contents.add(liTag);
+    liTag.append(strongTag);
+    liTag.append(buttonTag);
+    goal_list_contents.append(liTag);
+}
+
+// 목표 수정한 것 돔조작
+function editGoalDom(title, color, id) { 
+    var strongTag = document.getElementById(id);
+    strongTag.innerHTML = title;
+    strongTag.style.color = color;
+}
+
+// 목표 삭제한 것 돔조작 
+function deleteGoalDom(id) {
+    var strongTag = document.getElementById(id).parentElement;
+    strongTag.remove();
 }
 
 // axios 목표등록 
 let axiosAddGoal = async function() {
+    var title = modal_create_input.value;
     var color;
     var ID = makeGoalId();
     add_modal_color_btn.forEach((elem) => {
@@ -253,32 +262,53 @@ let axiosAddGoal = async function() {
         }
     })
     const params = {
-        title: modal_create_input.value,
+        title: title,
         color: color,
         goalKey: ID
     }
     requestGet('/addGoal', params)
         .then(res => {
             if (res === false) return; 
-            goalID.push(ID);
-            addGoalDom(title, color, goalKey);
+            goalId.push(ID);
+            addGoalDom(title, color, ID);
+            edit_modal_color_btn = document.querySelectorAll('.color-picker__list-item.edit');
+            onClickGoalList();
+            num_of_goal++;
         })
 }
 
 // axios 목표수정 
-let axiosEditGoal = async function() {
+let axiosEditGoal = async function(id) {
+    var title = modal_edit_input.value;
     var color;
-    var ID = 
+    edit_modal_color_btn.forEach((elem) => {
+        if (elem.classList.contains('active')) {
+            color = elem.style.backgroundColor;
+        }
+    })
     const params = {
-        title: modal_create_input.value,
+        title: title,
         color: color,
-        goalKey: ID
+        goalKey: id
     }
+    requestGet('/fixGoal', params)
+        .then(res => {
+            if (res === false) return;
+            editGoalDom(title, color, id);
+        })
 }
 
 // axios 목표삭제 
-let axiosDeleteGoal = async function() {
-
+let axiosDeleteGoal = async function(id) {
+    const params = {
+        goalKey: id
+    }
+    requestGet('/deleteGoal', params)
+        .then(res => {
+            if (res === false) return;
+            deleteGoalDom(id);
+            num_of_goal--;
+        })
 }
 
 function init() {
